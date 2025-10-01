@@ -1,0 +1,54 @@
+# Ignore compiled class files and build output
+/bin/
+**/*.class
+
+# Maven
+/target/
+
+# Gradle
+/.gradle/
+/build/
+
+# Java archives
+*.jar
+*.war
+*.ear
+
+# IntelliJ IDEA
+/.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+/.settings/
+.classpath
+.project
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Native crash logs
+hs_err_pid*
+
+# Packaging and release artifacts
+*.zip
+*.tar.gz
+
+# Other
+*.class
+
+# Keep res/ and src/ tracked
+!res/**
+!src/**

@@ -1,0 +1,3600 @@
+package wagemaker;
+
+/******************************************************************************************************
+ * @author by Ricardo Wagemaker (["java"] + "@" + "wagemaker.co.uk") 2013-2015
+ * @version 1.5.5
+ * @since   2013 - 2015
+ ******************************************************************************************************/
+
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.*;
+
+import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.KeyStroke;
+import javax.swing.InputMap;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.border.Border;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URI;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+public class CalculatorOrangeLite extends JFrame implements ActionListener {
+	
+	private void loadFrameIcon() {
+        URL imgUrl = null;
+        ImageIcon imgIcon = null; 
+        imgUrl = getClass().getResource("/images/gcclinux.png");
+        imgIcon = new ImageIcon(imgUrl);
+        Image img = imgIcon.getImage();
+        this.setIconImage(img);
+	}
+
+	// Declare Version
+
+	private static final long serialVersionUID = 1;
+
+	JPanel[] row = new JPanel[5];
+	JButton[] button = new JButton[24];
+	String[] buttonString = { "7", "8", "9", "+", "4", "5", "6", "-", "1", "2",
+			"3", "x", ".", "/", "C", "\u221A", "+/-", "=", "0", "%", " ", "x\u00B2", "\u03C0", " " };
+
+	// Get the size of the screen
+	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
+	// Determine the new location of the window
+	int w = this.getSize().width;
+	int h = this.getSize().height;
+	int x = (dim.width - w) / (3);
+	int y = (dim.height - h) / 5;
+
+	int[] dimW = { 73, 463, 450, 480, 142 };
+	int[] dimH = { 73, 21, 53, 470 };
+	Dimension displayDimension = new Dimension(dimW[1], dimH[2]);
+	Dimension displayMiniDimension = new Dimension(dimW[1], dimH[1]);
+	Dimension regularDimension = new Dimension(dimW[0], dimH[0]);
+	Dimension extendedDimension = new Dimension(dimW[4], dimH[0]);
+	Dimension zeroButDimension = new Dimension(dimW[0], dimH[0]);
+
+	boolean[] function = new boolean[4];
+	double[] temporary = { 0, 0 };
+	JTextField display = new JTextField(""); // Main Digital Display
+	JTextField displayMini = new JTextField(""); // result Digital Display
+	JTextField allValues = new JTextField();
+
+	boolean checkResult = false;
+
+	static JMenuBar mb = new JMenuBar(); // Menu bar
+	static JMenu mnuFile = new JMenu("File"); // File Entry on Menu bar
+	static JMenu mnuEdit = new JMenu("Edit"); // File Entry on Menu bar
+	static JMenuItem mnuStyle = new JMenu("Style"); // File Entry on Menu bar
+	static JMenu mnuHelp = new JMenu("Help"); // Help Menu entry
+
+	ImageIcon iconQuit =new ImageIcon(getClass().getResource("/images/quit.png") );
+	ImageIcon iconAbout =new ImageIcon(getClass().getResource("/images/audio.png") );
+	ImageIcon iconSupport =new ImageIcon(getClass().getResource("/images/support.png") );
+	ImageIcon iconTwitter =new ImageIcon(getClass().getResource("/images/twitter.png") );
+	ImageIcon iconPayPal =new ImageIcon(getClass().getResource("/images/paypal.png") );
+	ImageIcon iconHist =new ImageIcon(getClass().getResource("/images/history.png") );
+	ImageIcon iconClearHist =new ImageIcon(getClass().getResource("/images/delete.png") );
+	ImageIcon iconSoundControl =new ImageIcon(getClass().getResource("/images/audio.png") );
+	ImageIcon iconCopyResult =new ImageIcon(getClass().getResource("/images/copy.png") );
+	ImageIcon iconOrange =new ImageIcon(getClass().getResource("/images/orange.png") );
+	ImageIcon iconGray =new ImageIcon(getClass().getResource("/images/darkgray.png") );
+	ImageIcon iconExport =new ImageIcon(getClass().getResource("/images/export.png") );
+	ImageIcon iconBorderCompound =new ImageIcon(getClass().getResource("/images/copy.png") );
+	ImageIcon iconBorderLower =new ImageIcon(getClass().getResource("/images/lower.png") );
+	ImageIcon iconBorderRaised =new ImageIcon(getClass().getResource("/images/raised.png") );
+	ImageIcon iconBorderPlain =new ImageIcon(getClass().getResource("/images/plain.png") );
+	ImageIcon iconLime =new ImageIcon(getClass().getResource("/images/lime.png") );
+	
+
+	public JMenu mnuItemBack = new JMenu("BackGround"); // Sub-Menu Quit item
+	public JMenu mnuItemButtonStyle = new JMenu("Button Style"); // Sub-Menu Quit item
+	public JMenuItem mnuItemQuit = new JMenuItem("Quit", iconQuit );
+	public JMenuItem mnuItemAbout = new JMenuItem("About", iconAbout ); // Sub-Menu About Entry
+	public JMenuItem mnuItemSupport = new JMenuItem("Support", iconSupport ); // Sub-Menu About Entry
+	public JMenuItem mnuItemTwitter = new JMenuItem("Twitter", iconTwitter ); // Sub-Menu About Entry
+	public JMenuItem mnuItemPayPal = new JMenuItem("Donate", iconPayPal ); // Sub-Menu About Entry
+	public JMenuItem mnuItemHist = new JMenuItem("History", iconHist ); // Sub-Menu About Entry
+	public JMenuItem mnuItemHistOld = new JMenuItem("History (Old)", iconHist); // Sub-Menu About Entry
+	public JMenuItem mnuClearHist = new JMenuItem("Clear (History)", iconClearHist ); // Sub-Menu About Entry
+	public JMenuItem mnuSoundControl = new JMenuItem("Audio (On/Off)", iconSoundControl );
+	public JMenuItem mnuCopyResult = new JMenuItem("Copy (result)", iconCopyResult );
+	public JMenuItem mnuExport = new JMenuItem("Export (Excel)", iconExport );
+	
+	public JMenuItem mnuItemDarkGray = new JMenuItem("Dark Gray", iconGray); // Sub-Menu item
+	public JMenuItem mnuItemOrange = new JMenuItem("Orange", iconOrange); // Sub-Menu item
+	public JMenuItem mnuItemPlain = new JMenuItem("Plain", iconBorderPlain);
+	public JMenuItem mnuItemNoBoarder = new JMenuItem("Plain", iconBorderPlain);
+	public JMenuItem mnuItemBorderCompound = new JMenuItem("Compound", iconBorderCompound);
+	public JMenuItem mnuItemBorderLower = new JMenuItem("Lower Border" ,iconBorderLower);
+	public JMenuItem mnuItemBorderRaised = new JMenuItem("Raised Border" ,iconBorderRaised);
+	public JMenuItem mnuItemLime = new JMenuItem("Lime" ,iconLime);
+
+	// Creating Button Borders
+
+	Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+	Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+	Object compound = BorderFactory.createCompoundBorder(raisedbevel, loweredbevel);
+
+	// Finish Creating boarders
+
+	URL imageURL1 = CalculatorOrangeLite.class.getResource("/images/mini.png");
+	ImageLoader img = new ImageLoader(Toolkit.getDefaultToolkit().getImage(imageURL1));
+
+	// END THEME
+
+	// Key press constructor
+
+	class KeyPressed extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+		AbstractButton c;
+
+		KeyPressed(AbstractButton c) {
+			this.c = c;
+		}
+
+		public void actionPerformed(ActionEvent tf) {
+			c.doClick();
+		}
+
+	}
+
+	@SuppressWarnings("unused")
+	CalculatorOrangeLite() throws IOException {
+		
+		
+
+		super(""+CalcProperties.Title+CalcProperties.Separate+CalcProperties.Version); // Frame Title
+		
+		loadFrameIcon();
+
+		//System.out.println("ScreenSize: " + dim);
+		//System.out.println("Date: " + date);
+
+		String ACTION_KEY = "The Action";
+
+		// START TOP Menu
+
+		mnuFile.setFont(FontTheme.size14p);
+		mnuEdit.setFont(FontTheme.size14p);
+		mnuHelp.setFont(FontTheme.size14p);
+		mnuStyle.setFont(FontTheme.size14p);
+		mnuItemQuit.setFont(FontTheme.size14p);
+		mnuItemSupport.setFont(FontTheme.size14p);
+		mnuItemTwitter.setFont(FontTheme.size14p);
+		mnuItemPayPal.setFont(FontTheme.size14p);
+		mnuItemAbout.setFont(FontTheme.size14p);
+		mnuItemHist.setFont(FontTheme.size14p);
+		mnuClearHist.setFont(FontTheme.size14p);
+		mnuItemHistOld.setFont(FontTheme.size14p);
+		mnuSoundControl.setFont(FontTheme.size14p);
+		mnuCopyResult.setFont(FontTheme.size14p);
+		mnuItemBack.setFont(FontTheme.size14p);
+		mnuItemButtonStyle.setFont(FontTheme.size14p);
+		mnuItemOrange.setFont(FontTheme.size14p);
+		mnuItemDarkGray.setFont(FontTheme.size14p);
+		mnuExport.setFont(FontTheme.size14p);
+		mnuItemNoBoarder.setFont(FontTheme.size14p);
+		mnuItemBorderCompound.setFont(FontTheme.size14p);
+		mnuItemBorderLower.setFont(FontTheme.size14p);
+		mnuItemBorderRaised.setFont(FontTheme.size14p);
+		mnuItemLime.setFont(FontTheme.size14p);
+		mnuItemPlain.setFont(FontTheme.size14p);
+		
+
+		setJMenuBar(mb);
+		mb.add(mnuFile);
+		mb.add(mnuEdit);
+		mb.add(mnuStyle);
+		mb.add(mnuHelp);
+
+		mnuHelp.add(mnuItemPayPal);
+		mnuHelp.add(mnuItemTwitter);
+		mnuHelp.add(mnuItemSupport);
+		mnuHelp.add(mnuItemAbout);
+		mnuFile.add(mnuItemHist);
+		
+		File historyOLD = CalcProperties.historyOld();
+		if (historyOLD.exists()){
+			mnuFile.add(mnuItemHistOld);
+		}
+		mnuFile.add(mnuItemQuit);
+		mnuEdit.add(mnuCopyResult);
+		mnuEdit.add(mnuSoundControl);
+		mnuEdit.add(mnuClearHist);
+		//mnuEdit.add(mnuExport);
+		mnuStyle.add(mnuItemBack);
+		mnuStyle.add(mnuItemButtonStyle);
+		mnuItemBack.add(mnuItemLime);
+		mnuItemBack.add(mnuItemPlain);
+		mnuItemBack.add(mnuItemOrange);
+		mnuItemBack.add(mnuItemDarkGray);
+		mnuItemButtonStyle.add(mnuItemNoBoarder);
+		mnuItemButtonStyle.add(mnuItemBorderCompound);
+		mnuItemButtonStyle.add(mnuItemBorderLower);
+		mnuItemButtonStyle.add(mnuItemBorderRaised);
+		
+		
+
+		// END TOP MENU
+
+		CalcProperties.setDesign();
+		//setLocationRelativeTo(null);
+		setSize(new Dimension(dimW[3], dimH[3])); // Calculator Window Size Width, heights
+		setResizable(false);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		GridLayout grid = new GridLayout(5, 6);
+		setLayout(grid);
+		//setLocation(x, y);
+		Dimension position = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(position.width/2-this.getSize().width/2, position.height/2-this.getSize().height/2);
+		
+
+		for (int i = 0; i < 4; i++)
+			function[i] = false;
+
+		// FlowLayout f1 = new FlowLayout(FlowLayout.CENTER,0,10);
+		FlowLayout f1 = new FlowLayout(FlowLayout.CENTER);
+		// FlowLayout f2 = new FlowLayout(FlowLayout.LEFT,8,8);
+		FlowLayout f2 = new FlowLayout(FlowLayout.CENTER);
+
+		for (int i = 0; i < 5; i++)
+			row[i] = new JPanel();
+		row[0].setLayout(f1);
+
+		for (int i = 1; i < 5; i++)
+			row[i].setLayout(f2);
+
+		// Check History File
+		
+		File historyCheck = CalcProperties.historyFile();
+		
+		if (!historyCheck.exists()){
+			historyCheck.createNewFile();
+			FileWriter resultfilestr = new FileWriter(CalcProperties.historyFile(), true);
+			BufferedWriter outHist = new BufferedWriter(resultfilestr);
+			outHist.write("<center><b><h1>\"Calculator History\"</h1></b></center>");
+			outHist.newLine();
+			outHist.write("<table width=\"770\" border cellpadding=\"2\">");
+			outHist.close();
+		}
+		
+		// String workingDir;
+		
+		File file = new File(CalcProperties.workingDir());
+		
+		if (!file.exists()){
+			//System.out.println("Config File does Not exist = " + file);	
+			CalcProperties.setDesign();
+			mb.setForeground(CalcProperties.ORANGE); // set colour to menu bars
+			mnuFile.setForeground(CalcProperties.ORANGE);
+			mnuEdit.setForeground(CalcProperties.ORANGE);
+			mnuHelp.setForeground(CalcProperties.ORANGE);
+			mnuItemQuit.setForeground(CalcProperties.ORANGE); // set colour to menu bar
+			mnuItemAbout.setForeground(CalcProperties.ORANGE); // set colour to menu bar
+			mnuItemHist.setForeground(CalcProperties.ORANGE);
+			mnuItemHistOld.setForeground(CalcProperties.ORANGE);
+			mnuClearHist.setForeground(CalcProperties.ORANGE);
+			mnuSoundControl.setForeground(CalcProperties.ORANGE);
+			mnuItemSupport.setForeground(CalcProperties.ORANGE);
+			mnuItemTwitter.setForeground(CalcProperties.ORANGE);
+			mnuItemPayPal.setForeground(CalcProperties.ORANGE);
+			mnuCopyResult.setForeground(CalcProperties.ORANGE);
+			mnuItemBack.setForeground(CalcProperties.ORANGE);
+			mnuItemButtonStyle.setForeground(CalcProperties.ORANGE);
+			mnuItemOrange.setForeground(CalcProperties.ORANGE);
+			mnuItemDarkGray.setForeground(CalcProperties.ORANGE);
+			mnuStyle.setForeground(CalcProperties.ORANGE);
+			mnuExport.setForeground(CalcProperties.ORANGE);
+			mnuItemNoBoarder.setForeground(CalcProperties.ORANGE);
+			mnuItemBorderCompound.setForeground(CalcProperties.ORANGE);
+			mnuItemBorderLower.setForeground(CalcProperties.ORANGE);
+			mnuItemBorderRaised.setForeground(CalcProperties.ORANGE);
+			mnuItemLime.setForeground(CalcProperties.ORANGE);
+			mnuItemPlain.setForeground(CalcProperties.ORANGE);
+			
+			
+			for (int i = 0; i < 5; i++) {
+				row[i].setBackground(CalcProperties.ORANGE);
+			}
+			
+			Map<Integer, Character> keystrokeMap = new HashMap<Integer, Character>();
+			
+			keystrokeMap.put(14, (char) KeyEvent.VK_ESCAPE);
+			keystrokeMap.put(0, '7');
+			keystrokeMap.put(1, '8');
+			keystrokeMap.put(2, '9');
+			keystrokeMap.put(3, '+');
+			keystrokeMap.put(4, '4');
+			keystrokeMap.put(5, '5');
+			keystrokeMap.put(6, '6');
+			keystrokeMap.put(7, '-');
+			keystrokeMap.put(8, '1');
+			keystrokeMap.put(9, '2');
+			keystrokeMap.put(10, '3');
+			keystrokeMap.put(11, '*');
+			keystrokeMap.put(12, '.');
+			keystrokeMap.put(13, '/');
+			keystrokeMap.put(17, '=');
+			keystrokeMap.put(17, (char) KeyEvent.VK_ENTER);
+			keystrokeMap.put(18, '0');
+			keystrokeMap.put(19, '%');
+			
+			for (int i = 0; i < 24; i++) {
+				button[i] = new JButton(); // Moved
+				button[i].setBorder((Border) compound);  // button border on STart up // Moved
+				button[i].setContentAreaFilled(true); // Enable to remove buttons.
+				button[i].setText(buttonString[i]);
+				//System.out.println("CODE-030 "+"button " + i + " = " + buttonString[i]);
+
+				if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
+						|| i == 8 || i == 9 || i == 10 || i == 18) {
+					button[i].setBackground(CalcProperties.DARKGREY);  // Moved
+					button[i].setFont(FontTheme.size18i); // Moved
+				} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
+						|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
+						|| i == 20 || i == 22 || i == 21 || i == 23) {
+					button[i].setBackground(CalcProperties.ORANGE);
+					button[i].setFont(FontTheme.size18i);
+				}
+
+				button[i].addActionListener(this);
+
+				Character c = keystrokeMap.get(i);
+				if (c != null) {
+					KeyStroke keyStroke = KeyStroke.getKeyStroke(c, 0);
+					InputMap inputMap = button[i]
+							.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+					inputMap.put(keyStroke, ACTION_KEY);
+					ActionMap actionMap = button[i].getActionMap();
+					actionMap.put(ACTION_KEY, new KeyPressed(button[i]));
+				}
+			}
+			
+			// HERE
+			
+			Properties newProperties = new Properties(System.getProperties());
+			
+				newProperties.put("theme.colour", "ORANGE");
+				newProperties.put("button.colour", "DARKGREY");
+				newProperties.put("button_c.colour", "ORANGE");
+				newProperties.put("audio.status", "false");
+				newProperties.put("mb.colour", "ORANGE");
+				newProperties.put("mnuFile.colour", "ORANGE");
+				newProperties.put("mnuEdit.colour", "ORANGE");
+				newProperties.put("mnuHelp.colour", "ORANGE");
+				newProperties.put("mnuItemQuit.colour", "ORANGE");
+				newProperties.put("mnuItemAbout.colour", "ORANGE");
+				newProperties.put("mnuItemHist.colour", "ORANGE");
+				newProperties.put("mnuItemHistOld.colour", "ORANGE");
+				newProperties.put("mnuClearHist.colour", "ORANGE");
+				newProperties.put("mnuSoundControl.colour", "ORANGE");
+				newProperties.put("mnuItemSupport.colour", "ORANGE");
+				newProperties.put("mnuItemTwitter.colour", "ORANGE");
+				newProperties.put("mnuItemPayPal.colour", "ORANGE");
+				newProperties.put("mnuCopyResult.colour", "ORANGE");
+				newProperties.put("mnuItemBack.colour", "ORANGE");
+				newProperties.put("mnuItemButtonStyle.colour", "ORANGE");
+				newProperties.put("mnuItemOrange.colour", "ORANGE");
+				newProperties.put("mnuItemDarkGray.colour", "ORANGE");
+				newProperties.put("mnuStyle.colour", "ORANGE");
+				newProperties.put("mnuExport.colour", "ORANGE");
+				newProperties.put("mnuItemNoBoarder.colour", "ORANGE");
+				newProperties.put("mnuItemBorderCompound.colour", "ORANGE");
+				newProperties.put("mnuItemBorderLower.colour", "ORANGE");
+				newProperties.put("mnuItemBorderRaised.colour", "ORANGE");
+				newProperties.put("mnuItemLime.colour", "ORANGE");
+				newProperties.put("mnuItemPlain.colour", "ORANGE");
+				newProperties.put("row.colour", "ORANGE");
+				
+				for (int i = 0; i < 1; i++) {
+					if (button[0].getBorder() == compound) {
+						newProperties.put("style.type", "compound");
+					} else if (button[0].getBorder() == loweredbevel) {
+						newProperties.put("style.type", "loweredbevel");
+					} else if (button[0].getBorder() == raisedbevel) {
+						newProperties.put("style.type", "raisedbevel");
+						button[20].setBorder(null);
+					} else if (button[0].getBorder() == null) {
+						newProperties.put("style.type", "null");
+						button[20].setBorder(null);
+					}
+				}
+				
+				System.setProperties(newProperties);
+				FileOutputStream out = null;
+				try {
+					out = new FileOutputStream(file);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				try {
+					newProperties.store(out, "");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				// HERE
+			
+		} else {
+			
+			// Reading config file and storing information in memory
+			Properties prop = new Properties();
+			FileInputStream input = new FileInputStream(file);
+			prop.load(input);
+			
+			// System.out.println("Config File = " + file);
+			
+			//System.out.println("LINE 431 --> mnuFile.colour = " + prop.getProperty("mnuFile.colour"));
+			//System.out.println("LINE 432 --> theme.colour = " + prop.getProperty("theme.colour"));
+			
+			
+			// Checking the integraty of the config file in case there is a OLD config without all the properties.
+			if (prop.getProperty("mnuFile.colour") == null){ prop.setProperty("mnuFile.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemTwitter.colour") == null){ prop.setProperty("mnuItemTwitter.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemAbout.colour") == null){ prop.setProperty("mnuItemAbout.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemBack.colour") == null){ prop.setProperty("mnuItemBack.colour", "ORANGE"); }
+			if (prop.getProperty("mnuClearHist.colour") == null){ prop.setProperty("mnuClearHist.colour", "ORANGE"); }
+			if (prop.getProperty("theme.colour") == null){ prop.setProperty("theme.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemOrange.colour") == null){ prop.setProperty("mnuItemOrange.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemHist.colour") == null){ prop.setProperty("mnuItemHist.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemHistOld.colour") == null){ prop.setProperty("mnuItemHistOld.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemPayPal.colour") == null){ prop.setProperty("mnuItemPayPal.colour", "ORANGE"); }
+			if (prop.getProperty("style.type") == null){ prop.setProperty("style.type", "null"); }
+			if (prop.getProperty("mnuEdit.colour") == null){ prop.setProperty("mnuEdit.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemBorderRaised.colour") == null){ prop.setProperty("mnuItemBorderRaised.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemSupport.colour") == null){ prop.setProperty("mnuItemSupport.colour", "ORANGE"); }
+			if (prop.getProperty("mnuStyle.colour") == null){ prop.setProperty("mnuStyle.colour", "ORANGE"); }
+			if (prop.getProperty("button_c.colour") == null){ prop.setProperty("button_c.colour", "ORANGE"); }
+			if (prop.getProperty("mnuCopyResult.colour") == null){ prop.setProperty("mnuCopyResult.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemBorderCompound.colour") == null){ prop.setProperty("mnuItemBorderCompound.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemQuit.colour") == null){ prop.setProperty("mnuItemQuit.colour", "ORANGE"); }
+			if (prop.getProperty("button.colour") == null){ prop.setProperty("button.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemNoBoarder.colour") == null){ prop.setProperty("mnuItemNoBoarder.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemLime.colour") == null){ prop.setProperty("mnuItemLime.colour", "ORANGE"); }
+			if (prop.getProperty("mnuSoundControl.colour") == null){ prop.setProperty("mnuSoundControl.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemDarkGray.colour") == null){ prop.setProperty("mnuItemDarkGray.colour", "ORANGE"); }
+			if (prop.getProperty("mnuHelp.colour") == null){ prop.setProperty("mnuHelp.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemBorderLower.colour") == null){ prop.setProperty("mnuItemBorderLower.colour", "ORANGE"); }
+			if (prop.getProperty("audio.status") == null){ prop.setProperty("audio.status", "ORANGE"); }
+			if (prop.getProperty("mnuItemPlain.colour") == null){ prop.setProperty("mnuItemPlain.colour", "ORANGE"); }
+			if (prop.getProperty("mb.colour") == null){ prop.setProperty("mb.colour", "ORANGE"); }
+			if (prop.getProperty("mnuExport.colour") == null){ prop.setProperty("mnuExport.colour", "ORANGE"); }
+			if (prop.getProperty("mnuFile.colour") == null){ prop.setProperty("mnuFile.colour", "ORANGE"); }
+			if (prop.getProperty("row.colour") == null){ prop.setProperty("row.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemButtonStyle.colour") == null){ prop.setProperty("mnuItemButtonStyle.colour", "ORANGE"); }
+
+			
+			// CHECK VERSION
+			
+			boolean connectivity;
+			 
+			   try
+			   {
+			     URL version = URI.create(CalcProperties.versionFile).toURL();
+			     URLConnection conn = version.openConnection();
+			     conn.setConnectTimeout(5000);
+			     conn.connect();
+			     connectivity = true;
+			     //System.out.println("can connect / " + connectivity);
+			     
+			        BufferedReader in = new BufferedReader(new InputStreamReader(version.openStream()));
+			        
+			        String newVersion = in.readLine();
+			        String currentVersion = CalcProperties.Version;
+
+			        String currentValue = currentVersion.replaceAll("\\.", "");
+			        String newValue = newVersion.replaceAll("\\.", "");
+			        
+			        int x = Integer.parseInt(currentValue);
+			        int y = Integer.parseInt(newValue);
+
+			        if (x == y){
+			        	//JOptionPane.showMessageDialog(null, "Your Version is up to date!");
+			        } else if (x > y){
+			        	//System.out.println("\n"+"This version 1.5.1 has been updated for Windows 8"+"\n");
+			        } else if (x < y){
+			        	int selectedOption = JOptionPane.showConfirmDialog(null, 
+			        			" EN - Download new version? \n PL - aktualizacja nowej wersji? \n DE - Update auf neue Version? \n BR - atualizar para nova versão? \n NL - update naar de nieuwe versie? \n RU - обновление до новой версии? \n CH - 更新到新版本？", "Update Available - " +newVersion, JOptionPane.YES_NO_OPTION);
+			        			if (selectedOption == JOptionPane.YES_OPTION) {
+			        				System.out.println("Starting to Download");
+			        				try 
+			        		        {
+			        		            Desktop.getDesktop().browse(URI.create("https://github.com/gcclinux/orangecalc"));
+			        		        }           
+			        		        catch (Exception e) {}
+			        			} 	
+			        }
+			   }
+			   catch (Exception e)
+			   {
+				   connectivity = false;
+			     //System.out.println("can't connect to URL / " + connectivity);
+			     //System.out.println("URL = " + CalcProperties.versionFile);
+			   }
+			
+			// END VERSION
+			
+			   //System.out.println("Working Directory" + CalcProperties.workingDir);
+			
+			String ORANGE = "ORANGE";
+			String LIME = "LIME";
+			String DARKGREY = "DARKGREY";
+			String BLACK = "BLACK";
+			
+			//newProperties.put("theme.colour", prop.getProperty("theme.colour"));
+			
+			if (System.getProperty("audio.status") == null){
+				System.setProperty("audio.status", prop.getProperty("audio.status"));
+			}
+			
+			//System.out.println("LINE 499 --> mnuFile.colour = " + System.getProperty("mnuFile.colour"));
+
+			// create String to assign result to mnuFile.colour
+			String MNUFILE = prop.getProperty("mnuFile.colour");
+			
+			// Identify colour and assign colour
+			if (MNUFILE.equals(ORANGE)) {	
+				mnuFile.setForeground(CalcProperties.ORANGE);
+			} else if (MNUFILE.equals(LIME)) {	
+				mnuFile.setForeground(CalcProperties.LIME);
+			} else if (MNUFILE.equals(DARKGREY)) {	
+				mnuFile.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUFILE.equals(BLACK)) {	
+				mnuFile.setForeground(CalcProperties.BLACK);
+			}
+			
+			
+			String MB = prop.getProperty("mb.colour");
+			if (MB.equals(ORANGE)) {	
+				mb.setForeground(CalcProperties.ORANGE);
+			} else if (MB.equals(LIME)) {	
+				mb.setForeground(CalcProperties.LIME);
+			} else if (MB.equals(DARKGREY)) {	
+				mb.setForeground(CalcProperties.DARKGREY);
+			} else if (MB.equals(BLACK)) {	
+				mb.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUEDIT = prop.getProperty("mnuEdit.colour");
+			if (MNUEDIT.equals(ORANGE)) {	
+				mnuEdit.setForeground(CalcProperties.ORANGE);
+			} else if (MNUEDIT.equals(LIME)) {	
+				mnuEdit.setForeground(CalcProperties.LIME);
+			} else if (MNUEDIT.equals(DARKGREY)) {	
+				mnuEdit.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUEDIT.equals(BLACK)) {	
+				mnuEdit.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUHELP = prop.getProperty("mnuHelp.colour");
+			if (MNUHELP.equals(ORANGE)) {	
+				mnuHelp.setForeground(CalcProperties.ORANGE);
+			} else if (MNUHELP.equals(LIME)) {	
+				mnuHelp.setForeground(CalcProperties.LIME);
+			} else if (MNUHELP.equals(DARKGREY)) {	
+				mnuHelp.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUHELP.equals(BLACK)) {	
+				mnuHelp.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMQUIT = prop.getProperty("mnuItemQuit.colour");
+			if (MNUITEMQUIT.equals(ORANGE)) {	
+				mnuItemQuit.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMQUIT.equals(LIME)) {	
+				mnuItemQuit.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMQUIT.equals(DARKGREY)) {	
+				mnuItemQuit.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMQUIT.equals(BLACK)) {	
+				mnuItemQuit.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMABOUT = prop.getProperty("mnuItemAbout.colour");
+			if (MNUITEMABOUT.equals(ORANGE)) {	
+				mnuItemAbout.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMABOUT.equals(LIME)) {	
+				mnuItemAbout.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMABOUT.equals(DARKGREY)) {	
+				mnuItemAbout.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMABOUT.equals(BLACK)) {	
+				mnuItemAbout.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMHIST = prop.getProperty("mnuItemHist.colour");
+			if (MNUITEMHIST.equals(ORANGE)) {	
+				mnuItemHist.setForeground(CalcProperties.ORANGE);
+				mnuItemHistOld.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMHIST.equals(LIME)) {	
+				mnuItemHist.setForeground(CalcProperties.LIME);
+				mnuItemHistOld.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMHIST.equals(DARKGREY)) {	
+				mnuItemHist.setForeground(CalcProperties.DARKGREY);
+				mnuItemHistOld.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMHIST.equals(BLACK)) {	
+				mnuItemHist.setForeground(CalcProperties.BLACK);
+				mnuItemHistOld.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUCLEARHIST = prop.getProperty("mnuClearHist.colour");
+			if (MNUCLEARHIST.equals(ORANGE)) {	
+				mnuClearHist.setForeground(CalcProperties.ORANGE);
+			} else if (MNUCLEARHIST.equals(LIME)) {	
+				mnuClearHist.setForeground(CalcProperties.LIME);
+			} else if (MNUCLEARHIST.equals(DARKGREY)) {	
+				mnuClearHist.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUCLEARHIST.equals(BLACK)) {	
+				mnuClearHist.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUSOUNDCONTROL = prop.getProperty("mnuSoundControl.colour");
+			if (MNUSOUNDCONTROL.equals(ORANGE)) {	
+				mnuSoundControl.setForeground(CalcProperties.ORANGE);
+			} else if (MNUSOUNDCONTROL.equals(LIME)) {	
+				mnuSoundControl.setForeground(CalcProperties.LIME);
+			} else if (MNUSOUNDCONTROL.equals(DARKGREY)) {	
+				mnuSoundControl.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUSOUNDCONTROL.equals(BLACK)) {	
+				mnuSoundControl.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMSUPPORT = prop.getProperty("mnuItemSupport.colour");
+			if (MNUITEMSUPPORT.equals(ORANGE)) {	
+				mnuItemSupport.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMSUPPORT.equals(LIME)) {	
+				mnuItemSupport.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMSUPPORT.equals(DARKGREY)) {	
+				mnuItemSupport.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMSUPPORT.equals(BLACK)) {	
+				mnuItemSupport.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMTWITTER = prop.getProperty("mnuItemTwitter.colour");
+			if (MNUITEMTWITTER.equals(ORANGE)) {	
+				mnuItemTwitter.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMTWITTER.equals(LIME)) {	
+				mnuItemTwitter.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMTWITTER.equals(DARKGREY)) {	
+				mnuItemTwitter.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMTWITTER.equals(BLACK)) {	
+				mnuItemTwitter.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMPAYPAL = prop.getProperty("mnuItemPayPal.colour");
+			if (MNUITEMPAYPAL.equals(ORANGE)) {	
+				mnuItemPayPal.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMPAYPAL.equals(LIME)) {	
+				mnuItemPayPal.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMPAYPAL.equals(DARKGREY)) {	
+				mnuItemPayPal.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMPAYPAL.equals(BLACK)) {	
+				mnuItemPayPal.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUCOPYRESULT = prop.getProperty("mnuCopyResult.colour");
+			if (MNUCOPYRESULT.equals(ORANGE)) {	
+				mnuCopyResult.setForeground(CalcProperties.ORANGE);
+			} else if (MNUCOPYRESULT.equals(LIME)) {	
+				mnuCopyResult.setForeground(CalcProperties.LIME);
+			} else if (MNUCOPYRESULT.equals(DARKGREY)) {	
+				mnuCopyResult.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUCOPYRESULT.equals(BLACK)) {	
+				mnuCopyResult.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMBACK = prop.getProperty("mnuItemBack.colour");
+			if (MNUITEMBACK.equals(ORANGE)) {	
+				mnuItemBack.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMBACK.equals(LIME)) {	
+				mnuItemBack.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMBACK.equals(DARKGREY)) {	
+				mnuItemBack.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMBACK.equals(BLACK)) {	
+				mnuItemBack.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMBUTTONSTYLE = prop.getProperty("mnuItemButtonStyle.colour");
+			if (MNUITEMBUTTONSTYLE.equals(ORANGE)) {	
+				mnuItemButtonStyle.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMBUTTONSTYLE.equals(LIME)) {	
+				mnuItemButtonStyle.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMBUTTONSTYLE.equals(DARKGREY)) {	
+				mnuItemButtonStyle.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMBUTTONSTYLE.equals(BLACK)) {	
+				mnuItemButtonStyle.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMORANGE = prop.getProperty("mnuItemOrange.colour");
+			if (MNUITEMORANGE.equals(ORANGE)) {	
+				mnuItemOrange.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMORANGE.equals(LIME)) {	
+				mnuItemOrange.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMORANGE.equals(DARKGREY)) {	
+				mnuItemOrange.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMORANGE.equals(BLACK)) {	
+				mnuItemOrange.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMDARLGRAY = prop.getProperty("mnuItemDarkGray.colour");
+			if (MNUITEMDARLGRAY.equals(ORANGE)) {	
+				mnuItemDarkGray.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMDARLGRAY.equals(LIME)) {	
+				mnuItemDarkGray.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMDARLGRAY.equals(DARKGREY)) {	
+				mnuItemDarkGray.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMDARLGRAY.equals(BLACK)) {	
+				mnuItemDarkGray.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUSTYLE = prop.getProperty("mnuStyle.colour");
+			if (MNUSTYLE.equals(ORANGE)) {	
+				mnuStyle.setForeground(CalcProperties.ORANGE);
+			} else if (MNUSTYLE.equals(LIME)) {	
+				mnuStyle.setForeground(CalcProperties.LIME);
+			} else if (MNUSTYLE.equals(DARKGREY)) {	
+				mnuStyle.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUSTYLE.equals(BLACK)) {	
+				mnuStyle.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUEXPORT = prop.getProperty("mnuExport.colour");
+			if (MNUEXPORT.equals(ORANGE)) {	
+				mnuExport.setForeground(CalcProperties.ORANGE);
+			} else if (MNUEXPORT.equals(LIME)) {	
+				mnuExport.setForeground(CalcProperties.LIME);
+			} else if (MNUEXPORT.equals(DARKGREY)) {	
+				mnuExport.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUEXPORT.equals(BLACK)) {	
+				mnuExport.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMNOBOARDER = prop.getProperty("mnuItemNoBoarder.colour"); 
+			if (MNUITEMNOBOARDER.equals(ORANGE)) {	
+				mnuItemNoBoarder.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMNOBOARDER.equals(LIME)) {	
+				mnuItemNoBoarder.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMNOBOARDER.equals(DARKGREY)) {	
+				mnuItemNoBoarder.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMNOBOARDER.equals(BLACK)) {	
+				mnuItemNoBoarder.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMCOMPOUND = prop.getProperty("mnuItemBorderCompound.colour");
+			if (MNUITEMCOMPOUND.equals(ORANGE)) {	
+				mnuItemBorderCompound.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMCOMPOUND.equals(LIME)) {	
+				mnuItemBorderCompound.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMCOMPOUND.equals(DARKGREY)) {	
+				mnuItemBorderCompound.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMCOMPOUND.equals(BLACK)) {	
+				mnuItemBorderCompound.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMBOARDERLOWER = prop.getProperty("mnuItemBorderLower.colour");
+			if (MNUITEMBOARDERLOWER.equals(ORANGE)) {	
+				mnuItemBorderLower.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMBOARDERLOWER.equals(LIME)) {	
+				mnuItemBorderLower.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMBOARDERLOWER.equals(DARKGREY)) {	
+				mnuItemBorderLower.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMBOARDERLOWER.equals(BLACK)) {	
+				mnuItemBorderLower.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMBOADERRAISED = prop.getProperty("mnuItemBorderRaised.colour");
+			if (MNUITEMBOADERRAISED.equals(ORANGE)) {	
+				mnuItemBorderRaised.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMBOADERRAISED.equals(LIME)) {	
+				mnuItemBorderRaised.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMBOADERRAISED.equals(DARKGREY)) {	
+				mnuItemBorderRaised.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMBOADERRAISED.equals(BLACK)) {	
+				mnuItemBorderRaised.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMLIME = prop.getProperty("mnuItemLime.colour");
+			if (MNUITEMLIME.equals(ORANGE)) {	
+				mnuItemLime.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMLIME.equals(LIME)) {	
+				mnuItemLime.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMLIME.equals(DARKGREY)) {	
+				mnuItemLime.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMLIME.equals(BLACK)) {	
+				mnuItemLime.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String MNUITEMPLAIN = prop.getProperty("mnuItemPlain.colour");
+			if (MNUITEMPLAIN.equals(ORANGE)) {	
+				mnuItemPlain.setForeground(CalcProperties.ORANGE);
+			} else if (MNUITEMPLAIN.equals(LIME)) {	
+				mnuItemPlain.setForeground(CalcProperties.LIME);
+			} else if (MNUITEMPLAIN.equals(DARKGREY)) {	
+				mnuItemPlain.setForeground(CalcProperties.DARKGREY);
+			} else if (MNUITEMPLAIN.equals(BLACK)) {	
+				mnuItemPlain.setForeground(CalcProperties.BLACK);
+			}
+			//
+			String CALROW = prop.getProperty("row.colour");
+			
+			if (CALROW.equals(ORANGE)) {	
+				for (int i = 0; i < 5; i++) {
+					row[i].setBackground(CalcProperties.ORANGE);
+				} 
+				//\\ ONLY IN ORANGE AT THE MOMENT
+				
+				Map<Integer, Character> keystrokeMap = new HashMap<Integer, Character>();
+				
+				keystrokeMap.put(14, (char) KeyEvent.VK_ESCAPE);
+				keystrokeMap.put(0, '7');
+				keystrokeMap.put(1, '8');
+				keystrokeMap.put(2, '9');
+				keystrokeMap.put(3, '+');
+				keystrokeMap.put(4, '4');
+				keystrokeMap.put(5, '5');
+				keystrokeMap.put(6, '6');
+				keystrokeMap.put(7, '-');
+				keystrokeMap.put(8, '1');
+				keystrokeMap.put(9, '2');
+				keystrokeMap.put(10, '3');
+				keystrokeMap.put(11, '*');
+				keystrokeMap.put(12, '.');
+				keystrokeMap.put(13, '/');
+				keystrokeMap.put(17, '=');
+				keystrokeMap.put(17, (char) KeyEvent.VK_ENTER);
+				keystrokeMap.put(18, '0');
+				keystrokeMap.put(19, '%');
+				
+				String STYLETYPE = prop.getProperty("style.type");
+				//System.out.println("STYLETYPE (Line 680) = " + STYLETYPE );
+				
+				
+				for (int i = 0; i < 24; i++) {
+					button[i] = new JButton(); // Moved
+					//button[i].setBorder((Border) compound);  r
+						if (STYLETYPE.equals("compound")) {
+							button[i].setBorder((Border) compound);
+						} else if (STYLETYPE.equals("loweredbevel")) {
+							button[i].setBorder((Border) loweredbevel);
+						} else if (STYLETYPE.equals("raisedbevel")) {
+							button[i].setBorder((Border) raisedbevel);
+							//button[20].setBorder(null);                         LINE 758
+						} else if (STYLETYPE.equals("null")) {
+							button[i].setBorder((Border) null);
+						} else {
+							System.out.println("NO BOARDER FOUND STYLE FOUND = " + STYLETYPE);
+						}
+					button[i].setContentAreaFilled(true); 
+					button[i].setText(buttonString[i]);
+
+					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
+							|| i == 8 || i == 9 || i == 10 || i == 18) {
+						button[i].setBackground(CalcProperties.DARKGREY);  // Moved
+						button[i].setFont(FontTheme.size18i); // Moved
+					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
+							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
+							|| i == 20 || i == 22 || i == 21 || i == 23) {
+						button[i].setBackground(CalcProperties.Theme_C());
+						button[i].setFont(FontTheme.size18i);
+					}
+
+					button[i].addActionListener(this);
+
+					Character c = keystrokeMap.get(i);
+					if (c != null) {
+						KeyStroke keyStroke = KeyStroke.getKeyStroke(c, 0);
+						InputMap inputMap = button[i]
+								.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+						inputMap.put(keyStroke, ACTION_KEY);
+						ActionMap actionMap = button[i].getActionMap();
+						actionMap.put(ACTION_KEY, new KeyPressed(button[i]));
+					}
+				}
+				
+				//\\ ONLY IN ORANGE AT THE MOMENT MUST ADD TO LIME / DARKGRAY / BLACK
+				
+			} else if  (CALROW.equals("null")) {	
+				for (int i = 0; i < 5; i++) {
+					row[i].setBackground(null);
+				} 
+				//\\ ONLY IN ORANGE AT THE MOMENT
+				
+				Map<Integer, Character> keystrokeMap = new HashMap<Integer, Character>();
+				
+				keystrokeMap.put(14, (char) KeyEvent.VK_ESCAPE);
+				keystrokeMap.put(0, '7');
+				keystrokeMap.put(1, '8');
+				keystrokeMap.put(2, '9');
+				keystrokeMap.put(3, '+');
+				keystrokeMap.put(4, '4');
+				keystrokeMap.put(5, '5');
+				keystrokeMap.put(6, '6');
+				keystrokeMap.put(7, '-');
+				keystrokeMap.put(8, '1');
+				keystrokeMap.put(9, '2');
+				keystrokeMap.put(10, '3');
+				keystrokeMap.put(11, '*');
+				keystrokeMap.put(12, '.');
+				keystrokeMap.put(13, '/');
+				keystrokeMap.put(17, '=');
+				keystrokeMap.put(17, (char) KeyEvent.VK_ENTER);
+				keystrokeMap.put(18, '0');
+				keystrokeMap.put(19, '%');
+				
+				String STYLETYPE = prop.getProperty("style.type");
+				//System.out.println("STYLETYPE (Line 680) = " + STYLETYPE );
+				
+				
+				for (int i = 0; i < 24; i++) {
+					button[i] = new JButton(); // Moved
+					//button[i].setBorder((Border) compound);  r
+						if (STYLETYPE.equals("compound")) {
+							button[i].setBorder((Border) compound);
+						} else if (STYLETYPE.equals("loweredbevel")) {
+							button[i].setBorder((Border) loweredbevel);
+						} else if (STYLETYPE.equals("raisedbevel")) {
+							button[i].setBorder((Border) raisedbevel);
+							//button[20].setBorder(null);
+						} else if (STYLETYPE.equals("null")) {
+							button[i].setBorder((Border) null);
+						} else {
+							System.out.println("NO BOARDER FOUND STYLE FOUND = " + STYLETYPE);
+						}
+					button[i].setContentAreaFilled(true); 
+					button[i].setText(buttonString[i]);
+
+					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
+							|| i == 8 || i == 9 || i == 10 || i == 18) {
+						button[i].setBackground(CalcProperties.DARKGREY); 
+						button[i].setFont(FontTheme.size18i); 
+					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
+							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
+							|| i == 20 || i == 22 || i == 21 || i == 23) {
+						button[i].setBackground(CalcProperties.Theme_C());
+						button[i].setFont(FontTheme.size18i);
+					}
+
+					button[i].addActionListener(this);
+
+					Character c = keystrokeMap.get(i);
+					if (c != null) {
+						KeyStroke keyStroke = KeyStroke.getKeyStroke(c, 0);
+						InputMap inputMap = button[i]
+								.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+						inputMap.put(keyStroke, ACTION_KEY);
+						ActionMap actionMap = button[i].getActionMap();
+						actionMap.put(ACTION_KEY, new KeyPressed(button[i]));
+					}
+				}
+				
+				//\\ ONLY IN ORANGE AT THE MOMENT MUST ADD TO LIME / DARKGRAY / BLACK
+				
+			} else if (CALROW.equals(LIME)) {	
+				for (int i = 0; i < 5; i++) {
+					row[i].setBackground(CalcProperties.LIME);
+				} 
+				
+				Map<Integer, Character> keystrokeMap = new HashMap<Integer, Character>();
+				
+				keystrokeMap.put(14, (char) KeyEvent.VK_ESCAPE);
+				keystrokeMap.put(0, '7');
+				keystrokeMap.put(1, '8');
+				keystrokeMap.put(2, '9');
+				keystrokeMap.put(3, '+');
+				keystrokeMap.put(4, '4');
+				keystrokeMap.put(5, '5');
+				keystrokeMap.put(6, '6');
+				keystrokeMap.put(7, '-');
+				keystrokeMap.put(8, '1');
+				keystrokeMap.put(9, '2');
+				keystrokeMap.put(10, '3');
+				keystrokeMap.put(11, '*');
+				keystrokeMap.put(12, '.');
+				keystrokeMap.put(13, '/');
+				keystrokeMap.put(17, '=');
+				keystrokeMap.put(17, (char) KeyEvent.VK_ENTER);
+				keystrokeMap.put(18, '0');
+				keystrokeMap.put(19, '%');
+				
+				String STYLETYPE = prop.getProperty("style.type");
+				//System.out.println("STYLETYPE (Line 680) = " + STYLETYPE );
+				
+				
+				for (int i = 0; i < 24; i++) {
+					button[i] = new JButton(); 
+					//button[i].setBorder((Border) compound);  r
+						if (STYLETYPE.equals("compound")) {
+							button[i].setBorder((Border) compound);
+						} else if (STYLETYPE.equals("loweredbevel")) {
+							button[i].setBorder((Border) loweredbevel);
+						} else if (STYLETYPE.equals("raisedbevel")) {
+							button[i].setBorder((Border) raisedbevel);
+							//button[20].setBorder(null);
+						} else if (STYLETYPE.equals("null")) {
+							button[i].setBorder((Border) null);
+						} else {
+							System.out.println("NO BOARDER FOUND STYLE FOUND = " + STYLETYPE);
+						}
+					button[i].setContentAreaFilled(true); 
+					button[i].setText(buttonString[i]);
+
+					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
+							|| i == 8 || i == 9 || i == 10 || i == 18) {
+						button[i].setBackground(CalcProperties.DARKGREY);  // Moved
+						button[i].setFont(FontTheme.size18i); // Moved
+					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
+							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
+							|| i == 20 || i == 22 || i == 21 || i == 23) {
+						button[i].setBackground(CalcProperties.Theme_C());
+						button[i].setFont(FontTheme.size18i);
+						button[i].setForeground(CalcProperties.BLACK);
+					}
+
+					button[i].addActionListener(this);
+
+					Character c = keystrokeMap.get(i);
+					if (c != null) {
+						KeyStroke keyStroke = KeyStroke.getKeyStroke(c, 0);
+						InputMap inputMap = button[i]
+								.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+						inputMap.put(keyStroke, ACTION_KEY);
+						ActionMap actionMap = button[i].getActionMap();
+						actionMap.put(ACTION_KEY, new KeyPressed(button[i]));
+					}
+				}
+				
+			} 	else if (CALROW.equals(BLACK)) {	
+				for (int i = 0; i < 5; i++) {
+					row[i].setBackground(CalcProperties.BLACK);
+				} 
+				Map<Integer, Character> keystrokeMap = new HashMap<Integer, Character>();
+				
+				keystrokeMap.put(14, (char) KeyEvent.VK_ESCAPE);
+				keystrokeMap.put(0, '7');
+				keystrokeMap.put(1, '8');
+				keystrokeMap.put(2, '9');
+				keystrokeMap.put(3, '+');
+				keystrokeMap.put(4, '4');
+				keystrokeMap.put(5, '5');
+				keystrokeMap.put(6, '6');
+				keystrokeMap.put(7, '-');
+				keystrokeMap.put(8, '1');
+				keystrokeMap.put(9, '2');
+				keystrokeMap.put(10, '3');
+				keystrokeMap.put(11, '*');
+				keystrokeMap.put(12, '.');
+				keystrokeMap.put(13, '/');
+				keystrokeMap.put(17, '=');
+				keystrokeMap.put(17, (char) KeyEvent.VK_ENTER);
+				keystrokeMap.put(18, '0');
+				keystrokeMap.put(19, '%');
+				
+				String STYLETYPE = prop.getProperty("style.type");
+				//System.out.println("STYLETYPE (Line 680) = " + STYLETYPE );
+				
+				
+				for (int i = 0; i < 24; i++) {
+					button[i] = new JButton(); // Moved
+					//button[i].setBorder((Border) compound);  r
+						if (STYLETYPE.equals("compound")) {
+							button[i].setBorder((Border) compound);
+						} else if (STYLETYPE.equals("loweredbevel")) {
+							button[i].setBorder((Border) loweredbevel);
+						} else if (STYLETYPE.equals("raisedbevel")) {
+							button[i].setBorder((Border) raisedbevel);
+							button[20].setBorder(null);
+						} else if (STYLETYPE.equals("null")) {
+							button[i].setBorder((Border) null);
+						} else {
+							System.out.println("NO BOARDER FOUND STYLE FOUND = " + STYLETYPE);
+						}
+					button[i].setContentAreaFilled(true); 
+					button[i].setText(buttonString[i]);
+
+					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
+							|| i == 8 || i == 9 || i == 10 || i == 18) {
+						button[i].setBackground(CalcProperties.DARKGREY); 
+						button[i].setFont(FontTheme.size18i); 
+					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
+							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
+							|| i == 20 || i == 22 || i == 21 || i == 23) {
+						button[i].setBackground(CalcProperties.BLACK);
+						button[i].setFont(FontTheme.size18i);
+						button[i].setForeground(CalcProperties.WHITE);
+					}
+
+					button[i].addActionListener(this);
+
+					Character c = keystrokeMap.get(i);
+					if (c != null) {
+						KeyStroke keyStroke = KeyStroke.getKeyStroke(c, 0);
+						InputMap inputMap = button[i]
+								.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+						inputMap.put(keyStroke, ACTION_KEY);
+						ActionMap actionMap = button[i].getActionMap();
+						actionMap.put(ACTION_KEY, new KeyPressed(button[i]));
+					}
+				}
+				
+			}
+			//
+			
+
+			/*
+			mnuFile.setForeground(Color.getColor(prop.getProperty("mnuFile.colour")));
+			System.out.println("Config File does exist = " + file);
+			System.out.println("MNUFILE = " + MNUFILE);
+			System.out.println("Colour from config file = " + prop.getProperty("mnuFile.colour"));
+			System.out.println("ThemeClassA 304 = " + CalcProperties.Theme_ORANGE());
+			System.out.println("ThemeClassB 305 = " + CalcProperties.Theme_B());
+			System.out.println("ThemeClassC 306 = " + CalcProperties.Theme_C());
+			*/
+		
+		}
+
+
+		// end calculator colour set.
+
+
+		
+		//
+		
+		//System.out.println("workingDir() x = " + CalcProperties.workingDir());
+		//System.out.println("historyFile() x = " + CalcProperties.historyFile());
+
+		display.setFont(FontTheme.size40b);
+		display.setEditable(false);
+		display.setBorder((Border) compound);
+		display.setBackground(Color.white);
+		display.setForeground(Color.black);
+		display.setHorizontalAlignment(JTextField.RIGHT);
+		display.setPreferredSize(displayDimension);
+
+		displayMini.setFont(FontTheme.size15p);
+		displayMini.setEditable(false);
+		displayMini.setBorder((Border) compound);
+		displayMini.setBackground(Color.white);
+		displayMini.setForeground(Color.black);
+		displayMini.setHorizontalAlignment(JTextField.LEFT);
+		displayMini.setPreferredSize(displayMiniDimension);
+
+		for (int i = 0; i < 24; i++) {
+			button[i].setPreferredSize(regularDimension);
+			button[17].setPreferredSize(extendedDimension);
+		}
+
+		row[0].add(display);
+		row[0].add(displayMini);
+		add(row[0]);
+
+		for (int i = 0; i < 5; i++)
+			row[1].add(button[i]);
+		row[1].add(button[19]);
+		row[1].add(button[14]);
+		add(row[1]);
+
+		for (int i = 4; i < 8; i++)
+			row[2].add(button[i]);
+		row[2].add(button[15]);
+		row[2].add(button[21]);
+		add(row[2]);
+
+		for (int i = 8; i < 12; i++)
+			row[3].add(button[i]);
+		row[3].add(button[16]);
+		row[3].add(button[22]);
+		add(row[3]);
+
+		row[4].add(button[18]);
+
+		for (int i = 12; i < 14; i++)
+			row[4].add(button[i]);
+		row[4].add(button[17]);
+		add(row[4]);
+
+		// Penguin Icon display
+		img.setPreferredSize(new Dimension(dimH[1], dimH[1]));
+		button[20].add(img);
+		button[20].setContentAreaFilled(false);
+		button[20].setBorder(BorderFactory.createEmptyBorder());
+		row[4].add(button[20]);
+		// End Penguin icon
+
+		setVisible(true);
+
+		// start quit button
+
+		mnuSoundControl.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				try {
+					SoundControl.setVisible();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+		});
+
+		mnuItemQuit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				System.exit(0);
+			}
+		});
+		
+		
+		mnuCopyResult.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				StringSelection stringSelection = new StringSelection (display.getText());
+				Clipboard clpbrd = Toolkit.getDefaultToolkit ().getSystemClipboard ();
+				clpbrd.setContents (stringSelection, null);
+			}
+		});
+		
+
+		mnuClearHist.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				
+				File historyOLD = null;
+				try {
+					historyOLD = CalcProperties.historyOld();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				boolean successOld = historyOLD.delete();
+				mnuItemHistOld.hide();
+
+				File file = null;
+				try {
+					file = CalcProperties.historyFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				boolean success = file.delete();
+				if (!success) {
+					try {
+						
+						file.createNewFile();
+						FileWriter resultfilestr = new FileWriter(CalcProperties.historyFile(), true);
+						BufferedWriter outHist = new BufferedWriter(resultfilestr);
+						outHist.write("<center><b><h1>\"Calculator History\"</h1></b></center>");
+						outHist.newLine();
+						outHist.write("<table width=\"770\" border cellpadding=\"2\">");
+						outHist.close();
+						
+						UIManager.put("OptionPane.buttonOrientation", 0);		
+						UIManager.put("OptionPane.buttonFont", FontTheme.size15b);
+						UIManager.put("OptionPane.messageFont", FontTheme.size15p);
+						UIManager.put("OptionPane.messageForeground",CalcProperties.BLACK);
+						UIManager.put("Panel.background",  CalcProperties.ORANGE);
+						UIManager.put("OptionPane.background", CalcProperties.ORANGE);
+						
+						JOptionPane.showMessageDialog(null, "\n"
+								+ "  FAILED TO DELETE CACULATION HISTORY "
+								+ "\n" + "\n", CalcProperties.history,
+								JOptionPane.PLAIN_MESSAGE);
+					} catch (Exception fz) {
+					}
+					;
+				} else {
+					try {
+						
+						file.createNewFile();
+						FileWriter resultfilestr = new FileWriter(CalcProperties.historyFile(), true);
+						BufferedWriter outHist = new BufferedWriter(resultfilestr);
+						outHist.write("<center><b><h1>\"Calculator History\"</h1></b></center>");
+						outHist.newLine();
+						outHist.write("<table width=\"770\" border cellpadding=\"2\">");
+						outHist.close();
+						
+						UIManager.put("OptionPane.buttonOrientation", 0);		
+						UIManager.put("OptionPane.buttonFont", FontTheme.size15b);
+						UIManager.put("OptionPane.messageFont", FontTheme.size15p);
+						UIManager.put("OptionPane.messageForeground",CalcProperties.BLACK);
+						UIManager.put("Panel.background",  CalcProperties.ORANGE);
+						UIManager.put("OptionPane.background", CalcProperties.ORANGE);
+						
+						JOptionPane.showMessageDialog(null, "\n"
+								+ "  ALL CACULATION HISTORY NOW DELETED  "
+								+ "\n" + "\n", CalcProperties.history,
+								JOptionPane.PLAIN_MESSAGE);
+					} catch (Exception fz) {
+					}
+					;
+				}
+			}
+		});
+		
+		// START BORDER
+		
+		mnuItemBorderCompound.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				CalcProperties.setDesign();
+				// CREATE CONFIG ######################################
+				
+				File file = null;
+				try {
+					file = new File(CalcProperties.workingDir());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				Properties prop = new Properties();
+				FileInputStream input = null;
+				try {
+					input = new FileInputStream(file);
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				try {
+					prop.load(input);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				Properties newProperties = new Properties(System.getProperties());
+				
+				newProperties.put("theme.colour", prop.getProperty("theme.colour"));
+				newProperties.put("button.colour", prop.getProperty("button.colour"));
+				newProperties.put("button_c.colour", prop.getProperty("button_c.colour"));
+				newProperties.put("audio.status", prop.getProperty("audio.status"));
+				newProperties.put("mb.colour", prop.getProperty("mb.colour"));
+				newProperties.put("mnuFile.colour", prop.getProperty("mnuFile.colour"));
+				newProperties.put("mnuEdit.colour", prop.getProperty("mnuEdit.colour"));
+				newProperties.put("mnuHelp.colour", prop.getProperty("mnuHelp.colour"));
+				newProperties.put("mnuItemQuit.colour", prop.getProperty("mnuItemQuit.colour"));
+				newProperties.put("mnuItemAbout.colour", prop.getProperty("mnuItemAbout.colour"));
+				newProperties.put("mnuItemHist.colour", prop.getProperty("mnuItemHist.colour"));
+				newProperties.put("mnuItemHistOld.colour", prop.getProperty("mnuItemHistOld.colour"));
+				newProperties.put("mnuClearHist.colour", prop.getProperty("mnuClearHist.colour"));
+				newProperties.put("mnuSoundControl.colour", prop.getProperty("mnuSoundControl.colour"));
+				newProperties.put("mnuItemSupport.colour", prop.getProperty("mnuItemSupport.colour"));
+				newProperties.put("mnuItemTwitter.colour", prop.getProperty("mnuItemTwitter.colour"));
+				newProperties.put("mnuItemPayPal.colour", prop.getProperty("mnuItemPayPal.colour"));
+				newProperties.put("mnuCopyResult.colour", prop.getProperty("mnuCopyResult.colour"));
+				newProperties.put("mnuItemBack.colour", prop.getProperty("mnuItemBack.colour"));
+				newProperties.put("mnuItemButtonStyle.colour", prop.getProperty("mnuItemButtonStyle.colour"));
+				newProperties.put("mnuItemOrange.colour", prop.getProperty("mnuItemOrange.colour"));
+				newProperties.put("mnuItemDarkGray.colour", prop.getProperty("mnuItemDarkGray.colour"));
+				newProperties.put("mnuStyle.colour", prop.getProperty("mnuStyle.colour"));
+				newProperties.put("mnuExport.colour", prop.getProperty("mnuExport.colour"));
+				newProperties.put("mnuItemNoBoarder.colour", prop.getProperty("mnuItemNoBoarder.colour"));
+				newProperties.put("mnuItemBorderCompound.colour", prop.getProperty("mnuItemBorderCompound.colour"));
+				newProperties.put("mnuItemBorderLower.colour", prop.getProperty("mnuItemBorderLower.colour"));
+				newProperties.put("mnuItemBorderRaised.colour", prop.getProperty("mnuItemBorderRaised.colour"));
+				newProperties.put("mnuItemLime.colour", prop.getProperty("mnuItemLime.colour"));
+				newProperties.put("mnuItemPlain.colour", prop.getProperty("mnuItemPlain.colour"));
+				newProperties.put("row.colour", prop.getProperty("row.colour"));
+				newProperties.put("style.type", "compound");
+				
+				System.setProperties(newProperties);
+				FileOutputStream out = null;
+				try {
+					out = new FileOutputStream(file);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				try {
+					newProperties.store(out, "");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				
+				// END CONFIG   ######################################
+				for (int i = 0; i < 24; i++) {
+					//System.out.println("Button [i] Backgroup = " + button[i].getBackground());					
+					if (button[i].getBackground() == CalcProperties.BLACK){
+						if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6 || i == 8 || i == 9 || i == 10 || i == 18) {
+						button[i].setBorder((Border) compound);
+						} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
+							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
+							|| i == 20 || i == 22 || i == 21 || i == 23) {
+							button[i].setBorder(null);
+						}
+					} else {
+						button[i].setBorder((Border) compound);
+					}
+				}		
+				button[20].setBorder(null);
+			}
+			
+		});
+		
+		mnuItemBorderLower.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				CalcProperties.setDesign();
+				
+				// CREATE CONFIG ######################################
+				
+				File file = null;
+				try {
+					file = new File(CalcProperties.workingDir());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				Properties prop = new Properties();
+				FileInputStream input = null;
+				try {
+					input = new FileInputStream(file);
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				try {
+					prop.load(input);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				Properties newProperties = new Properties(System.getProperties());
+				
+				newProperties.put("theme.colour", prop.getProperty("theme.colour"));
+				newProperties.put("button.colour", prop.getProperty("button.colour"));
+				newProperties.put("button_c.colour", prop.getProperty("button_c.colour"));
+				newProperties.put("audio.status", prop.getProperty("audio.status"));
+				newProperties.put("mb.colour", prop.getProperty("mb.colour"));
+				newProperties.put("mnuFile.colour", prop.getProperty("mnuFile.colour"));
+				newProperties.put("mnuEdit.colour", prop.getProperty("mnuEdit.colour"));
+				newProperties.put("mnuHelp.colour", prop.getProperty("mnuHelp.colour"));
+				newProperties.put("mnuItemQuit.colour", prop.getProperty("mnuItemQuit.colour"));
+				newProperties.put("mnuItemAbout.colour", prop.getProperty("mnuItemAbout.colour"));
+				newProperties.put("mnuItemHist.colour", prop.getProperty("mnuItemHist.colour"));
+				newProperties.put("mnuItemHistOld.colour", prop.getProperty("mnuItemHistOld.colour"));
+				newProperties.put("mnuClearHist.colour", prop.getProperty("mnuClearHist.colour"));
+				newProperties.put("mnuSoundControl.colour", prop.getProperty("mnuSoundControl.colour"));
+				newProperties.put("mnuItemSupport.colour", prop.getProperty("mnuItemSupport.colour"));
+				newProperties.put("mnuItemTwitter.colour", prop.getProperty("mnuItemTwitter.colour"));
+				newProperties.put("mnuItemPayPal.colour", prop.getProperty("mnuItemPayPal.colour"));
+				newProperties.put("mnuCopyResult.colour", prop.getProperty("mnuCopyResult.colour"));
+				newProperties.put("mnuItemBack.colour", prop.getProperty("mnuItemBack.colour"));
+				newProperties.put("mnuItemButtonStyle.colour", prop.getProperty("mnuItemButtonStyle.colour"));
+				newProperties.put("mnuItemOrange.colour", prop.getProperty("mnuItemOrange.colour"));
+				newProperties.put("mnuItemDarkGray.colour", prop.getProperty("mnuItemDarkGray.colour"));
+				newProperties.put("mnuStyle.colour", prop.getProperty("mnuStyle.colour"));
+				newProperties.put("mnuExport.colour", prop.getProperty("mnuExport.colour"));
+				newProperties.put("mnuItemNoBoarder.colour", prop.getProperty("mnuItemNoBoarder.colour"));
+				newProperties.put("mnuItemBorderCompound.colour", prop.getProperty("mnuItemBorderCompound.colour"));
+				newProperties.put("mnuItemBorderLower.colour", prop.getProperty("mnuItemBorderLower.colour"));
+				newProperties.put("mnuItemBorderRaised.colour", prop.getProperty("mnuItemBorderRaised.colour"));
+				newProperties.put("mnuItemLime.colour", prop.getProperty("mnuItemLime.colour"));
+				newProperties.put("mnuItemPlain.colour", prop.getProperty("mnuItemPlain.colour"));
+				newProperties.put("row.colour", prop.getProperty("row.colour"));
+				newProperties.put("style.type", "loweredbevel");
+				
+				System.setProperties(newProperties);
+				FileOutputStream out = null;
+				try {
+					out = new FileOutputStream(file);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				try {
+					newProperties.store(out, "");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				// END CONFIG   ######################################
+				
+				for (int i = 0; i < 24; i++) {
+					button[i].setBorder((Border) loweredbevel);
+				}
+				button[20].setBorder(null);
+			}
+			
+		});
+		
+		mnuItemBorderRaised.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				CalcProperties.setDesign();
+				// CREATE CONFIG ######################################
+				
+				File file = null;
+				try {
+					file = new File(CalcProperties.workingDir());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				Properties prop = new Properties();
+				FileInputStream input = null;
+				try {
+					input = new FileInputStream(file);
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				try {
+					prop.load(input);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				Properties newProperties = new Properties(System.getProperties());
+				
+				newProperties.put("theme.colour", prop.getProperty("theme.colour"));
+				newProperties.put("button.colour", prop.getProperty("button.colour"));
+				newProperties.put("button_c.colour", prop.getProperty("button_c.colour"));
+				newProperties.put("audio.status", prop.getProperty("audio.status"));
+				newProperties.put("mb.colour", prop.getProperty("mb.colour"));
+				newProperties.put("mnuFile.colour", prop.getProperty("mnuFile.colour"));
+				newProperties.put("mnuEdit.colour", prop.getProperty("mnuEdit.colour"));
+				newProperties.put("mnuHelp.colour", prop.getProperty("mnuHelp.colour"));
+				newProperties.put("mnuItemQuit.colour", prop.getProperty("mnuItemQuit.colour"));
+				newProperties.put("mnuItemAbout.colour", prop.getProperty("mnuItemAbout.colour"));
+				newProperties.put("mnuItemHist.colour", prop.getProperty("mnuItemHist.colour"));
+				newProperties.put("mnuItemHistOld.colour", prop.getProperty("mnuItemHistOld.colour"));
+				newProperties.put("mnuClearHist.colour", prop.getProperty("mnuClearHist.colour"));
+				newProperties.put("mnuSoundControl.colour", prop.getProperty("mnuSoundControl.colour"));
+				newProperties.put("mnuItemSupport.colour", prop.getProperty("mnuItemSupport.colour"));
+				newProperties.put("mnuItemTwitter.colour", prop.getProperty("mnuItemTwitter.colour"));
+				newProperties.put("mnuItemPayPal.colour", prop.getProperty("mnuItemPayPal.colour"));
+				newProperties.put("mnuCopyResult.colour", prop.getProperty("mnuCopyResult.colour"));
+				newProperties.put("mnuItemBack.colour", prop.getProperty("mnuItemBack.colour"));
+				newProperties.put("mnuItemButtonStyle.colour", prop.getProperty("mnuItemButtonStyle.colour"));
+				newProperties.put("mnuItemOrange.colour", prop.getProperty("mnuItemOrange.colour"));
+				newProperties.put("mnuItemDarkGray.colour", prop.getProperty("mnuItemDarkGray.colour"));
+				newProperties.put("mnuStyle.colour", prop.getProperty("mnuStyle.colour"));
+				newProperties.put("mnuExport.colour", prop.getProperty("mnuExport.colour"));
+				newProperties.put("mnuItemNoBoarder.colour", prop.getProperty("mnuItemNoBoarder.colour"));
+				newProperties.put("mnuItemBorderCompound.colour", prop.getProperty("mnuItemBorderCompound.colour"));
+				newProperties.put("mnuItemBorderLower.colour", prop.getProperty("mnuItemBorderLower.colour"));
+				newProperties.put("mnuItemBorderRaised.colour", prop.getProperty("mnuItemBorderRaised.colour"));
+				newProperties.put("mnuItemLime.colour", prop.getProperty("mnuItemLime.colour"));
+				newProperties.put("mnuItemPlain.colour", prop.getProperty("mnuItemPlain.colour"));
+				newProperties.put("row.colour", prop.getProperty("row.colour"));
+				newProperties.put("style.type", "raisedbevel");
+				
+				System.setProperties(newProperties);
+				FileOutputStream out = null;
+				try {
+					out = new FileOutputStream(file);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				try {
+					newProperties.store(out, "");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				// END CONFIG   ######################################
+				for (int i = 0; i < 24; i++) {
+					button[i].setBorder((Border) raisedbevel);
+				}
+				button[20].setBorder(null);
+			}
+			
+		});
+		
+		
+		// BORDER PLAIN START
+		
+		mnuItemNoBoarder.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				CalcProperties.setDesign();
+				// CREATE CONFIG ######################################
+				
+				File file = null;
+				try {
+					file = new File(CalcProperties.workingDir());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				Properties prop = new Properties();
+				FileInputStream input = null;
+				try {
+					input = new FileInputStream(file);
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				try {
+					prop.load(input);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				Properties newProperties = new Properties(System.getProperties());
+				
+				newProperties.put("theme.colour", prop.getProperty("theme.colour"));
+				newProperties.put("button.colour", prop.getProperty("button.colour"));
+				newProperties.put("button_c.colour", prop.getProperty("button_c.colour"));
+				newProperties.put("audio.status", prop.getProperty("audio.status"));
+				newProperties.put("mb.colour", prop.getProperty("mb.colour"));
+				newProperties.put("mnuFile.colour", prop.getProperty("mnuFile.colour"));
+				newProperties.put("mnuEdit.colour", prop.getProperty("mnuEdit.colour"));
+				newProperties.put("mnuHelp.colour", prop.getProperty("mnuHelp.colour"));
+				newProperties.put("mnuItemQuit.colour", prop.getProperty("mnuItemQuit.colour"));
+				newProperties.put("mnuItemAbout.colour", prop.getProperty("mnuItemAbout.colour"));
+				newProperties.put("mnuItemHist.colour", prop.getProperty("mnuItemHist.colour"));
+				newProperties.put("mnuItemHistOld.colour", prop.getProperty("mnuItemHistOld.colour"));
+				newProperties.put("mnuClearHist.colour", prop.getProperty("mnuClearHist.colour"));
+				newProperties.put("mnuSoundControl.colour", prop.getProperty("mnuSoundControl.colour"));
+				newProperties.put("mnuItemSupport.colour", prop.getProperty("mnuItemSupport.colour"));
+				newProperties.put("mnuItemTwitter.colour", prop.getProperty("mnuItemTwitter.colour"));
+				newProperties.put("mnuItemPayPal.colour", prop.getProperty("mnuItemPayPal.colour"));
+				newProperties.put("mnuCopyResult.colour", prop.getProperty("mnuCopyResult.colour"));
+				newProperties.put("mnuItemBack.colour", prop.getProperty("mnuItemBack.colour"));
+				newProperties.put("mnuItemButtonStyle.colour", prop.getProperty("mnuItemButtonStyle.colour"));
+				newProperties.put("mnuItemOrange.colour", prop.getProperty("mnuItemOrange.colour"));
+				newProperties.put("mnuItemDarkGray.colour", prop.getProperty("mnuItemDarkGray.colour"));
+				newProperties.put("mnuStyle.colour", prop.getProperty("mnuStyle.colour"));
+				newProperties.put("mnuExport.colour", prop.getProperty("mnuExport.colour"));
+				newProperties.put("mnuItemNoBoarder.colour", prop.getProperty("mnuItemNoBoarder.colour"));
+				newProperties.put("mnuItemBorderCompound.colour", prop.getProperty("mnuItemBorderCompound.colour"));
+				newProperties.put("mnuItemBorderLower.colour", prop.getProperty("mnuItemBorderLower.colour"));
+				newProperties.put("mnuItemBorderRaised.colour", prop.getProperty("mnuItemBorderRaised.colour"));
+				newProperties.put("mnuItemLime.colour", prop.getProperty("mnuItemLime.colour"));
+				newProperties.put("mnuItemPlain.colour", prop.getProperty("mnuItemPlain.colour"));
+				newProperties.put("row.colour", prop.getProperty("row.colour"));
+				newProperties.put("style.type", "null");
+				
+				System.setProperties(newProperties);
+				FileOutputStream out = null;
+				try {
+					out = new FileOutputStream(file);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				try {
+					newProperties.store(out, "");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				
+				// END CONFIG   ######################################
+				for (int i = 0; i < 24; i++) {
+					button[i].setBorder(null);
+				}
+			}
+			
+		});
+		
+		// BORDER PLAIN END
+		
+		mnuItemPlain.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+
+				mb.setForeground(null); // set colour to menu bars
+				mnuFile.setForeground(null);
+				mnuEdit.setForeground(null);
+				mnuStyle.setForeground(null);
+				mnuHelp.setForeground(null);
+				mnuItemQuit.setForeground(null); // set colour to menu bar
+				mnuItemAbout.setForeground(null); // set colour to menu bar
+				mnuItemHist.setForeground(null);
+				mnuClearHist.setForeground(null);
+				mnuSoundControl.setForeground(null);
+				mnuItemSupport.setForeground(null);
+				mnuItemTwitter.setForeground(null);
+				mnuItemPayPal.setForeground(null);
+				mnuCopyResult.setForeground(null);
+				mnuItemBack.setForeground(null);
+				mnuItemButtonStyle.setForeground(null);
+				mnuItemOrange.setForeground(null);
+				mnuItemDarkGray.setForeground(null);
+				mnuStyle.setForeground(null);
+				mnuExport.setForeground(null);
+				mnuItemNoBoarder.setForeground(null);
+				mnuItemBorderCompound.setForeground(null);
+				mnuItemBorderLower.setForeground(null);
+				mnuItemBorderRaised.setForeground(null);
+				mnuItemLime.setForeground(null);
+				mnuItemPlain.setForeground(null);
+				
+				for (int i = 0; i < 5; i++) {
+					row[i].setBackground(null);
+				}
+				
+				for (int i = 0; i < 24; i++) {
+					if (button[0].getBorder() == compound) {
+						button[i].setBorder((Border) compound);
+						button[20].setBorder(null);
+					} else if (button[0].getBorder() == loweredbevel) {
+						button[i].setBorder((Border) loweredbevel);
+						button[20].setBorder(null);
+					} else if (button[0].getBorder() == raisedbevel) {
+						button[i].setBorder((Border) raisedbevel);
+						button[20].setBorder(null);
+					} else if (button[0].getBorder() == null) {
+						button[i].setBorder((Border) null);
+						button[20].setBorder(null);
+					}
+					button[i].setForeground(CalcProperties.BLACK);
+				}
+				
+				for (int i = 0; i < 24; i++) {
+					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
+							|| i == 8 || i == 9 || i == 10 || i == 18) {
+						button[i].setBackground(CalcProperties.DARKGREY);
+					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
+							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
+							|| i == 20 || i == 22 || i == 21 || i == 23) {
+						button[i].setBackground(null);
+					}
+				}
+				
+				File file = null;
+				try {
+					file = new File(CalcProperties.workingDir());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				Properties newProperties = new Properties(System.getProperties());
+				
+				newProperties.put("theme.colour", "null");
+				newProperties.put("button.colour", "null");
+				newProperties.put("button_c.colour", "null");
+				newProperties.put("audio.status", "false");
+				newProperties.put("mb.colour", "null");
+				newProperties.put("mnuFile.colour", "null");
+				newProperties.put("mnuEdit.colour", "null");
+				newProperties.put("mnuHelp.colour", "null");
+				newProperties.put("mnuItemQuit.colour", "null");
+				newProperties.put("mnuItemAbout.colour", "null");
+				newProperties.put("mnuItemHist.colour", "null");
+				newProperties.put("mnuItemHistOld.colour", "null");
+				newProperties.put("mnuClearHist.colour", "null");
+				newProperties.put("mnuSoundControl.colour", "null");
+				newProperties.put("mnuItemSupport.colour", "null");
+				newProperties.put("mnuItemTwitter.colour", "null");
+				newProperties.put("mnuItemPayPal.colour", "null");
+				newProperties.put("mnuCopyResult.colour", "null");
+				newProperties.put("mnuItemBack.colour", "null");
+				newProperties.put("mnuItemButtonStyle.colour", "null");
+				newProperties.put("mnuItemOrange.colour", "null");
+				newProperties.put("mnuItemDarkGray.colour", "null");
+				newProperties.put("mnuStyle.colour", "null");
+				newProperties.put("mnuExport.colour", "null");
+				newProperties.put("mnuItemNoBoarder.colour", "null");
+				newProperties.put("mnuItemBorderCompound.colour", "null");
+				newProperties.put("mnuItemBorderLower.colour", "null");
+				newProperties.put("mnuItemBorderRaised.colour", "null");
+				newProperties.put("mnuItemLime.colour", "null");
+				newProperties.put("mnuItemPlain.colour", "null");
+				newProperties.put("row.colour", "null");
+					
+					for (int i = 0; i < 1; i++) {
+						if (button[0].getBorder() == compound) {
+							newProperties.put("style.type", "compound");
+						} else if (button[0].getBorder() == loweredbevel) {
+							newProperties.put("style.type", "loweredbevel");
+						} else if (button[0].getBorder() == raisedbevel) {
+							newProperties.put("style.type", "raisedbevel");
+							button[20].setBorder(null);
+						} else if (button[0].getBorder() == null) {
+							newProperties.put("style.type", "null");
+							button[20].setBorder(null);
+						}
+					}
+					
+					System.setProperties(newProperties);
+					FileOutputStream out = null;
+					try {
+						out = new FileOutputStream(file);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+					try {
+						newProperties.store(out, "");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				
+			}
+			
+		});
+		
+		mnuItemDarkGray.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+
+				mb.setForeground(CalcProperties.DARKGREY); // set colour to menu bars
+				mnuFile.setForeground(CalcProperties.DARKGREY);
+				mnuEdit.setForeground(CalcProperties.DARKGREY);
+				mnuStyle.setForeground(CalcProperties.DARKGREY);
+				mnuHelp.setForeground(CalcProperties.DARKGREY);
+				mnuItemQuit.setForeground(CalcProperties.DARKGREY); // set colour to menu bar
+				mnuItemAbout.setForeground(CalcProperties.DARKGREY); // set colour to menu bar
+				mnuItemHist.setForeground(CalcProperties.DARKGREY);
+				mnuItemHistOld.setForeground(CalcProperties.DARKGREY);
+				mnuClearHist.setForeground(CalcProperties.DARKGREY);
+				mnuSoundControl.setForeground(CalcProperties.DARKGREY);
+				mnuItemSupport.setForeground(CalcProperties.DARKGREY);
+				mnuItemTwitter.setForeground(CalcProperties.DARKGREY);
+				mnuItemPayPal.setForeground(CalcProperties.DARKGREY);
+				mnuCopyResult.setForeground(CalcProperties.DARKGREY);
+				mnuItemBack.setForeground(CalcProperties.DARKGREY);
+				mnuItemButtonStyle.setForeground(CalcProperties.DARKGREY);
+				mnuItemOrange.setForeground(CalcProperties.DARKGREY);
+				mnuItemDarkGray.setForeground(CalcProperties.DARKGREY);
+				mnuStyle.setForeground(CalcProperties.DARKGREY);
+				mnuExport.setForeground(CalcProperties.DARKGREY);
+				mnuItemNoBoarder.setForeground(CalcProperties.DARKGREY);
+				mnuItemBorderCompound.setForeground(CalcProperties.DARKGREY);
+				mnuItemBorderLower.setForeground(CalcProperties.DARKGREY);
+				mnuItemBorderRaised.setForeground(CalcProperties.DARKGREY);
+				mnuItemLime.setForeground(CalcProperties.DARKGREY);
+				mnuItemPlain.setForeground(CalcProperties.DARKGREY);
+				
+				for (int i = 0; i < 5; i++) {
+					row[i].setBackground(CalcProperties.BLACK);
+				}
+				
+				for (int i = 0; i < 24; i++) {
+					if (button[0].getBorder() == compound) {
+						button[i].setBorder((Border) compound);
+						button[20].setBorder(null);
+					} else if (button[0].getBorder() == loweredbevel) {
+						button[i].setBorder((Border) loweredbevel);
+						button[20].setBorder(null);
+					} else if (button[0].getBorder() == raisedbevel) {
+						button[i].setBorder((Border) raisedbevel);
+						button[20].setBorder(null);
+					} else if (button[0].getBorder() == null) {
+						button[i].setBorder((Border) null);
+						button[20].setBorder(null);
+					}
+				}
+				
+				for (int i = 0; i < 24; i++) {
+					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
+							|| i == 8 || i == 9 || i == 10 || i == 18) {
+						button[i].setBackground(CalcProperties.DARKGREY);
+					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
+							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
+							|| i == 20 || i == 22 || i == 21 || i == 23) {
+						button[i].setBackground(CalcProperties.BLACK);
+						button[i].setForeground(CalcProperties.WHITE);
+						button[i].setBorder(null);
+					}
+				}
+				
+				File file = null;
+				try {
+					file = new File(CalcProperties.workingDir());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				Properties newProperties = new Properties(System.getProperties());
+				
+					newProperties.put("theme.colour", "LIME");
+					newProperties.put("button.colour", "DarkGrey");
+					newProperties.put("button_c.colour", "BLACK");
+					newProperties.put("audio.status", "false");
+					newProperties.put("mb.colour", "BLACK");
+					newProperties.put("mnuFile.colour", "DARKGREY");
+					newProperties.put("mnuEdit.colour", "DARKGREY");
+					newProperties.put("mnuHelp.colour", "DARKGREY");
+					newProperties.put("mnuItemQuit.colour", "DARKGREY");
+					newProperties.put("mnuItemAbout.colour", "DARKGREY");
+					newProperties.put("mnuItemHist.colour", "DARKGREY");
+					newProperties.put("mnuItemHistOld.colour", "DARKGREY");
+					newProperties.put("mnuClearHist.colour", "DARKGREY");
+					newProperties.put("mnuSoundControl.colour", "DARKGREY");
+					newProperties.put("mnuItemSupport.colour", "DARKGREY");
+					newProperties.put("mnuItemTwitter.colour", "DARKGREY");
+					newProperties.put("mnuItemPayPal.colour", "DARKGREY");
+					newProperties.put("mnuCopyResult.colour", "DARKGREY");
+					newProperties.put("mnuItemBack.colour", "DARKGREY");
+					newProperties.put("mnuItemButtonStyle.colour", "DARKGREY");
+					newProperties.put("mnuItemOrange.colour", "DARKGREY");
+					newProperties.put("mnuItemDarkGray.colour", "DARKGREY");
+					newProperties.put("mnuStyle.colour", "DARKGREY");
+					newProperties.put("mnuExport.colour", "DARKGREY");
+					newProperties.put("mnuItemNoBoarder.colour", "DARKGREY");
+					newProperties.put("mnuItemBorderCompound.colour", "DARKGREY");
+					newProperties.put("mnuItemBorderLower.colour", "DARKGREY");
+					newProperties.put("mnuItemBorderRaised.colour", "DARKGREY");
+					newProperties.put("mnuItemLime.colour", "DARKGREY");
+					newProperties.put("mnuItemPlain.colour", "DARKGREY");
+					newProperties.put("row.colour", "BLACK");
+					
+					for (int i = 0; i < 1; i++) {
+						if (button[0].getBorder() == compound) {
+							newProperties.put("style.type", "compound");
+						} else if (button[0].getBorder() == loweredbevel) {
+							newProperties.put("style.type", "loweredbevel");
+						} else if (button[0].getBorder() == raisedbevel) {
+							newProperties.put("style.type", "raisedbevel");
+							button[20].setBorder(null);
+						} else if (button[0].getBorder() == null) {
+							newProperties.put("style.type", "null");
+							button[20].setBorder(null);
+						}
+					}
+					
+					System.setProperties(newProperties);
+					FileOutputStream out = null;
+					try {
+						out = new FileOutputStream(file);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+					try {
+						newProperties.store(out, "");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				
+			}
+			
+		});
+		
+		mnuItemLime.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+
+				mb.setForeground(CalcProperties.DARKGREY); // set colour to menu bars
+				mnuFile.setForeground(CalcProperties.DARKGREY);
+				mnuEdit.setForeground(CalcProperties.DARKGREY);
+				mnuStyle.setForeground(CalcProperties.DARKGREY);
+				mnuHelp.setForeground(CalcProperties.DARKGREY);
+				mnuItemQuit.setForeground(CalcProperties.DARKGREY); // set colour to menu bar
+				mnuItemAbout.setForeground(CalcProperties.DARKGREY); // set colour to menu bar
+				mnuItemHist.setForeground(CalcProperties.DARKGREY);
+				mnuItemHistOld.setForeground(CalcProperties.DARKGREY);
+				mnuClearHist.setForeground(CalcProperties.DARKGREY);
+				mnuSoundControl.setForeground(CalcProperties.DARKGREY);
+				mnuItemSupport.setForeground(CalcProperties.DARKGREY);
+				mnuItemTwitter.setForeground(CalcProperties.DARKGREY);
+				mnuItemPayPal.setForeground(CalcProperties.DARKGREY);
+				mnuCopyResult.setForeground(CalcProperties.DARKGREY);
+				mnuItemBack.setForeground(CalcProperties.DARKGREY);
+				mnuItemButtonStyle.setForeground(CalcProperties.DARKGREY);
+				mnuItemOrange.setForeground(CalcProperties.DARKGREY);
+				mnuItemDarkGray.setForeground(CalcProperties.DARKGREY);
+				mnuStyle.setForeground(CalcProperties.DARKGREY);
+				mnuExport.setForeground(CalcProperties.DARKGREY);
+				mnuItemNoBoarder.setForeground(CalcProperties.DARKGREY);
+				mnuItemBorderCompound.setForeground(CalcProperties.DARKGREY);
+				mnuItemBorderLower.setForeground(CalcProperties.DARKGREY);
+				mnuItemBorderRaised.setForeground(CalcProperties.DARKGREY);
+				mnuItemLime.setForeground(CalcProperties.DARKGREY);
+				mnuItemPlain.setForeground(CalcProperties.DARKGREY);
+
+				for (int i = 0; i < 5; i++) {
+					row[i].setBackground(CalcProperties.LIME);
+				}
+				
+				for (int i = 0; i < 24; i++) {
+					
+					if (button[0].getBorder() == compound) {
+						button[i].setBorder((Border) compound);
+						button[20].setBorder(null);
+					} else if (button[0].getBorder() == loweredbevel) {
+						button[i].setBorder((Border) loweredbevel);
+						button[20].setBorder(null);
+					} else if (button[0].getBorder() == raisedbevel) {
+						button[i].setBorder((Border) raisedbevel);
+						button[20].setBorder(null);
+					}
+					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6 || i == 8 || i == 9 || i == 10 || i == 18) {
+						button[i].setBackground(CalcProperties.DARKGREY);
+					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17 || i == 19
+							|| i == 20 || i == 22 || i == 21 || i == 23) {
+						button[i].setBackground(CalcProperties.LIME);
+						button[i].setForeground(CalcProperties.BLACK);
+					}
+				}
+				// HERE
+				
+				File file = null;
+				try {
+					file = new File(CalcProperties.workingDir());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				Properties newProperties = new Properties(System.getProperties());
+				
+					newProperties.put("theme.colour", "LIME");
+					newProperties.put("button.colour", "DarkGrey");
+					newProperties.put("button_c.colour", "LIME");
+					newProperties.put("audio.status", "false");
+					newProperties.put("mb.colour", "LIME");
+					newProperties.put("mnuFile.colour", "DARKGREY");
+					newProperties.put("mnuEdit.colour", "DARKGREY");
+					newProperties.put("mnuHelp.colour", "DARKGREY");
+					newProperties.put("mnuItemQuit.colour", "DARKGREY");
+					newProperties.put("mnuItemAbout.colour", "DARKGREY");
+					newProperties.put("mnuItemHist.colour", "DARKGREY");
+					newProperties.put("mnuItemHistOld.colour", "DARKGREY");
+					newProperties.put("mnuClearHist.colour", "DARKGREY");
+					newProperties.put("mnuSoundControl.colour", "DARKGREY");
+					newProperties.put("mnuItemSupport.colour", "DARKGREY");
+					newProperties.put("mnuItemTwitter.colour", "DARKGREY");
+					newProperties.put("mnuItemPayPal.colour", "DARKGREY");
+					newProperties.put("mnuCopyResult.colour", "DARKGREY");
+					newProperties.put("mnuItemBack.colour", "DARKGREY");
+					newProperties.put("mnuItemButtonStyle.colour", "DARKGREY");
+					newProperties.put("mnuItemOrange.colour", "DARKGREY");
+					newProperties.put("mnuItemDarkGray.colour", "DARKGREY");
+					newProperties.put("mnuStyle.colour", "DARKGREY");
+					newProperties.put("mnuExport.colour", "DARKGREY");
+					newProperties.put("mnuItemNoBoarder.colour", "DARKGREY");
+					newProperties.put("mnuItemBorderCompound.colour", "DARKGREY");
+					newProperties.put("mnuItemBorderLower.colour", "DARKGREY");
+					newProperties.put("mnuItemBorderRaised.colour", "DARKGREY");
+					newProperties.put("mnuItemLime.colour", "DARKGREY");
+					newProperties.put("mnuItemPlain.colour", "DARKGREY");
+					newProperties.put("row.colour", "LIME");
+					
+					for (int i = 0; i < 1; i++) {
+						if (button[0].getBorder() == compound) {
+							newProperties.put("style.type", "compound");
+						} else if (button[0].getBorder() == loweredbevel) {
+							newProperties.put("style.type", "loweredbevel");
+						} else if (button[0].getBorder() == raisedbevel) {
+							newProperties.put("style.type", "raisedbevel");
+							button[20].setBorder(null);
+						} else if (button[0].getBorder() == null) {
+							newProperties.put("style.type", "null");
+							button[20].setBorder(null);
+						}
+					}
+					
+					System.setProperties(newProperties);
+					FileOutputStream out = null;
+					try {
+						out = new FileOutputStream(file);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+					try {
+						newProperties.store(out, "");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					// HERE
+			}
+			
+		});
+		
+		//System.out.println("CREATE_LIME = "+ CalcProperties.CREATE_LIME);
+		
+		mnuItemOrange.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				CalcProperties.setDesign();
+				mb.setForeground(CalcProperties.ORANGE); // set colour to menu bars
+				mnuFile.setForeground(CalcProperties.ORANGE);
+				mnuEdit.setForeground(CalcProperties.ORANGE);
+				mnuStyle.setForeground(CalcProperties.ORANGE);
+				mnuHelp.setForeground(CalcProperties.ORANGE);
+				mnuItemQuit.setForeground(CalcProperties.ORANGE); // set colour to menu bar
+				mnuItemAbout.setForeground(CalcProperties.ORANGE); // set colour to menu bar
+				mnuItemHist.setForeground(CalcProperties.ORANGE);
+				mnuItemHistOld.setForeground(CalcProperties.ORANGE);
+				mnuClearHist.setForeground(CalcProperties.ORANGE);
+				mnuSoundControl.setForeground(CalcProperties.ORANGE);
+				mnuItemSupport.setForeground(CalcProperties.ORANGE);
+				mnuItemTwitter.setForeground(CalcProperties.ORANGE);
+				mnuItemPayPal.setForeground(CalcProperties.ORANGE);
+				mnuCopyResult.setForeground(CalcProperties.ORANGE);
+				mnuItemBack.setForeground(CalcProperties.ORANGE);
+				mnuItemButtonStyle.setForeground(CalcProperties.ORANGE);
+				mnuItemOrange.setForeground(CalcProperties.ORANGE);
+				mnuItemDarkGray.setForeground(CalcProperties.ORANGE);
+				mnuStyle.setForeground(CalcProperties.ORANGE);
+				mnuExport.setForeground(CalcProperties.ORANGE);
+				mnuItemNoBoarder.setForeground(CalcProperties.ORANGE);
+				mnuItemBorderCompound.setForeground(CalcProperties.ORANGE);
+				mnuItemBorderLower.setForeground(CalcProperties.ORANGE);
+				mnuItemBorderRaised.setForeground(CalcProperties.ORANGE);
+				mnuItemLime.setForeground(CalcProperties.ORANGE);
+				mnuItemPlain.setForeground(CalcProperties.ORANGE);
+				
+				for (int i = 0; i < 5; i++) {
+					row[i].setBackground(CalcProperties.ORANGE);
+				}
+				
+				for (int i = 0; i < 24; i++) {
+					if (button[0].getBorder() == compound) {
+						button[i].setBorder((Border) compound);
+						button[20].setBorder(null);
+					} else if (button[0].getBorder() == loweredbevel) {
+						button[i].setBorder((Border) loweredbevel);
+						button[20].setBorder(null);
+					} else if (button[0].getBorder() == raisedbevel) {
+						button[i].setBorder((Border) raisedbevel);
+						button[20].setBorder(null);
+					} else if (button[0].getBorder() == null) {
+						button[i].setBorder((Border) null);
+						button[20].setBorder(null);
+					}
+					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
+							|| i == 8 || i == 9 || i == 10 || i == 18) {
+						button[i].setBackground(CalcProperties.DARKGREY);
+					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
+							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
+							|| i == 20 || i == 22 || i == 21 || i == 23) {
+						button[i].setBackground(CalcProperties.ORANGE);
+						button[i].setForeground(CalcProperties.BLACK);
+					}
+				}
+				// HERE
+				
+				File file = null;
+				try {
+					file = new File(CalcProperties.workingDir());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				Properties newProperties = new Properties(System.getProperties());
+				
+					newProperties.put("theme.colour", "ORANGE");
+					newProperties.put("button.colour", "DARKGREY");
+					newProperties.put("button_c.colour", "ORANGE");
+					newProperties.put("audio.status", "false");
+					newProperties.put("mb.colour", "ORANGE");
+					newProperties.put("mnuFile.colour", "ORANGE");
+					newProperties.put("mnuEdit.colour", "ORANGE");
+					newProperties.put("mnuHelp.colour", "ORANGE");
+					newProperties.put("mnuItemQuit.colour", "ORANGE");
+					newProperties.put("mnuItemAbout.colour", "ORANGE");
+					newProperties.put("mnuItemHist.colour", "ORANGE");
+					newProperties.put("mnuItemHistOld.colour", "ORANGE");
+					newProperties.put("mnuClearHist.colour", "ORANGE");
+					newProperties.put("mnuSoundControl.colour", "ORANGE");
+					newProperties.put("mnuItemSupport.colour", "ORANGE");
+					newProperties.put("mnuItemTwitter.colour", "ORANGE");
+					newProperties.put("mnuItemPayPal.colour", "ORANGE");
+					newProperties.put("mnuCopyResult.colour", "ORANGE");
+					newProperties.put("mnuItemBack.colour", "ORANGE");
+					newProperties.put("mnuItemButtonStyle.colour", "ORANGE");
+					newProperties.put("mnuItemOrange.colour", "ORANGE");
+					newProperties.put("mnuItemDarkGray.colour", "ORANGE");
+					newProperties.put("mnuStyle.colour", "ORANGE");
+					newProperties.put("mnuExport.colour", "ORANGE");
+					newProperties.put("mnuItemNoBoarder.colour", "ORANGE");
+					newProperties.put("mnuItemBorderCompound.colour", "ORANGE");
+					newProperties.put("mnuItemBorderLower.colour", "ORANGE");
+					newProperties.put("mnuItemBorderRaised.colour", "ORANGE");
+					newProperties.put("mnuItemLime.colour", "ORANGE");
+					newProperties.put("mnuItemPlain.colour", "ORANGE");
+					newProperties.put("row.colour", "ORANGE");
+					
+					for (int i = 0; i < 1; i++) {
+						if (button[0].getBorder() == compound) {
+							newProperties.put("style.type", "compound");
+						} else if (button[0].getBorder() == loweredbevel) {
+							newProperties.put("style.type", "loweredbevel");
+						} else if (button[0].getBorder() == raisedbevel) {
+							newProperties.put("style.type", "raisedbevel");
+							button[20].setBorder(null);
+						} else if (button[0].getBorder() == null) {
+							newProperties.put("style.type", "null");
+							button[20].setBorder(null);
+						}
+					}
+					
+					System.setProperties(newProperties);
+					FileOutputStream out = null;
+					try {
+						out = new FileOutputStream(file);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+					try {
+						newProperties.store(out, "");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					// HERE
+			}
+			
+		});
+
+		mnuItemHist.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+
+				File file = null;
+				try {
+					file = CalcProperties.historyFile();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				if (!file.exists()) {
+					try {
+						file.createNewFile();
+						FileWriter resultfilestr = new FileWriter(CalcProperties.historyFile(), true);
+						BufferedWriter outHist = new BufferedWriter(resultfilestr);
+						outHist.write("<center><b><h1>\"Calculator History\"</h1></b></center>");
+						outHist.newLine();
+						outHist.write("<table width=\"490\" border cellpadding=\"2\">");
+						outHist.close();
+						
+						/* Desktop.getDesktop().browse(
+								CalcProperties.historyFile().toURI()); 
+								*/
+						DisplayReport.main(null);
+					} catch (IOException e) {
+					}
+				} else {
+					try {
+						DisplayReport.main(null);
+					} catch (IOException e) {
+					}
+				}
+
+			}
+		});
+		
+		mnuItemHistOld.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+
+				File file = null;
+				try {
+					file = CalcProperties.historyOld();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+		
+				if (!file.exists()) {
+					//System.out.println("Trying to Open  " + file);
+				} else {
+					try {
+						Desktop.getDesktop().browse(CalcProperties.historyOld().toURI()); 
+					} catch (IOException e) {
+					}
+				}
+
+			}
+		});	
+		mnuItemSupport.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				try 
+		        {
+					Desktop.getDesktop().browse(URI.create("https://github.com/gcclinux/orangecalc/discussions/").toURL().toURI());
+		        }           
+		        catch (Exception e) {}
+
+			}
+		});
+
+		// start about button
+
+		mnuItemAbout.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				About.main(null);
+			}
+		});
+		// Select button focus, required for initial key stroke
+
+		button[17].requestFocus();
+		
+
+	} // End super("Calculator XL")
+
+	public void clear() {
+		String Audio = null;
+		try {
+			Audio = CalcProperties.AudioTrue();
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		} // ZZ
+
+		//System.out.println("String Audio = System.getProperty = " + Audio);
+		try {
+			if (Audio.contains("true")) {
+				new Sound("typewriter.wav").start();
+			}
+			display.setText("");
+			displayMini.setText("");
+			allValues.setText("");
+			checkResult = false;
+			for (int i = 0; i < 4; i++)
+				function[i] = false;
+			for (int i = 0; i < 2; i++)
+				temporary[i] = 0;
+		} catch (NullPointerException e) {
+		}
+	}
+	
+	public static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = new BigDecimal(value);
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
+	}
+	
+	public void getPower() {  // Power
+
+		try {
+			double value = Math.pow(Double.parseDouble(allValues.getText()),2);
+			//System.out.println("Current value " + allValues.getText());
+			//System.out.println("Real value " + value);
+			//System.out.println("New value " +round(value, 2));
+			Double xx = Double.valueOf(value);
+			int x = xx.intValue();
+
+			FileWriter resultfilestr = new FileWriter(
+					CalcProperties.historyFile(), true);
+			BufferedWriter outHist = new BufferedWriter(resultfilestr);
+
+			if (x == value) {
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} 
+				display.setText(Integer.toString(x));
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+
+				displayMini.setText("x\u00B2 " + allValues.getText() + " = " + Integer.toString(x));
+				outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + "x\u00B2" + allValues.getText() + " = "+ Integer.toString(x) + "</td></tr>");
+				outHist.newLine();
+				outHist.close();
+				//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
+
+				allValues.setText(Integer.toString(x));
+
+			} else {
+				//round(value, 2); 
+				display.setText(Double.toString(round(value, 2)));
+
+				displayMini.setText("x\u00B2 " + allValues.getText() + " = " + Double.toString(round(value, 2)));
+				outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + "x\u00B2" + allValues.getText() + " = "+ Double.toString(value) + "</td></tr>");
+				outHist.newLine();
+				outHist.close();
+				//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+
+				allValues.setText(Double.toString(round(value, 2)));
+			}
+
+		} catch (IOException e) {
+		} catch (NumberFormatException e) {
+		}
+	}
+
+	public void getSqrt() {
+
+		try {
+			double value = Math.sqrt(Double.parseDouble(allValues.getText()));
+			//System.out.println("Square Before " + allValues.getText());
+			Double xx = Double.valueOf(value);
+			int x = xx.intValue();
+
+			FileWriter resultfilestr = new FileWriter(
+					CalcProperties.historyFile(), true);
+			BufferedWriter outHist = new BufferedWriter(resultfilestr);
+
+			if (x == value) {
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				display.setText(Integer.toString(x));
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+
+				displayMini.setText("Sq (\u221A) " + allValues.getText() + " = "
+						+ Integer.toString(x));
+
+				outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + "Sq  &radic; " + allValues.getText() + " = "+ Integer.toString(x) + "</td></tr>");
+				outHist.newLine();
+				outHist.close();
+				//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
+
+				allValues.setText(Integer.toString(x));
+
+			} else {
+				display.setText(Double.toString(value));
+
+				displayMini.setText("Sq (\u221A)  " + allValues.getText() + " = "
+						+ Double.toString(value));
+				outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + "Sq  &radic; " + allValues.getText() + " = "+ Double.toString(value) + "</td></tr>");
+				outHist.newLine();
+				outHist.close();
+				//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+
+				allValues.setText(Double.toString(value));
+			}
+
+		} catch (IOException e) {
+		} catch (NumberFormatException e) {
+		}
+	}
+
+	public void getPosNeg() {
+		try {
+			double value = Double.parseDouble(display.getText());
+			String str = allValues.getText();
+			if (value != 0) {
+				value = value * (-1);
+				Double xx = Double.valueOf(value);
+				int x = xx.intValue();
+				if (x == value) {
+					display.setText(Integer.toString(x));
+					allValues.setText(Integer.toString(x));
+					if (str.contains("-")) {
+						String Audio = null;
+						try {
+							Audio = CalcProperties.AudioTrue();
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						} // ZZ
+						if (Audio.contains("true")) {
+							new Sound("typewriter.wav").start();
+						}
+					} else {
+						String Audio = null;
+						try {
+							Audio = CalcProperties.AudioTrue();
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						} // ZZ
+						if (Audio.contains("true")) {
+							new Sound("typewriter.wav").start();
+						}
+					}
+				} else {
+					display.setText(Double.toString(value));
+					allValues.setText(Double.toString(value));
+				}
+			} else {
+			}
+		} catch (NumberFormatException e) {
+		}
+	}
+
+	public void getResult() {
+
+		double result = 0;
+		temporary[1] = Double.parseDouble(allValues.getText());
+		String temp0 = Double.toString(temporary[0]);
+		String temp1 = Double.toString(temporary[1]);
+		try {
+			if (temp0.contains("-")) {
+				String[] temp00 = temp0.split("-", 2);
+				temporary[0] = (Double.parseDouble(temp00[1]) * -1);
+			}
+			if (temp1.contains("-")) {
+				String[] temp11 = temp1.split("-", 2);
+				temporary[1] = (Double.parseDouble(temp11[1]) * -1);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+		try {
+			if (function[2] == true && temp0 != null && temp1 != null) {
+				result = temporary[0] * temporary[1];
+				//System.out.println("Multiply function set");
+			} else if (function[3] == true && temp0 != null && temp1 != null) {
+				result = temporary[0] / temporary[1];
+				//System.out.println("Division function set");
+			} else if (function[0] == true && temp0 != null && temp1 != null) {
+				result = temporary[0] + temporary[1];
+				//System.out.println("Addition function set");
+			} else if (function[1] == true && temp0 != null && temp1 != null) {
+				result = temporary[0] - temporary[1];
+				//System.out.println("Subtraction function set");
+			}
+
+			for (int i = 0; i < 4; i++) {
+				function[i] = false;
+				//System.out.println("Setting functions " + i + " to "+ function[i]);
+			}
+
+			Double xx = Double.valueOf(result);
+			int x = xx.intValue();
+			if (x == result) {
+				String str = allValues.getText();
+				String mstr = displayMini.getText();
+				display.setText(Integer.toString(x));
+				allValues.setText(Integer.toString(x));
+				//System.out.println("One = " + Integer.toString(x));
+
+				FileWriter resultfilestr = new FileWriter(
+						CalcProperties.historyFile(), true);
+				BufferedWriter outHist = new BufferedWriter(resultfilestr);
+
+				if (mstr.contains("=")) {
+					if (mstr.contains("%")) {
+						displayMini.setText(mstr + " = " + Integer.toString(x));
+						//System.out.println("STwo = " + mstr + " = "	+ Integer.toString(x));
+					} else {
+						displayMini.setText(mstr + str + " = "
+								+ Integer.toString(x));
+						//System.out.println("Two = " + mstr + str + " = "+ Integer.toString(x));
+					}
+
+					//System.out.println("CODE-021 - Checking button pressed result Again = " + checkResult);
+
+					if (checkResult == true) {
+						if (mstr.contains("%")) {
+							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + " = " + " " + Integer.toString(x) + "</td></tr>");
+							outHist.newLine();
+							outHist.close();
+							//System.out.println("Logged HTML Sfile = "+ CalcProperties.historyFile());
+						} else {
+
+							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + str + " " + " = " + " " + Integer.toString(x) + "</td></tr>");
+							outHist.newLine();
+							outHist.close();
+							//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
+						}
+					}
+
+				} else {
+
+					if (mstr.contains("%")) {
+						displayMini.setText(mstr + " = " + Integer.toString(x));
+						if (checkResult == true) {
+							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + " = " + " " + Integer.toString(x) + "</td></tr>");
+							outHist.newLine();
+							outHist.close();
+							//System.out.println("Logged HTML S file = "+ CalcProperties.historyFile());
+							//System.out.println("Three = " + mstr + " = "+ Integer.toString(x));
+						}
+					} else {
+						displayMini.setText(mstr + str + " = "
+								+ Integer.toString(x));
+
+						if (checkResult == true) {
+							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + str + " " + " = " + " " + Integer.toString(x) + "</td></tr>");
+							outHist.newLine();
+							outHist.close();
+							//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
+							//System.out.println("Three = " + mstr + str + " = "+ Integer.toString(x));
+						}
+					}
+				}
+			} else {
+				String str = allValues.getText();
+				String mstr = displayMini.getText();
+				result = Math.round(result * 100) / 100.0d;
+				display.setText(Double.toString(result));
+				allValues.setText(Double.toString(result));
+				//System.out.println("Four = " + Double.toString(result));
+
+				FileWriter resultfilestr = new FileWriter(
+						CalcProperties.historyFile(), true);
+				BufferedWriter outHist = new BufferedWriter(resultfilestr);
+
+				if (mstr.contains("=")) {
+					//System.out.println("Zstr = " + str);
+					//System.out.println("Zmstr = " + mstr);
+					//System.out.println("Zresult = " + Double.toString(result));
+					if (mstr.contains("%")) {
+						displayMini.setText(mstr + " = "
+								+ Double.toString(result)); // changed from x to
+															// result
+						//System.out.println("SFive = " + mstr + " = "+ Double.toString(result));
+						if (checkResult == true) {
+							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + " = " + " " + Double.toString(result) + "</td></tr>");
+							outHist.newLine();
+							outHist.close();
+							//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
+						}
+					} else {
+						displayMini.setText(mstr + str + " = "
+								+ Double.toString(result)); // changed from x to
+															// result
+						//System.out.println("Five = " + mstr + str + " = "+ Double.toString(result));
+					}
+				} else {
+					if (mstr.contains("%")) {
+						displayMini.setText(mstr + " = "
+								+ Double.toString(result));
+						//System.out.println("SSix = " + mstr + " = "	+ Double.toString(result));
+						if (checkResult == true) {
+							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + " = " + " " + Double.toString(result) + "</td></tr>");
+							outHist.newLine();
+							outHist.close();
+							//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
+						}
+					} else {
+						displayMini.setText(mstr + str + " = "
+								+ Double.toString(result));
+						//System.out.println("Six = " + mstr + str + " = "+ Double.toString(result));
+						if (checkResult == true) {
+							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + str + " " + " = " + " " + Double.toString(result) + "</td></tr>");
+							outHist.newLine();
+							outHist.close();
+							//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
+						}
+					}
+				}
+			}
+		} catch (NumberFormatException e) {
+		} catch (IOException e) {
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		
+
+		if (ae.getSource() == button[0]) { // Number SEVEN - 7
+			if (allValues.getText().isEmpty()) {
+				display.setText("7");
+				allValues.setText("7");
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			} else {
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+				if (checkResult == true) {
+					//System.out.println("Busy checkResult = true");
+					if (display.getText().contains(".")){
+						display.setText(display.getText()+"7");
+					} else {
+						display.setText("7");
+					}
+					allValues.setText(display.getText());
+					checkResult = false;
+				} else {
+					//System.out.println("Busy checkResult = false");
+					display.setText(display.getText() + "7");
+					allValues.setText(display.getText());
+				}
+			}
+		}
+
+		if (ae.getSource() == button[1]) { // Number EIGHT - 8
+			if (allValues.getText().isEmpty()) {
+				display.setText("8");
+				allValues.setText("8");
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			} else {
+				if (checkResult == true) {
+					//System.out.println("Busy checkResult = true");
+					if (display.getText().contains(".")){
+						display.setText(display.getText()+"8");
+					} else {
+						display.setText("8");
+					}
+					allValues.setText(display.getText());
+					checkResult = false;
+				} else {
+					//System.out.println("Busy checkResult = false");
+					display.setText(display.getText() + "8");
+					allValues.setText(display.getText());
+				}
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			}
+		}
+
+		if (ae.getSource() == button[2]) { // Number NINE - 9
+			if (allValues.getText().isEmpty()) {
+				display.setText("9");
+				allValues.setText("9");
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			} else {
+				if (checkResult == true) {
+					//System.out.println("Busy checkResult = true");
+					if (display.getText().contains(".")){
+						display.setText(display.getText()+"9");
+					} else {
+						display.setText("9");
+					}
+					allValues.setText(display.getText());
+					checkResult = false;
+				} else {
+					//System.out.println("Busy checkResult = false");
+					display.setText(display.getText() + "9");
+					allValues.setText(display.getText());
+				}
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			}
+		}
+
+		if (ae.getSource() == button[3]) { // add function[0] --> Adding numbers
+											// now working... button 3
+
+			String str = allValues.getText();
+			String str9 = displayMini.getText();
+			if (str9.contains("%") && str9.contains("(")
+					&& checkResult == false) {
+				//System.out.println("Contains % & () need to press = first --> getting result");
+				// getResult();
+			} else {
+
+				if (function[1] == true || function[2] == true
+						|| function[3] == true) {
+					getResult();
+					String str2 = allValues.getText();
+					String str3 = displayMini.getText();
+					temporary[0] = Double.parseDouble(allValues.getText());
+					function[0] = true;
+					display.setText(str2);
+					displayMini.setText(str3 + " + ");
+					allValues.setText("");
+					String Audio = null;
+					try {
+						Audio = CalcProperties.AudioTrue();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					} // ZZ
+					if (Audio.contains("true")) {
+						new Sound("typewriter.wav").start();
+					}
+				}
+
+				if (function[0] == false) {
+					if (!allValues.getText().isEmpty()) {
+						temporary[0] = Double.parseDouble(allValues.getText());
+						function[0] = true;
+						display.setText("");
+						displayMini.setText(str + " + ");
+						allValues.setText(str);
+						String Audio = null;
+						try {
+							Audio = CalcProperties.AudioTrue();
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						} // ZZ
+						if (Audio.contains("true")) {
+							new Sound("typewriter.wav").start();
+						}
+					}
+				} else {
+					getResult();
+					String str2 = allValues.getText();
+					String str3 = displayMini.getText();
+					temporary[0] = Double.parseDouble(allValues.getText());
+					function[0] = true;
+					display.setText(str2);
+					displayMini.setText(str3 + " + ");
+					allValues.setText("");
+					String Audio = null;
+					try {
+						Audio = CalcProperties.AudioTrue();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					} // ZZ
+					if (Audio.contains("true")) {
+						new Sound("typewriter.wav").start();
+					}
+				}
+			}
+		}
+
+		if (ae.getSource() == button[7]) { // subtraction function[1] -->
+											// subtracting numbers now
+											// working... 16-10-2013
+
+			String str = allValues.getText();
+			String str9 = displayMini.getText();
+
+			if (str9.contains("%") && str9.contains("(")
+					&& checkResult == false) {
+				//System.out.println("Contains % & () need to press = first");
+			} else {
+
+				if (function[0] == true || function[2] == true
+						|| function[3] == true) {
+					getResult();
+					String str2 = allValues.getText();
+					String str3 = displayMini.getText();
+					temporary[0] = Double.parseDouble(allValues.getText());
+					function[1] = true;
+					display.setText(str2);
+					displayMini.setText(str3 + " - ");
+					allValues.setText("");
+					String Audio = null;
+					try {
+						Audio = CalcProperties.AudioTrue();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					} // ZZ
+					if (Audio.contains("true")) {
+						new Sound("typewriter.wav").start();
+					}
+				}
+
+				if (function[1] == false) {
+					if (!allValues.getText().isEmpty()) {
+						temporary[0] = Double.parseDouble(allValues.getText());
+						function[1] = true;
+						display.setText("");
+						displayMini.setText(str + " - ");
+						allValues.setText(str);
+						String Audio = null;
+						try {
+							Audio = CalcProperties.AudioTrue();
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						} // ZZ
+						if (Audio.contains("true")) {
+							new Sound("typewriter.wav").start();
+						}
+					}
+				} else {
+					getResult();
+					String str2 = allValues.getText();
+					String str3 = displayMini.getText();
+					temporary[0] = Double.parseDouble(allValues.getText());
+					function[1] = true;
+					display.setText(str2);
+					displayMini.setText(str3 + " - ");
+					allValues.setText("");
+					String Audio = null;
+					try {
+						Audio = CalcProperties.AudioTrue();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					} // ZZ
+					if (Audio.contains("true")) {
+						new Sound("typewriter.wav").start();
+					}
+				}
+			}
+		}
+
+		if (ae.getSource() == button[11]) { // multiplication function[2] --> 16-10-2013
+
+			String str = allValues.getText();
+			//String str8 = display.getText();
+			String str9 = displayMini.getText();
+
+			//System.out.println("ALLVALUES = " + str);
+			//System.out.println("DISPLAY = " + str8);
+			//System.out.println("MINIDISPLAY = " + str9);
+			//System.out.println("CHECKRESULT = " + checkResult);
+
+			if (str9.contains("%") && str9.contains("(")
+					&& checkResult == false) {
+				//System.out.println("Contains % & () need to press = first");
+			} else {
+
+				if (function[0] == true || function[1] == true
+						|| function[3] == true) {
+					getResult();
+					String str2 = allValues.getText();
+					String str3 = displayMini.getText();
+					temporary[0] = Double.parseDouble(allValues.getText());
+					function[2] = true;
+					display.setText(str2);
+					displayMini.setText(str3 + " x ");
+					allValues.setText("");
+					String Audio = null;
+					try {
+						Audio = CalcProperties.AudioTrue();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					} // ZZ
+					if (Audio.contains("true")) {
+						new Sound("typewriter.wav").start();
+					}
+				}
+
+				if (function[2] == false) {
+					if (!allValues.getText().isEmpty()) {
+						temporary[0] = Double.parseDouble(allValues.getText());
+						function[2] = true;
+						display.setText("");
+						displayMini.setText(str + " x ");
+						allValues.setText(str);
+						String Audio = null;
+						try {
+							Audio = CalcProperties.AudioTrue();
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						} // ZZ
+						if (Audio.contains("true")) {
+							new Sound("typewriter.wav").start();
+						}
+					}
+				} else {
+					getResult();
+					String str2 = allValues.getText();
+					String str3 = displayMini.getText();
+					temporary[0] = Double.parseDouble(allValues.getText());
+					function[2] = true;
+					display.setText(str2);
+					displayMini.setText(str3 + " x ");
+					allValues.setText("");
+					String Audio = null;
+					try {
+						Audio = CalcProperties.AudioTrue();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					} // ZZ
+					if (Audio.contains("true")) {
+						new Sound("typewriter.wav").start();
+					}
+				}
+			}
+		}
+		
+		
+
+		if (ae.getSource() == button[13]) { // division function[3] --> divide
+											// numbers now working... 16-10-2013
+
+			String str = allValues.getText();
+			String str9 = displayMini.getText();
+
+			if (str9.contains("%") && str9.contains("(")
+					&& checkResult == false) {
+				//System.out.println("Contains % & () need to press = first");
+			} else {
+
+				if (function[0] == true || function[1] == true
+						|| function[2] == true) {
+					getResult();
+					String str2 = allValues.getText();
+					String str3 = displayMini.getText();
+					temporary[0] = Double.parseDouble(allValues.getText());
+					function[3] = true;
+					display.setText(str2);
+					displayMini.setText(str3 + " / ");
+					allValues.setText("");
+					String Audio = null;
+					try {
+						Audio = CalcProperties.AudioTrue();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					} // ZZ
+					if (Audio.contains("true")) {
+						new Sound("typewriter.wav").start();
+					}
+				}
+
+				if (function[3] == false) {
+					if (!allValues.getText().isEmpty()) {
+						temporary[0] = Double.parseDouble(allValues.getText());
+						function[3] = true;
+						display.setText("");
+						displayMini.setText(str + " / ");
+						allValues.setText(str);
+						String Audio = null;
+						try {
+							Audio = CalcProperties.AudioTrue();
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						} // ZZ
+						if (Audio.contains("true")) {
+							new Sound("typewriter.wav").start();
+						}
+					}
+				} else {
+					getResult();
+					String str2 = allValues.getText();
+					String str3 = displayMini.getText();
+					temporary[0] = Double.parseDouble(allValues.getText());
+					function[3] = true;
+					display.setText(str2);
+					displayMini.setText(str3 + " / ");
+					allValues.setText("");
+					String Audio = null;
+					try {
+						Audio = CalcProperties.AudioTrue();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					} // ZZ
+					if (Audio.contains("true")) {
+						new Sound("typewriter.wav").start();
+					}
+				}
+			}
+		}
+
+		if (ae.getSource() == button[19]) { // Button 19 == Percentage
+
+			double result = 0;
+			String strp = displayMini.getText();
+			temporary[1] = Double.parseDouble(allValues.getText());
+			String temp0 = Double.toString(temporary[0]);
+			String temp1 = Double.toString(temporary[1]);
+
+			//System.out.println("CODE-014 - Percent temp0 = " + temp0);
+			//System.out.println("CODE-015 - Percent temp1 = " + temp1);
+			
+			/* if (function[2] == true) {
+				System.out.println("CODE-008 - Function 2 = true");
+			} else if (function[3] == true) {
+				System.out.println("CODE-009 - Function 3 = true");
+			} else if (function[0] == true) {
+				System.out.println("CODE-010 - Function 0 = true");
+			} else if (function[1] == true) {
+				System.out.println("CODE-011 - Function 1 = true");
+			} else {
+				System.out.println("CODE-012 - No Function Active");
+			}
+			*/
+
+			if (temp0.equals("0.0") || strp.contains("%") || (function[0] == false && function[3] == false && function[1] == false && function[2] == false)) {
+				//System.out.println("CODE-013 - Percent temp0 = " + temp0 + " OR "+ "Percent already engaged " + strp);
+			} else {
+				try {
+					if (temp0.contains("-")) {
+						String[] temp00 = temp0.split("-", 2);
+						temporary[0] = (Double.parseDouble(temp00[1]) * -1);
+					}
+					if (temp1.contains("-")) {
+						String[] temp11 = temp1.split("-", 2);
+						temporary[1] = (Double.parseDouble(temp11[1]) * -1);
+					}
+				} catch (ArrayIndexOutOfBoundsException e) {
+				}
+				try {
+					result = (temporary[0] / 100) * temporary[1];
+					result = Math.round(result * 100) / 100.0d;
+					
+					//System.out.println("CODE-007 - Percentage function executed");
+
+					Double xx = Double.valueOf(result);
+					int x = xx.intValue();
+					if (x == result) {
+						String str = allValues.getText();
+						String mstr = displayMini.getText();
+						display.setText(Integer.toString(x));
+						allValues.setText(Integer.toString(x));
+						//System.out.println("CODE-001 = " + Integer.toString(x));
+						String Audio = null;
+						try {
+							Audio = CalcProperties.AudioTrue();
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						} // ZZ
+						if (Audio.contains("true")) {
+							new Sound("typewriter.wav").start();
+						}
+
+						FileWriter resultfilestr = new FileWriter(
+								CalcProperties.historyFile(), true);
+						BufferedWriter outHist = new BufferedWriter(
+								resultfilestr);
+
+						if (mstr.contains("=")) {
+							
+							displayMini.setText("(" + mstr + str + "%" + ") = "	+ Integer.toString(x));
+							
+							//System.out.println("CODE-002 = " + mstr + str + " = "+ Integer.toString(x));
+
+							//System.out.println("CODE-016 - Checking button pressed result Again "+ checkResult);
+
+							if (checkResult == true) {
+								outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">"+ "(" + mstr + " " + str + " " + ")" + " = " + " " + Integer.toString(x) + "</td></tr>");
+								outHist.newLine();
+								outHist.close();
+								//System.out.println("CODE-017 - Logged HTML file = "+ CalcProperties.historyFile());
+							}
+
+						} else {
+							displayMini.setText("(" + mstr + str + "%" + ") = "
+									+ Integer.toString(x));
+
+							if (checkResult == true) {
+								outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">"+ "(" + mstr + " " + str + " " + ")" + " = " + " " + Integer.toString(x) + "</td></tr>");
+								outHist.newLine();
+								outHist.close();
+								//System.out.println("CODE-018 - Logged HTML file = "+ CalcProperties.historyFile());
+							}
+							//System.out.println("CODE-003 = " + mstr + str+ " = " + Integer.toString(x));
+						}
+					} else {
+						String str = allValues.getText();
+						String mstr = displayMini.getText();
+						display.setText(Double.toString(result));
+						allValues.setText(Double.toString(result));
+						//System.out.println("CODE-004 = "+ Double.toString(result));
+						String Audio = null;
+						try {
+							Audio = CalcProperties.AudioTrue();
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						} // ZZ
+						if (Audio.contains("true")) {
+							new Sound("typewriter.wav").start();
+						}
+						if (mstr.contains("=")) {
+							displayMini.setText("(" + mstr + str + "%" + ") = "
+									+ Double.toString(result));
+							//System.out.println("CODE-005 = " + mstr + str + "%"+ " = " + Double.toString(result));
+						} else {
+							displayMini.setText("(" + mstr + str + "%" + ") = "
+									+ Double.toString(result));
+							//System.out.println("CODE-006 = " + mstr + str + "%"+ " = " + Double.toString(result));
+						}
+					}
+
+					//System.out.println("CODE-19 - Result = " + result);
+					result = Math.round(result * 100) / 100.0d;
+					//System.out.println("CODE-20 - New Result = " + result);
+					//System.out.println("temp0 = " + temp0);
+					//System.out.println("temp1 = " + temp1);
+					//System.out.println("temporary0 = " + temporary[0]);
+					//System.out.println("temporary1 = " + temporary[1]);
+					temporary[1] = result;
+					//System.out.println("new temporary1 = " + temporary[1]);
+				} catch (NumberFormatException e) {
+				} catch (IOException e) {
+				}
+
+			}
+		}
+
+		if (ae.getSource() == button[5]) { // Number FIVE - 5
+			if (allValues.getText().isEmpty()) {
+				display.setText("5");
+				allValues.setText("5");
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {e2.printStackTrace(); }
+				
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			} else {
+				if (checkResult == true) {
+					//System.out.println("Busy checkResult here = true");
+					if (display.getText().contains(".")){
+						display.setText(display.getText()+"5");
+					} else {
+						display.setText("5");
+					}
+					allValues.setText(display.getText());
+					checkResult = false;
+				} else {
+					//System.out.println("Busy checkResult = false");
+					display.setText(display.getText() + "5");
+					allValues.setText(display.getText());
+				}
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			}
+		}
+
+		if (ae.getSource() == button[4]) { // Number FOUR - 4
+			if (allValues.getText().isEmpty()) {
+				display.setText("4");
+				allValues.setText("4");
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			} else {
+				if (checkResult == true) {
+					//System.out.println("Busy checkResult = true");
+					if (display.getText().contains(".")){
+						display.setText(display.getText()+"4");
+					} else {
+						display.setText("4");
+					}
+					allValues.setText(display.getText());
+					checkResult = false;
+				} else {
+					//System.out.println("Busy checkResult = false");
+					display.setText(display.getText() + "4");
+					allValues.setText(display.getText());
+				}
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			}
+		}
+
+		if (ae.getSource() == button[6]) { // Number SIX - 6
+			if (allValues.getText().isEmpty()) {
+				display.setText("6");
+				allValues.setText("6");
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			} else {
+				if (checkResult == true) {
+					//System.out.println("Busy checkResult = true");
+					if (display.getText().contains(".")){
+						display.setText(display.getText()+"6");
+					} else {
+						display.setText("6");
+					}
+					allValues.setText(display.getText());
+					checkResult = false;
+				} else {
+					//System.out.println("Busy checkResult = false");
+					display.setText(display.getText() + "6");
+					allValues.setText(display.getText());
+				}
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			}
+		}
+
+		if (ae.getSource() == button[8]) { // Number ONE - 1
+			if (allValues.getText().isEmpty()) {
+				display.setText("1");
+				allValues.setText("1");
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			} else {
+				if (checkResult == true) {
+					//System.out.println("Busy checkResult = true");
+					if (display.getText().contains(".")){
+						display.setText(display.getText()+"1");
+					} else {
+						display.setText("1");
+					}
+					allValues.setText(display.getText());
+					checkResult = false;
+				} else {
+					//System.out.println("Busy checkResult = false");
+					display.setText(display.getText() + "1");
+					allValues.setText(display.getText());
+				}
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			}
+		}
+
+		if (ae.getSource() == button[9]) { // Number TWO - 2
+			if (allValues.getText().isEmpty()) {
+				display.setText("2");
+				allValues.setText("2");
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			} else {
+				if (checkResult == true) {
+					//System.out.println("Busy checkResult = true");
+					if (display.getText().contains(".")){
+						display.setText(display.getText()+"2");
+					} else {
+						display.setText("2");
+					}
+					allValues.setText(display.getText());
+					checkResult = false;
+				} else {
+					//System.out.println("Busy checkResult = false");
+					display.setText(display.getText() + "2");
+					allValues.setText(display.getText());
+				}
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			}
+		}
+
+		if (ae.getSource() == button[10]) { // Number THREE - 3
+			if (allValues.getText().isEmpty()) {
+				display.setText("3");
+				allValues.setText("3");
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			} else {
+				if (checkResult == true) {
+					//System.out.println("Busy checkResult = true" + " " + display.getText());
+					
+					if (display.getText().contains(".")){
+						display.setText(display.getText()+"3");
+					} else {
+						display.setText("3");
+					}
+					allValues.setText(display.getText());
+					checkResult = false;
+				} else {
+					//System.out.println("Busy checkResult = false");
+					display.setText(display.getText() + "3");
+					allValues.setText(display.getText());
+				}
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			}
+		}
+
+		if (ae.getSource() == button[12]) { // DOT / dot button
+			String str = display.getText();
+			if (!str.contains(".")) {
+				if (str.isEmpty()) {
+					str = "0";
+					String Audio = null;
+					try {
+						Audio = CalcProperties.AudioTrue();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					} // ZZ
+					if (Audio.contains("true")) {
+						new Sound("typewriter.wav").start();
+					}
+				}
+				display.setText(str + ".");
+				allValues.setText(str + ".");
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			}
+		}
+
+		if (ae.getSource() == button[14]) {
+			clear(); 
+			button[17].requestFocus();
+		}
+			
+
+		if (ae.getSource() == button[15])
+			getSqrt();
+
+		if (ae.getSource() == button[16])
+			getPosNeg();
+
+		if (ae.getSource() == button[17]) { // Equal button =
+			
+			if (checkResult == true){
+				
+			} else {
+
+					if (function[0] == true || function[1] == true || function[2] == true || function[3] == true) {
+						//System.out.println("Button 17 pressed to get result");
+						checkResult = true;
+						//System.out.println("Setting button pressed result "+ checkResult);
+						getResult();
+						String Audio = null;
+						try {
+							Audio = CalcProperties.AudioTrue();
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						} // ZZ
+						if (Audio.contains("true")) {
+							new Sound("typewriter.wav").start();
+						}
+					}
+			}
+		}
+
+		if (ae.getSource() == button[18]) { // Number ZERO - 0
+			if (allValues.getText().isEmpty()) {
+				display.setText("0");
+				allValues.setText(display.getText());
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			} else {
+				display.setText(display.getText() + "0");
+				allValues.setText(display.getText());
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			}
+		}
+
+		if (ae.getSource() == button[21]) { // Power of 2
+			if (allValues.getText().isEmpty()) {
+
+			} else {
+				getPower();
+				}
+			}
+		
+		// Power of 3 END
+
+		if (ae.getSource() == button[22]) { // Number of Pi - 3.14159
+			if (allValues.getText().isEmpty()) {
+				display.setText("3.14159265359");
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+				allValues.setText(display.getText());
+			} else {
+				display.setText("");
+				if (function[0] == false & function[1] == false
+						&& function[2] == false && function[3] == false) {
+					displayMini.setText("");
+				}
+				display.setText(display.getText() + "3.14159265359");
+				allValues.setText(display.getText());
+				String Audio = null;
+				try {
+					Audio = CalcProperties.AudioTrue();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} // ZZ
+				if (Audio.contains("true")) {
+					new Sound("typewriter.wav").start();
+				}
+			}
+		}
+
+	}
+
+	@SuppressWarnings("unused")
+	public static void main(String[] arguments) throws IOException {
+		CalculatorOrangeLite c = new CalculatorOrangeLite();
+	}
+}
