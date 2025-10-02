@@ -6,19 +6,9 @@ package wagemaker;
  * @since   2013 - 2015
  ******************************************************************************************************/
 
-import java.awt.Cursor;
-import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.font.TextAttribute;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -26,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 
 public class About {
-	@SuppressWarnings({ "static-access", "unchecked", "rawtypes" })
+	@SuppressWarnings({ "static-access" })
 	public static void main(String args[]) {
 	
 		UIManager UI=new UIManager();
@@ -53,49 +43,25 @@ public class About {
 			label3.setFont(FontTheme.size20b);
 			label3.setForeground(CalcProperties.WHITE);
 	        label3.setSize(300, 30);
-	        label3.setLocation(0,110);
+	        label3.setLocation(0,90);
 	        
 			JLabel label4 = new JLabel(CalcProperties.Developer, JLabel.CENTER);
 			label4.setFont(FontTheme.size15i);
 			label4.setForeground(CalcProperties.WHITE);
-	        label4.setSize(300, 30);
-	        label4.setLocation(0, 140);
+	        label4.setSize(300, 20);
+	        label4.setLocation(0, 120);
 	        
-	        JLabel support = new JLabel("License & Changelog", JLabel.CENTER);
-	        support.setFont(FontTheme.size17p);
-	        support.setForeground(CalcProperties.WHITE);
-	        support.setSize(300, 30);
-	        support.setLocation(0, 220);
- 
-	        Font font = support.getFont();
-	        Map attributes = font.getAttributes();
-	        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-	        support.setFont(font.deriveFont(attributes));
-	        
-	        support.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	        support.addMouseListener(new MouseAdapter() {
-	          public void mouseClicked(MouseEvent e) {
-	             if (e.getClickCount() > 0) {
-	                 if (Desktop.isDesktopSupported()) {
-	                       Desktop desktop = Desktop.getDesktop();
-	                       
-	                       
-	                       try {
-	                           //URI uri = new URI("file:/opt/smalltextpad/license.html");
-	                    	   //URI uri = new URI("License.html");
-	                    	   URI uri = new URI("http://www.gcclinux.co.uk/downloads/license/orangecalculator-license.html");
-	                           desktop.browse(uri);
-	                       } catch (IOException ex) {
-	                           ex.printStackTrace();
-	                       } catch (URISyntaxException ex) {
-	                           ex.printStackTrace();
-	                       }
-	                       
-	                       
-	               }
-	             }
-	          }
-	       });
+			// Short description about the multi-colour calculator (centered, wrapped)
+			JLabel desc = new JLabel(
+				"<html><div style='text-align:center;'>"
+			  + "Linux Inspired, tiny, multi-colour calculator with Dark Gray, Orange, Lime and Plain styles, "
+			  + "keyboard shortcuts, optional sounds, and history display — simple and fast." 
+			  + "</div></html>",
+				JLabel.CENTER);
+			desc.setFont(FontTheme.size15p);
+			desc.setForeground(CalcProperties.WHITE);
+			desc.setSize(280, 90);
+			desc.setLocation(5, 160);
 	       
 			 
 		JFrame About = new JFrame();
@@ -110,7 +76,7 @@ public class About {
 		About.add(label2);
 		About.add(label3);
 		About.add(label4);
-		About.add(support);
+	About.add(desc);
 		
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

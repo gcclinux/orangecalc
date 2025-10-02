@@ -3,7 +3,7 @@ package wagemaker;
 /******************************************************************************************************
  * @author by Ricardo Wagemaker (["java"] + "@" + "wagemaker.co.uk") 2013-2015
  * @version 1.5.5
- * @since   2013 - 2015
+ * @since   2013 - 2025
  ******************************************************************************************************/
 
 import java.awt.Color;
@@ -56,6 +56,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class CalculatorOrangeLite extends JFrame implements ActionListener {
+	private static final String ACTION_KEY = "The Action";
 	
 	private void loadFrameIcon() {
         URL imgUrl = null;
@@ -84,7 +85,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 	int x = (dim.width - w) / (3);
 	int y = (dim.height - h) / 5;
 
-	int[] dimW = { 73, 463, 450, 480, 142 };
+	int[] dimW = { 73, 463, 450, 480, 152 };
 	int[] dimH = { 73, 21, 53, 470 };
 	Dimension displayDimension = new Dimension(dimW[1], dimH[2]);
 	Dimension displayMiniDimension = new Dimension(dimW[1], dimH[1]);
@@ -109,8 +110,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 	ImageIcon iconQuit =new ImageIcon(getClass().getResource("/images/quit.png") );
 	ImageIcon iconAbout =new ImageIcon(getClass().getResource("/images/audio.png") );
 	ImageIcon iconSupport =new ImageIcon(getClass().getResource("/images/support.png") );
-	ImageIcon iconTwitter =new ImageIcon(getClass().getResource("/images/twitter.png") );
-	ImageIcon iconPayPal =new ImageIcon(getClass().getResource("/images/paypal.png") );
+	ImageIcon iconStar =new ImageIcon(getClass().getResource("/images/star.gif") );
 	ImageIcon iconHist =new ImageIcon(getClass().getResource("/images/history.png") );
 	ImageIcon iconClearHist =new ImageIcon(getClass().getResource("/images/delete.png") );
 	ImageIcon iconSoundControl =new ImageIcon(getClass().getResource("/images/audio.png") );
@@ -126,12 +126,19 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 	
 
 	public JMenu mnuItemBack = new JMenu("BackGround"); // Sub-Menu Quit item
+	{
+		// set icon separately because JMenu does not have a (String, Icon) constructor in all JDKs
+		mnuItemBack.setIcon(iconStar);
+	}
 	public JMenu mnuItemButtonStyle = new JMenu("Button Style"); // Sub-Menu Quit item
+	{
+		// set icon separately because JMenu does not have a (String, Icon) constructor in all JDKs
+		mnuItemButtonStyle.setIcon(iconStar);
+	}
 	public JMenuItem mnuItemQuit = new JMenuItem("Quit", iconQuit );
 	public JMenuItem mnuItemAbout = new JMenuItem("About", iconAbout ); // Sub-Menu About Entry
 	public JMenuItem mnuItemSupport = new JMenuItem("Support", iconSupport ); // Sub-Menu About Entry
-	public JMenuItem mnuItemTwitter = new JMenuItem("Twitter", iconTwitter ); // Sub-Menu About Entry
-	public JMenuItem mnuItemPayPal = new JMenuItem("Donate", iconPayPal ); // Sub-Menu About Entry
+
 	public JMenuItem mnuItemHist = new JMenuItem("History", iconHist ); // Sub-Menu About Entry
 	public JMenuItem mnuItemHistOld = new JMenuItem("History (Old)", iconHist); // Sub-Menu About Entry
 	public JMenuItem mnuClearHist = new JMenuItem("Clear (History)", iconClearHist ); // Sub-Menu About Entry
@@ -156,9 +163,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 
 	// Finish Creating boarders
 
-	URL imageURL1 = CalculatorOrangeLite.class.getResource("/images/mini.png");
-	ImageLoader img = new ImageLoader(Toolkit.getDefaultToolkit().getImage(imageURL1));
-
 	// END THEME
 
 	// Key press constructor
@@ -182,14 +186,14 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 		
 		
 
-		super(""+CalcProperties.Title+CalcProperties.Separate+CalcProperties.Version); // Frame Title
+		super(""+CalcProperties.Title); // Frame Title
 		
 		loadFrameIcon();
 
 		//System.out.println("ScreenSize: " + dim);
 		//System.out.println("Date: " + date);
 
-		String ACTION_KEY = "The Action";
+		// ACTION_KEY is now a class field
 
 		// START TOP Menu
 
@@ -199,8 +203,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 		mnuStyle.setFont(FontTheme.size14p);
 		mnuItemQuit.setFont(FontTheme.size14p);
 		mnuItemSupport.setFont(FontTheme.size14p);
-		mnuItemTwitter.setFont(FontTheme.size14p);
-		mnuItemPayPal.setFont(FontTheme.size14p);
+
 		mnuItemAbout.setFont(FontTheme.size14p);
 		mnuItemHist.setFont(FontTheme.size14p);
 		mnuClearHist.setFont(FontTheme.size14p);
@@ -226,8 +229,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 		mb.add(mnuStyle);
 		mb.add(mnuHelp);
 
-		mnuHelp.add(mnuItemPayPal);
-		mnuHelp.add(mnuItemTwitter);
+
 		mnuHelp.add(mnuItemSupport);
 		mnuHelp.add(mnuItemAbout);
 		mnuFile.add(mnuItemHist);
@@ -272,9 +274,9 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			function[i] = false;
 
 		// FlowLayout f1 = new FlowLayout(FlowLayout.CENTER,0,10);
-		FlowLayout f1 = new FlowLayout(FlowLayout.CENTER);
+		FlowLayout f1 = new FlowLayout(FlowLayout.LEFT);
 		// FlowLayout f2 = new FlowLayout(FlowLayout.LEFT,8,8);
-		FlowLayout f2 = new FlowLayout(FlowLayout.CENTER);
+		FlowLayout f2 = new FlowLayout(FlowLayout.LEFT);
 
 		for (int i = 0; i < 5; i++)
 			row[i] = new JPanel();
@@ -282,20 +284,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 
 		for (int i = 1; i < 5; i++)
 			row[i].setLayout(f2);
-
-		// Check History File
-		
-		File historyCheck = CalcProperties.historyFile();
-		
-		if (!historyCheck.exists()){
-			historyCheck.createNewFile();
-			FileWriter resultfilestr = new FileWriter(CalcProperties.historyFile(), true);
-			BufferedWriter outHist = new BufferedWriter(resultfilestr);
-			outHist.write("<center><b><h1>\"Calculator History\"</h1></b></center>");
-			outHist.newLine();
-			outHist.write("<table width=\"770\" border cellpadding=\"2\">");
-			outHist.close();
-		}
 		
 		// String workingDir;
 		
@@ -315,8 +303,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			mnuClearHist.setForeground(CalcProperties.ORANGE);
 			mnuSoundControl.setForeground(CalcProperties.ORANGE);
 			mnuItemSupport.setForeground(CalcProperties.ORANGE);
-			mnuItemTwitter.setForeground(CalcProperties.ORANGE);
-			mnuItemPayPal.setForeground(CalcProperties.ORANGE);
+
 			mnuCopyResult.setForeground(CalcProperties.ORANGE);
 			mnuItemBack.setForeground(CalcProperties.ORANGE);
 			mnuItemButtonStyle.setForeground(CalcProperties.ORANGE);
@@ -408,8 +395,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				newProperties.put("mnuClearHist.colour", "ORANGE");
 				newProperties.put("mnuSoundControl.colour", "ORANGE");
 				newProperties.put("mnuItemSupport.colour", "ORANGE");
-				newProperties.put("mnuItemTwitter.colour", "ORANGE");
-				newProperties.put("mnuItemPayPal.colour", "ORANGE");
+
 				newProperties.put("mnuCopyResult.colour", "ORANGE");
 				newProperties.put("mnuItemBack.colour", "ORANGE");
 				newProperties.put("mnuItemButtonStyle.colour", "ORANGE");
@@ -468,7 +454,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			
 			// Checking the integraty of the config file in case there is a OLD config without all the properties.
 			if (prop.getProperty("mnuFile.colour") == null){ prop.setProperty("mnuFile.colour", "ORANGE"); }
-			if (prop.getProperty("mnuItemTwitter.colour") == null){ prop.setProperty("mnuItemTwitter.colour", "ORANGE"); }
+
 			if (prop.getProperty("mnuItemAbout.colour") == null){ prop.setProperty("mnuItemAbout.colour", "ORANGE"); }
 			if (prop.getProperty("mnuItemBack.colour") == null){ prop.setProperty("mnuItemBack.colour", "ORANGE"); }
 			if (prop.getProperty("mnuClearHist.colour") == null){ prop.setProperty("mnuClearHist.colour", "ORANGE"); }
@@ -476,7 +462,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			if (prop.getProperty("mnuItemOrange.colour") == null){ prop.setProperty("mnuItemOrange.colour", "ORANGE"); }
 			if (prop.getProperty("mnuItemHist.colour") == null){ prop.setProperty("mnuItemHist.colour", "ORANGE"); }
 			if (prop.getProperty("mnuItemHistOld.colour") == null){ prop.setProperty("mnuItemHistOld.colour", "ORANGE"); }
-			if (prop.getProperty("mnuItemPayPal.colour") == null){ prop.setProperty("mnuItemPayPal.colour", "ORANGE"); }
+
 			if (prop.getProperty("style.type") == null){ prop.setProperty("style.type", "null"); }
 			if (prop.getProperty("mnuEdit.colour") == null){ prop.setProperty("mnuEdit.colour", "ORANGE"); }
 			if (prop.getProperty("mnuItemBorderRaised.colour") == null){ prop.setProperty("mnuItemBorderRaised.colour", "ORANGE"); }
@@ -684,28 +670,8 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			} else if (MNUITEMSUPPORT.equals(BLACK)) {	
 				mnuItemSupport.setForeground(CalcProperties.BLACK);
 			}
-			//
-			String MNUITEMTWITTER = prop.getProperty("mnuItemTwitter.colour");
-			if (MNUITEMTWITTER.equals(ORANGE)) {	
-				mnuItemTwitter.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMTWITTER.equals(LIME)) {	
-				mnuItemTwitter.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMTWITTER.equals(DARKGREY)) {	
-				mnuItemTwitter.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMTWITTER.equals(BLACK)) {	
-				mnuItemTwitter.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMPAYPAL = prop.getProperty("mnuItemPayPal.colour");
-			if (MNUITEMPAYPAL.equals(ORANGE)) {	
-				mnuItemPayPal.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMPAYPAL.equals(LIME)) {	
-				mnuItemPayPal.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMPAYPAL.equals(DARKGREY)) {	
-				mnuItemPayPal.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMPAYPAL.equals(BLACK)) {	
-				mnuItemPayPal.setForeground(CalcProperties.BLACK);
-			}
+
+
 			//
 			String MNUCOPYRESULT = prop.getProperty("mnuCopyResult.colour");
 			if (MNUCOPYRESULT.equals(ORANGE)) {	
@@ -1117,7 +1083,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 							button[i].setBorder((Border) loweredbevel);
 						} else if (STYLETYPE.equals("raisedbevel")) {
 							button[i].setBorder((Border) raisedbevel);
-							button[20].setBorder(null);
 						} else if (STYLETYPE.equals("null")) {
 							button[i].setBorder((Border) null);
 						} else {
@@ -1128,14 +1093,24 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 
 					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
 							|| i == 8 || i == 9 || i == 10 || i == 18) {
-						button[i].setBackground(CalcProperties.DARKGREY); 
-						button[i].setFont(FontTheme.size18i); 
+							// numeric buttons
+							button[i].setBackground(CalcProperties.DARKGREY);
+							button[i].setForeground(CalcProperties.BLACK);
+							button[i].setFont(FontTheme.size18i);
+							button[i].setContentAreaFilled(true);
 					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
 							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
 							|| i == 20 || i == 22 || i == 21 || i == 23) {
-						button[i].setBackground(CalcProperties.BLACK);
-						button[i].setFont(FontTheme.size18i);
-						button[i].setForeground(CalcProperties.WHITE);
+							// non-numeric buttons
+							button[i].setBackground(CalcProperties.BLACK);
+							button[i].setForeground(CalcProperties.BLACK);
+							button[i].setFont(FontTheme.size18i);
+							button[i].setContentAreaFilled(true);
+							if (i == 20) {
+								button[i].setBorder(null);
+							} else {
+								button[i].setBorder(BorderFactory.createLineBorder(CalcProperties.WHITE));
+							}
 					}
 
 					button[i].addActionListener(this);
@@ -1227,12 +1202,24 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 		row[4].add(button[17]);
 		add(row[4]);
 
-		// Penguin Icon display
-		img.setPreferredSize(new Dimension(dimH[1], dimH[1]));
-		button[20].add(img);
-		button[20].setContentAreaFilled(false);
-		button[20].setBorder(BorderFactory.createEmptyBorder());
-		row[4].add(button[20]);
+	// Penguin / mini icon display - make the mini.png image 50% of its intrinsic size
+	// ImageLoader already set its preferredSize to the image intrinsic size in its constructor;
+	// read that and reduce by 50% so this change affects only the mini image instance.
+
+	URL imageURL1 = CalculatorOrangeLite.class.getResource("/images/mini.png");
+	// Load the image synchronously via ImageIcon so we have the intrinsic dimensions
+	ImageLoader img = new ImageLoader(new ImageIcon(imageURL1).getImage());
+	Dimension origImgSize = img.getPreferredSize();
+	Dimension halfSize = new Dimension(Math.max(1, origImgSize.width), Math.max(1, origImgSize.height));
+	// Apply half-size to only this ImageLoader instance
+	img.setPreferredSize(halfSize);
+	// Ensure the hosting button uses a simple layout and matches the image preferred size
+	button[20].setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+	button[20].setPreferredSize(halfSize);
+	button[20].add(img);
+	button[20].setContentAreaFilled(false);
+	button[20].setBorder(BorderFactory.createEmptyBorder());
+	row[4].add(button[20]);
 		// End Penguin icon
 
 		setVisible(true);
@@ -1702,8 +1689,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				mnuClearHist.setForeground(null);
 				mnuSoundControl.setForeground(null);
 				mnuItemSupport.setForeground(null);
-				mnuItemTwitter.setForeground(null);
-				mnuItemPayPal.setForeground(null);
+
 				mnuCopyResult.setForeground(null);
 				mnuItemBack.setForeground(null);
 				mnuItemButtonStyle.setForeground(null);
@@ -1836,8 +1822,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				mnuClearHist.setForeground(CalcProperties.DARKGREY);
 				mnuSoundControl.setForeground(CalcProperties.DARKGREY);
 				mnuItemSupport.setForeground(CalcProperties.DARKGREY);
-				mnuItemTwitter.setForeground(CalcProperties.DARKGREY);
-				mnuItemPayPal.setForeground(CalcProperties.DARKGREY);
 				mnuCopyResult.setForeground(CalcProperties.DARKGREY);
 				mnuItemBack.setForeground(CalcProperties.DARKGREY);
 				mnuItemButtonStyle.setForeground(CalcProperties.DARKGREY);
@@ -1857,20 +1841,37 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				}
 				
 				for (int i = 0; i < 24; i++) {
+					// Default to current style
 					if (button[0].getBorder() == compound) {
 						button[i].setBorder((Border) compound);
-						button[20].setBorder(null);
 					} else if (button[0].getBorder() == loweredbevel) {
 						button[i].setBorder((Border) loweredbevel);
-						button[20].setBorder(null);
 					} else if (button[0].getBorder() == raisedbevel) {
 						button[i].setBorder((Border) raisedbevel);
-						button[20].setBorder(null);
 					} else if (button[0].getBorder() == null) {
 						button[i].setBorder((Border) null);
-						button[20].setBorder(null);
+					}
+
+					// Set numeric buttons: dark grey background, black text
+					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6 || i == 8 || i == 9 || i == 10 || i == 18) {
+						button[i].setBackground(CalcProperties.DARKGREY);
+						button[i].setForeground(CalcProperties.BLACK);
+						button[i].setContentAreaFilled(true);
+						button[i].setFont(FontTheme.size18i);
+					} else {
+						// non-numeric: black background, white text, white outline (except penguin)
+						button[i].setBackground(CalcProperties.BLACK);
+						button[i].setForeground(CalcProperties.BLACK);
+						button[i].setContentAreaFilled(true);
+						button[i].setFont(FontTheme.size18i);
+						if (i == 20) {
+							button[i].setBorder(null);
+						} else {
+							button[i].setBorder(BorderFactory.createLineBorder(CalcProperties.WHITE));
+						}
 					}
 				}
+				button[20].setBorder(null);
 				
 				for (int i = 0; i < 24; i++) {
 					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
@@ -1880,8 +1881,13 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
 							|| i == 20 || i == 22 || i == 21 || i == 23) {
 						button[i].setBackground(CalcProperties.BLACK);
-						button[i].setForeground(CalcProperties.WHITE);
-						button[i].setBorder(null);
+						button[i].setForeground(CalcProperties.BLACK);
+						// Keep white outline border for visibility on non-number buttons
+						if (i == 20) {
+							button[i].setBorder(null);
+						} else {
+							button[i].setBorder(BorderFactory.createLineBorder(CalcProperties.WHITE));
+						}
 					}
 				}
 				
@@ -1971,8 +1977,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				mnuClearHist.setForeground(CalcProperties.DARKGREY);
 				mnuSoundControl.setForeground(CalcProperties.DARKGREY);
 				mnuItemSupport.setForeground(CalcProperties.DARKGREY);
-				mnuItemTwitter.setForeground(CalcProperties.DARKGREY);
-				mnuItemPayPal.setForeground(CalcProperties.DARKGREY);
 				mnuCopyResult.setForeground(CalcProperties.DARKGREY);
 				mnuItemBack.setForeground(CalcProperties.DARKGREY);
 				mnuItemButtonStyle.setForeground(CalcProperties.DARKGREY);
@@ -2101,8 +2105,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				mnuClearHist.setForeground(CalcProperties.ORANGE);
 				mnuSoundControl.setForeground(CalcProperties.ORANGE);
 				mnuItemSupport.setForeground(CalcProperties.ORANGE);
-				mnuItemTwitter.setForeground(CalcProperties.ORANGE);
-				mnuItemPayPal.setForeground(CalcProperties.ORANGE);
 				mnuCopyResult.setForeground(CalcProperties.ORANGE);
 				mnuItemBack.setForeground(CalcProperties.ORANGE);
 				mnuItemButtonStyle.setForeground(CalcProperties.ORANGE);

@@ -26,14 +26,24 @@ class ImageLoader extends JPanel {
 	}
 
 	 public ImageLoader(Image img) {
-  		this.img = img;
-  		Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
-  		setSize(size);
-  		setLayout(null);
-	}
+			this.img = img;
+			// prefer to respect container sizing so caller can setPreferredSize
+			Dimension size = new Dimension(Math.max(1, img.getWidth(null)), Math.max(1, img.getHeight(null)));
+			setPreferredSize(size);
+			setLayout(null);
+			// keep panel transparent so it doesn't draw an opaque background behind the image
+			setOpaque(false);
+		}
 
+	@Override
 	public void paintComponent(Graphics g) {
-  		g.drawImage(img, 0, 0, null);
+		super.paintComponent(g);
+		// Draw the image scaled to this component's current size so preferredSize controls visual size
+		int w = getWidth();
+		int h = getHeight();
+		if (w > 0 && h > 0) {
+			g.drawImage(img, 0, 0, w, h, null);
+		}
 	}
 
 }

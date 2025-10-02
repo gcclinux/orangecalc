@@ -23,8 +23,8 @@ public class CalcProperties {
 	static String Name = "RW Collection";
 	static String Developer = "Ricardo Wagemaker";
 
-	static String Version = "1.5.5";
-	static String Title = "Small Orange Calculator";
+	static String Version = "1.5.6";
+	static String Title = "Orange Calculator";
 	static String configFile = "calculatorOrange.conf";
 	static String homeDir = System.getProperty("user.home");
 	public static String osName = System.getProperty("os.name").toLowerCase();
@@ -33,7 +33,7 @@ public class CalcProperties {
 	static String workingDir = null;
 	static File historyFile = null;
 	static File historyOld = null;
-	static String versionFile = "http://www.gcclinux.co.uk/downloads/calculator-version.txt";
+	static String versionFile = "https://github.com/gcclinux/orangecalc";
 
 	static Map<String, Color> colourmap = new HashMap<String, Color>();
 

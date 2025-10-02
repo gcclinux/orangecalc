@@ -66,7 +66,7 @@ class DisplayReport
 		int h = this.getSize().height;
 		int y = (dim.height - h) / (2);
 		
-		setTitle(CalcProperties.Name+CalcProperties.Separate+CalcProperties.Title+CalcProperties.Separate+CalcProperties.Version);
+		setTitle(CalcProperties.Title);
 		setSize( 810, y );
 		setBackground(CalcProperties.DARKGREY);
 		setLocationRelativeTo(null);
