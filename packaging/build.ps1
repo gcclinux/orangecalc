@@ -7,7 +7,7 @@ param(
     [switch]$Help
 )
 
-$PROJECT_ROOT = $PSScriptRoot
+$PROJECT_ROOT = Split-Path $PSScriptRoot -Parent
 $SRC_DIR = Join-Path $PROJECT_ROOT "src"
 $BIN_DIR = Join-Path $PROJECT_ROOT "bin"
 $RES_DIR = Join-Path $PROJECT_ROOT "res"

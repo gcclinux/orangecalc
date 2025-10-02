@@ -4,7 +4,7 @@ REM Usage: build.bat [clean] [run]
 
 setlocal enabledelayedexpansion
 
-set PROJECT_ROOT=%~dp0
+set PROJECT_ROOT=%~dp0..\
 set SRC_DIR=%PROJECT_ROOT%src
 set BIN_DIR=%PROJECT_ROOT%bin
 set RES_DIR=%PROJECT_ROOT%res

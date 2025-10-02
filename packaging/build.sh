@@ -1,7 +1,7 @@
 #!/bin/bash
 # Orange Calculator Build Script for Unix-like systems
 
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SRC_DIR="$PROJECT_ROOT/src"
 BIN_DIR="$PROJECT_ROOT/bin"
 RES_DIR="$PROJECT_ROOT/res"
