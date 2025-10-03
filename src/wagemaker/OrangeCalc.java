@@ -791,33 +791,12 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		// End Penguin icon
 
 		// Finalize a fixed-size, non-resizable frame 550x550 and center it
-		setSize(550, 550);
-		setMinimumSize(new Dimension(550, 550));
-		setMaximumSize(new Dimension(550, 550));
+		int w = 473; int h = 480;
+		setSize(w, h);
+		setMinimumSize(new Dimension(w, h));
+		setMaximumSize(new Dimension(w, h));
 		setResizable(false);
 		setLocationRelativeTo(null);
-
-		// Guard against WM-driven maximize and unintended resizes on some Linux window managers
-		addWindowStateListener(new WindowStateListener() {
-			@Override
-			public void windowStateChanged(WindowEvent e) {
-				if ((e.getNewState() & java.awt.Frame.MAXIMIZED_BOTH) == java.awt.Frame.MAXIMIZED_BOTH) {
-					javax.swing.SwingUtilities.invokeLater(() -> {
-						setExtendedState(JFrame.NORMAL);
-						setSize(550, 550);
-						setLocationRelativeTo(null);
-					});
-				}
-			}
-		});
-		addComponentListener(new java.awt.event.ComponentAdapter() {
-			@Override
-			public void componentResized(java.awt.event.ComponentEvent e) {
-				if (getWidth() != 550 || getHeight() != 550) {
-					javax.swing.SwingUtilities.invokeLater(() -> setSize(550, 550));
-				}
-			}
-		});
 		setVisible(true);
 
 		// start quit button
