@@ -84,7 +84,7 @@ public class About {
 		
 		// Adding Application ICON
 		 
-		 ImageIcon ImageIcon = new ImageIcon(CalculatorOrangeLite.class.getResource("/images/gcclinux.png"));
+		 ImageIcon ImageIcon = new ImageIcon(OrangeCalc.class.getResource("/images/gcclinux.png"));
 		 Image Logo = ImageIcon.getImage();
 		 About.setIconImage(Logo);
  

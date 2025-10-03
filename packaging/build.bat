@@ -8,7 +8,7 @@ set PROJECT_ROOT=%~dp0..\
 set SRC_DIR=%PROJECT_ROOT%src
 set BIN_DIR=%PROJECT_ROOT%bin
 set RES_DIR=%PROJECT_ROOT%res
-set MAIN_CLASS=wagemaker.CalculatorOrangeLite
+set MAIN_CLASS=wagemaker.OrangeCalc
 
 echo Orange Calculator Build Script
 echo ==============================

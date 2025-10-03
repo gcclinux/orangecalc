@@ -5,7 +5,7 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SRC_DIR="$PROJECT_ROOT/src"
 BIN_DIR="$PROJECT_ROOT/bin"
 RES_DIR="$PROJECT_ROOT/res"
-MAIN_CLASS="wagemaker.CalculatorOrangeLite"
+MAIN_CLASS="wagemaker.OrangeCalc"
 
 # Colors for output
 RED='\033[0;31m'

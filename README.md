@@ -62,28 +62,7 @@ chmod +x build.sh
 ./build.sh help
 ```
 
-### 4. Makefile (Cross-platform)
-```bash
-# Compile only
-make
-
-# or
-make build
-
-# Clean compiled files
-make clean
-
-# Compile and run
-make run
-
-# Clean and rebuild
-make rebuild
-
-# Show help
-make help
-```
-
-### 5. Maven (Alternative)
+### 4. Maven (Alternative)
 If you prefer Maven, use the existing `pom.xml`:
 ```bash
 # Compile
@@ -107,7 +86,7 @@ run.bat
 
 # Or manually
 cd bin
-java -cp . wagemaker.CalculatorOrangeLite
+java -cp . wagemaker.OrangeCalc
 ```
 
 ## Project Structure
@@ -123,9 +102,7 @@ orangecalc/
 ├── build.ps1               # PowerShell build script
 ├── build.bat               # Batch build script
 ├── build.sh                # Shell build script
-├── Makefile                # Make build script
 ├── run.bat                 # Quick run script
-└── pom.xml                 # Maven configuration
 ```
 
 ## Requirements
@@ -137,7 +114,7 @@ orangecalc/
 ## Notes
 - All scripts automatically copy resources from `res/` to `bin/`
 - Class files are organized in package structure under `bin/wagemaker/`
-- The main class is `wagemaker.CalculatorOrangeLite`
+- The main class is `wagemaker.OrangeCalc`
 - All build scripts check for Java availability before compilation
 - Use the clean option when switching between different Java versions
 

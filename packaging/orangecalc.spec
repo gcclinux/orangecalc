@@ -88,7 +88,7 @@ Terminal=false
 StartupNotify=true
 Categories=Utility;Calculator;Office;
 Keywords=calculator;math;arithmetic;java;
-StartupWMClass=CalculatorOrangeLite
+StartupWMClass=OrangeCalc
 EOF
 
 # Install documentation

@@ -11,7 +11,7 @@ $PROJECT_ROOT = Split-Path $PSScriptRoot -Parent
 $SRC_DIR = Join-Path $PROJECT_ROOT "src"
 $BIN_DIR = Join-Path $PROJECT_ROOT "bin"
 $RES_DIR = Join-Path $PROJECT_ROOT "res"
-$MAIN_CLASS = "wagemaker.CalculatorOrangeLite"
+$MAIN_CLASS = "wagemaker.OrangeCalc"
 
 function Show-Help {
     Write-Host "Orange Calculator Build Script" -ForegroundColor Green

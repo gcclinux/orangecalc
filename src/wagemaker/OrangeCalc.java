@@ -29,7 +29,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.KeyStroke;
 import javax.swing.InputMap;
 import javax.swing.AbstractAction;
@@ -55,7 +54,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class CalculatorOrangeLite extends JFrame implements ActionListener {
+public class OrangeCalc extends JFrame implements ActionListener {
 	private static final String ACTION_KEY = "The Action";
 	
 	private void loadFrameIcon() {
@@ -182,7 +181,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 	}
 
 	@SuppressWarnings("unused")
-	CalculatorOrangeLite() throws IOException {
+	OrangeCalc() throws IOException {
 		
 		
 
@@ -190,8 +189,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 		
 		loadFrameIcon();
 
-		//System.out.println("ScreenSize: " + dim);
-		//System.out.println("Date: " + date);
 
 		// ACTION_KEY is now a class field
 
@@ -259,15 +256,9 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 		// END TOP MENU
 
 		CalcProperties.setDesign();
-		//setLocationRelativeTo(null);
-		setSize(new Dimension(dimW[3], dimH[3])); // Calculator Window Size Width, heights
-		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		GridLayout grid = new GridLayout(5, 6);
 		setLayout(grid);
-		//setLocation(x, y);
-		Dimension position = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation(position.width/2-this.getSize().width/2, position.height/2-this.getSize().height/2);
 		
 
 		for (int i = 0; i < 4; i++)
@@ -290,7 +281,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 		File file = new File(CalcProperties.workingDir());
 		
 		if (!file.exists()){
-			//System.out.println("Config File does Not exist = " + file);	
 			CalcProperties.setDesign();
 			mb.setForeground(CalcProperties.ORANGE); // set colour to menu bars
 			mnuFile.setForeground(CalcProperties.ORANGE);
@@ -350,7 +340,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				button[i].setBorder((Border) compound);  // button border on STart up // Moved
 				button[i].setContentAreaFilled(true); // Enable to remove buttons.
 				button[i].setText(buttonString[i]);
-				//System.out.println("CODE-030 "+"button " + i + " = " + buttonString[i]);
 
 				if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
 						|| i == 8 || i == 9 || i == 10 || i == 18) {
@@ -446,10 +435,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			FileInputStream input = new FileInputStream(file);
 			prop.load(input);
 			
-			// System.out.println("Config File = " + file);
 			
-			//System.out.println("LINE 431 --> mnuFile.colour = " + prop.getProperty("mnuFile.colour"));
-			//System.out.println("LINE 432 --> theme.colour = " + prop.getProperty("theme.colour"));
 			
 			
 			// Checking the integraty of the config file in case there is a OLD config without all the properties.
@@ -499,7 +485,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			     conn.setConnectTimeout(5000);
 			     conn.connect();
 			     connectivity = true;
-			     //System.out.println("can connect / " + connectivity);
 			     
 			        BufferedReader in = new BufferedReader(new InputStreamReader(version.openStream()));
 			        
@@ -515,7 +500,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			        if (x == y){
 			        	//JOptionPane.showMessageDialog(null, "Your Version is up to date!");
 			        } else if (x > y){
-			        	//System.out.println("\n"+"This version 1.5.1 has been updated for Windows 8"+"\n");
 			        } else if (x < y){
 			        	int selectedOption = JOptionPane.showConfirmDialog(null, 
 			        			" EN - Download new version? \n PL - aktualizacja nowej wersji? \n DE - Update auf neue Version? \n BR - atualizar para nova versão? \n NL - update naar de nieuwe versie? \n RU - обновление до новой версии? \n CH - 更新到新版本？", "Update Available - " +newVersion, JOptionPane.YES_NO_OPTION);
@@ -532,13 +516,10 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			   catch (Exception e)
 			   {
 				   connectivity = false;
-			     //System.out.println("can't connect to URL / " + connectivity);
-			     //System.out.println("URL = " + CalcProperties.versionFile);
 			   }
 			
 			// END VERSION
 			
-			   //System.out.println("Working Directory" + CalcProperties.workingDir);
 			
 			String ORANGE = "ORANGE";
 			String LIME = "LIME";
@@ -551,7 +532,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				System.setProperty("audio.status", prop.getProperty("audio.status"));
 			}
 			
-			//System.out.println("LINE 499 --> mnuFile.colour = " + System.getProperty("mnuFile.colour"));
 
 			// create String to assign result to mnuFile.colour
 			String MNUFILE = prop.getProperty("mnuFile.colour");
@@ -846,9 +826,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				keystrokeMap.put(18, '0');
 				keystrokeMap.put(19, '%');
 				
-				String STYLETYPE = prop.getProperty("style.type");
-				//System.out.println("STYLETYPE (Line 680) = " + STYLETYPE );
-				
+				String STYLETYPE = prop.getProperty("style.type");	
 				
 				for (int i = 0; i < 24; i++) {
 					button[i] = new JButton(); // Moved
@@ -922,9 +900,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				keystrokeMap.put(18, '0');
 				keystrokeMap.put(19, '%');
 				
-				String STYLETYPE = prop.getProperty("style.type");
-				//System.out.println("STYLETYPE (Line 680) = " + STYLETYPE );
-				
+				String STYLETYPE = prop.getProperty("style.type");				
 				
 				for (int i = 0; i < 24; i++) {
 					button[i] = new JButton(); // Moved
@@ -998,9 +974,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				keystrokeMap.put(19, '%');
 				
 				String STYLETYPE = prop.getProperty("style.type");
-				//System.out.println("STYLETYPE (Line 680) = " + STYLETYPE );
-				
-				
+
 				for (int i = 0; i < 24; i++) {
 					button[i] = new JButton(); 
 					//button[i].setBorder((Border) compound);  r
@@ -1071,9 +1045,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				keystrokeMap.put(19, '%');
 				
 				String STYLETYPE = prop.getProperty("style.type");
-				//System.out.println("STYLETYPE (Line 680) = " + STYLETYPE );
-				
-				
+
 				for (int i = 0; i < 24; i++) {
 					button[i] = new JButton(); // Moved
 					//button[i].setBorder((Border) compound);  r
@@ -1127,30 +1099,8 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				}
 				
 			}
-			//
-			
-
-			/*
-			mnuFile.setForeground(Color.getColor(prop.getProperty("mnuFile.colour")));
-			System.out.println("Config File does exist = " + file);
-			System.out.println("MNUFILE = " + MNUFILE);
-			System.out.println("Colour from config file = " + prop.getProperty("mnuFile.colour"));
-			System.out.println("ThemeClassA 304 = " + CalcProperties.Theme_ORANGE());
-			System.out.println("ThemeClassB 305 = " + CalcProperties.Theme_B());
-			System.out.println("ThemeClassC 306 = " + CalcProperties.Theme_C());
-			*/
 		
 		}
-
-
-		// end calculator colour set.
-
-
-		
-		//
-		
-		//System.out.println("workingDir() x = " + CalcProperties.workingDir());
-		//System.out.println("historyFile() x = " + CalcProperties.historyFile());
 
 		display.setFont(FontTheme.size40b);
 		display.setEditable(false);
@@ -1202,11 +1152,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 		row[4].add(button[17]);
 		add(row[4]);
 
-	// Penguin / mini icon display - make the mini.png image 50% of its intrinsic size
-	// ImageLoader already set its preferredSize to the image intrinsic size in its constructor;
-	// read that and reduce by 50% so this change affects only the mini image instance.
-
-	URL imageURL1 = CalculatorOrangeLite.class.getResource("/images/mini.png");
+	URL imageURL1 = OrangeCalc.class.getResource("/images/mini.png");
 	// Load the image synchronously via ImageIcon so we have the intrinsic dimensions
 	ImageLoader img = new ImageLoader(new ImageIcon(imageURL1).getImage());
 	Dimension origImgSize = img.getPreferredSize();
@@ -1222,6 +1168,34 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 	row[4].add(button[20]);
 		// End Penguin icon
 
+		// Finalize a fixed-size, non-resizable frame 550x550 and center it
+		setSize(550, 550);
+		setMinimumSize(new Dimension(550, 550));
+		setMaximumSize(new Dimension(550, 550));
+		setResizable(false);
+		setLocationRelativeTo(null);
+
+		// Guard against WM-driven maximize and unintended resizes on some Linux window managers
+		addWindowStateListener(new WindowStateListener() {
+			@Override
+			public void windowStateChanged(WindowEvent e) {
+				if ((e.getNewState() & java.awt.Frame.MAXIMIZED_BOTH) == java.awt.Frame.MAXIMIZED_BOTH) {
+					javax.swing.SwingUtilities.invokeLater(() -> {
+						setExtendedState(JFrame.NORMAL);
+						setSize(550, 550);
+						setLocationRelativeTo(null);
+					});
+				}
+			}
+		});
+		addComponentListener(new java.awt.event.ComponentAdapter() {
+			@Override
+			public void componentResized(java.awt.event.ComponentEvent e) {
+				if (getWidth() != 550 || getHeight() != 550) {
+					javax.swing.SwingUtilities.invokeLater(() -> setSize(550, 550));
+				}
+			}
+		});
 		setVisible(true);
 
 		// start quit button
@@ -1256,969 +1230,22 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 		});
 		
 
-		mnuClearHist.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				
-				File historyOLD = null;
-				try {
-					historyOLD = CalcProperties.historyOld();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				boolean successOld = historyOLD.delete();
-				mnuItemHistOld.hide();
-
-				File file = null;
-				try {
-					file = CalcProperties.historyFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				boolean success = file.delete();
-				if (!success) {
-					try {
-						
-						file.createNewFile();
-						FileWriter resultfilestr = new FileWriter(CalcProperties.historyFile(), true);
-						BufferedWriter outHist = new BufferedWriter(resultfilestr);
-						outHist.write("<center><b><h1>\"Calculator History\"</h1></b></center>");
-						outHist.newLine();
-						outHist.write("<table width=\"770\" border cellpadding=\"2\">");
-						outHist.close();
-						
-						UIManager.put("OptionPane.buttonOrientation", 0);		
-						UIManager.put("OptionPane.buttonFont", FontTheme.size15b);
-						UIManager.put("OptionPane.messageFont", FontTheme.size15p);
-						UIManager.put("OptionPane.messageForeground",CalcProperties.BLACK);
-						UIManager.put("Panel.background",  CalcProperties.ORANGE);
-						UIManager.put("OptionPane.background", CalcProperties.ORANGE);
-						
-						JOptionPane.showMessageDialog(null, "\n"
-								+ "  FAILED TO DELETE CACULATION HISTORY "
-								+ "\n" + "\n", CalcProperties.history,
-								JOptionPane.PLAIN_MESSAGE);
-					} catch (Exception fz) {
-					}
-					;
-				} else {
-					try {
-						
-						file.createNewFile();
-						FileWriter resultfilestr = new FileWriter(CalcProperties.historyFile(), true);
-						BufferedWriter outHist = new BufferedWriter(resultfilestr);
-						outHist.write("<center><b><h1>\"Calculator History\"</h1></b></center>");
-						outHist.newLine();
-						outHist.write("<table width=\"770\" border cellpadding=\"2\">");
-						outHist.close();
-						
-						UIManager.put("OptionPane.buttonOrientation", 0);		
-						UIManager.put("OptionPane.buttonFont", FontTheme.size15b);
-						UIManager.put("OptionPane.messageFont", FontTheme.size15p);
-						UIManager.put("OptionPane.messageForeground",CalcProperties.BLACK);
-						UIManager.put("Panel.background",  CalcProperties.ORANGE);
-						UIManager.put("OptionPane.background", CalcProperties.ORANGE);
-						
-						JOptionPane.showMessageDialog(null, "\n"
-								+ "  ALL CACULATION HISTORY NOW DELETED  "
-								+ "\n" + "\n", CalcProperties.history,
-								JOptionPane.PLAIN_MESSAGE);
-					} catch (Exception fz) {
-					}
-					;
-				}
-			}
-		});
+		mnuClearHist.addActionListener(new ClearHistAction(this));
 		
 		// START BORDER
+		mnuItemBorderCompound.addActionListener(new BorderCompoundAction(button, (Border) compound));
 		
-		mnuItemBorderCompound.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				CalcProperties.setDesign();
-				// CREATE CONFIG ######################################
-				
-				File file = null;
-				try {
-					file = new File(CalcProperties.workingDir());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				Properties prop = new Properties();
-				FileInputStream input = null;
-				try {
-					input = new FileInputStream(file);
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				}
-				try {
-					prop.load(input);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				Properties newProperties = new Properties(System.getProperties());
-				
-				newProperties.put("theme.colour", prop.getProperty("theme.colour"));
-				newProperties.put("button.colour", prop.getProperty("button.colour"));
-				newProperties.put("button_c.colour", prop.getProperty("button_c.colour"));
-				newProperties.put("audio.status", prop.getProperty("audio.status"));
-				newProperties.put("mb.colour", prop.getProperty("mb.colour"));
-				newProperties.put("mnuFile.colour", prop.getProperty("mnuFile.colour"));
-				newProperties.put("mnuEdit.colour", prop.getProperty("mnuEdit.colour"));
-				newProperties.put("mnuHelp.colour", prop.getProperty("mnuHelp.colour"));
-				newProperties.put("mnuItemQuit.colour", prop.getProperty("mnuItemQuit.colour"));
-				newProperties.put("mnuItemAbout.colour", prop.getProperty("mnuItemAbout.colour"));
-				newProperties.put("mnuItemHist.colour", prop.getProperty("mnuItemHist.colour"));
-				newProperties.put("mnuItemHistOld.colour", prop.getProperty("mnuItemHistOld.colour"));
-				newProperties.put("mnuClearHist.colour", prop.getProperty("mnuClearHist.colour"));
-				newProperties.put("mnuSoundControl.colour", prop.getProperty("mnuSoundControl.colour"));
-				newProperties.put("mnuItemSupport.colour", prop.getProperty("mnuItemSupport.colour"));
-				newProperties.put("mnuItemTwitter.colour", prop.getProperty("mnuItemTwitter.colour"));
-				newProperties.put("mnuItemPayPal.colour", prop.getProperty("mnuItemPayPal.colour"));
-				newProperties.put("mnuCopyResult.colour", prop.getProperty("mnuCopyResult.colour"));
-				newProperties.put("mnuItemBack.colour", prop.getProperty("mnuItemBack.colour"));
-				newProperties.put("mnuItemButtonStyle.colour", prop.getProperty("mnuItemButtonStyle.colour"));
-				newProperties.put("mnuItemOrange.colour", prop.getProperty("mnuItemOrange.colour"));
-				newProperties.put("mnuItemDarkGray.colour", prop.getProperty("mnuItemDarkGray.colour"));
-				newProperties.put("mnuStyle.colour", prop.getProperty("mnuStyle.colour"));
-				newProperties.put("mnuExport.colour", prop.getProperty("mnuExport.colour"));
-				newProperties.put("mnuItemNoBoarder.colour", prop.getProperty("mnuItemNoBoarder.colour"));
-				newProperties.put("mnuItemBorderCompound.colour", prop.getProperty("mnuItemBorderCompound.colour"));
-				newProperties.put("mnuItemBorderLower.colour", prop.getProperty("mnuItemBorderLower.colour"));
-				newProperties.put("mnuItemBorderRaised.colour", prop.getProperty("mnuItemBorderRaised.colour"));
-				newProperties.put("mnuItemLime.colour", prop.getProperty("mnuItemLime.colour"));
-				newProperties.put("mnuItemPlain.colour", prop.getProperty("mnuItemPlain.colour"));
-				newProperties.put("row.colour", prop.getProperty("row.colour"));
-				newProperties.put("style.type", "compound");
-				
-				System.setProperties(newProperties);
-				FileOutputStream out = null;
-				try {
-					out = new FileOutputStream(file);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-				try {
-					newProperties.store(out, "");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				
-				// END CONFIG   ######################################
-				for (int i = 0; i < 24; i++) {
-					//System.out.println("Button [i] Backgroup = " + button[i].getBackground());					
-					if (button[i].getBackground() == CalcProperties.BLACK){
-						if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6 || i == 8 || i == 9 || i == 10 || i == 18) {
-						button[i].setBorder((Border) compound);
-						} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
-							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
-							|| i == 20 || i == 22 || i == 21 || i == 23) {
-							button[i].setBorder(null);
-						}
-					} else {
-						button[i].setBorder((Border) compound);
-					}
-				}		
-				button[20].setBorder(null);
-			}
-			
-		});
+		mnuItemBorderLower.addActionListener(new BorderLowerAction(button, (Border) loweredbevel));
 		
-		mnuItemBorderLower.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				CalcProperties.setDesign();
-				
-				// CREATE CONFIG ######################################
-				
-				File file = null;
-				try {
-					file = new File(CalcProperties.workingDir());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				Properties prop = new Properties();
-				FileInputStream input = null;
-				try {
-					input = new FileInputStream(file);
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				}
-				try {
-					prop.load(input);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				Properties newProperties = new Properties(System.getProperties());
-				
-				newProperties.put("theme.colour", prop.getProperty("theme.colour"));
-				newProperties.put("button.colour", prop.getProperty("button.colour"));
-				newProperties.put("button_c.colour", prop.getProperty("button_c.colour"));
-				newProperties.put("audio.status", prop.getProperty("audio.status"));
-				newProperties.put("mb.colour", prop.getProperty("mb.colour"));
-				newProperties.put("mnuFile.colour", prop.getProperty("mnuFile.colour"));
-				newProperties.put("mnuEdit.colour", prop.getProperty("mnuEdit.colour"));
-				newProperties.put("mnuHelp.colour", prop.getProperty("mnuHelp.colour"));
-				newProperties.put("mnuItemQuit.colour", prop.getProperty("mnuItemQuit.colour"));
-				newProperties.put("mnuItemAbout.colour", prop.getProperty("mnuItemAbout.colour"));
-				newProperties.put("mnuItemHist.colour", prop.getProperty("mnuItemHist.colour"));
-				newProperties.put("mnuItemHistOld.colour", prop.getProperty("mnuItemHistOld.colour"));
-				newProperties.put("mnuClearHist.colour", prop.getProperty("mnuClearHist.colour"));
-				newProperties.put("mnuSoundControl.colour", prop.getProperty("mnuSoundControl.colour"));
-				newProperties.put("mnuItemSupport.colour", prop.getProperty("mnuItemSupport.colour"));
-				newProperties.put("mnuItemTwitter.colour", prop.getProperty("mnuItemTwitter.colour"));
-				newProperties.put("mnuItemPayPal.colour", prop.getProperty("mnuItemPayPal.colour"));
-				newProperties.put("mnuCopyResult.colour", prop.getProperty("mnuCopyResult.colour"));
-				newProperties.put("mnuItemBack.colour", prop.getProperty("mnuItemBack.colour"));
-				newProperties.put("mnuItemButtonStyle.colour", prop.getProperty("mnuItemButtonStyle.colour"));
-				newProperties.put("mnuItemOrange.colour", prop.getProperty("mnuItemOrange.colour"));
-				newProperties.put("mnuItemDarkGray.colour", prop.getProperty("mnuItemDarkGray.colour"));
-				newProperties.put("mnuStyle.colour", prop.getProperty("mnuStyle.colour"));
-				newProperties.put("mnuExport.colour", prop.getProperty("mnuExport.colour"));
-				newProperties.put("mnuItemNoBoarder.colour", prop.getProperty("mnuItemNoBoarder.colour"));
-				newProperties.put("mnuItemBorderCompound.colour", prop.getProperty("mnuItemBorderCompound.colour"));
-				newProperties.put("mnuItemBorderLower.colour", prop.getProperty("mnuItemBorderLower.colour"));
-				newProperties.put("mnuItemBorderRaised.colour", prop.getProperty("mnuItemBorderRaised.colour"));
-				newProperties.put("mnuItemLime.colour", prop.getProperty("mnuItemLime.colour"));
-				newProperties.put("mnuItemPlain.colour", prop.getProperty("mnuItemPlain.colour"));
-				newProperties.put("row.colour", prop.getProperty("row.colour"));
-				newProperties.put("style.type", "loweredbevel");
-				
-				System.setProperties(newProperties);
-				FileOutputStream out = null;
-				try {
-					out = new FileOutputStream(file);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-				try {
-					newProperties.store(out, "");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				// END CONFIG   ######################################
-				
-				for (int i = 0; i < 24; i++) {
-					button[i].setBorder((Border) loweredbevel);
-				}
-				button[20].setBorder(null);
-			}
-			
-		});
+		mnuItemNoBoarder.addActionListener(new NoBorderAction(button));
 		
-		mnuItemBorderRaised.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				CalcProperties.setDesign();
-				// CREATE CONFIG ######################################
-				
-				File file = null;
-				try {
-					file = new File(CalcProperties.workingDir());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				Properties prop = new Properties();
-				FileInputStream input = null;
-				try {
-					input = new FileInputStream(file);
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				}
-				try {
-					prop.load(input);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				Properties newProperties = new Properties(System.getProperties());
-				
-				newProperties.put("theme.colour", prop.getProperty("theme.colour"));
-				newProperties.put("button.colour", prop.getProperty("button.colour"));
-				newProperties.put("button_c.colour", prop.getProperty("button_c.colour"));
-				newProperties.put("audio.status", prop.getProperty("audio.status"));
-				newProperties.put("mb.colour", prop.getProperty("mb.colour"));
-				newProperties.put("mnuFile.colour", prop.getProperty("mnuFile.colour"));
-				newProperties.put("mnuEdit.colour", prop.getProperty("mnuEdit.colour"));
-				newProperties.put("mnuHelp.colour", prop.getProperty("mnuHelp.colour"));
-				newProperties.put("mnuItemQuit.colour", prop.getProperty("mnuItemQuit.colour"));
-				newProperties.put("mnuItemAbout.colour", prop.getProperty("mnuItemAbout.colour"));
-				newProperties.put("mnuItemHist.colour", prop.getProperty("mnuItemHist.colour"));
-				newProperties.put("mnuItemHistOld.colour", prop.getProperty("mnuItemHistOld.colour"));
-				newProperties.put("mnuClearHist.colour", prop.getProperty("mnuClearHist.colour"));
-				newProperties.put("mnuSoundControl.colour", prop.getProperty("mnuSoundControl.colour"));
-				newProperties.put("mnuItemSupport.colour", prop.getProperty("mnuItemSupport.colour"));
-				newProperties.put("mnuItemTwitter.colour", prop.getProperty("mnuItemTwitter.colour"));
-				newProperties.put("mnuItemPayPal.colour", prop.getProperty("mnuItemPayPal.colour"));
-				newProperties.put("mnuCopyResult.colour", prop.getProperty("mnuCopyResult.colour"));
-				newProperties.put("mnuItemBack.colour", prop.getProperty("mnuItemBack.colour"));
-				newProperties.put("mnuItemButtonStyle.colour", prop.getProperty("mnuItemButtonStyle.colour"));
-				newProperties.put("mnuItemOrange.colour", prop.getProperty("mnuItemOrange.colour"));
-				newProperties.put("mnuItemDarkGray.colour", prop.getProperty("mnuItemDarkGray.colour"));
-				newProperties.put("mnuStyle.colour", prop.getProperty("mnuStyle.colour"));
-				newProperties.put("mnuExport.colour", prop.getProperty("mnuExport.colour"));
-				newProperties.put("mnuItemNoBoarder.colour", prop.getProperty("mnuItemNoBoarder.colour"));
-				newProperties.put("mnuItemBorderCompound.colour", prop.getProperty("mnuItemBorderCompound.colour"));
-				newProperties.put("mnuItemBorderLower.colour", prop.getProperty("mnuItemBorderLower.colour"));
-				newProperties.put("mnuItemBorderRaised.colour", prop.getProperty("mnuItemBorderRaised.colour"));
-				newProperties.put("mnuItemLime.colour", prop.getProperty("mnuItemLime.colour"));
-				newProperties.put("mnuItemPlain.colour", prop.getProperty("mnuItemPlain.colour"));
-				newProperties.put("row.colour", prop.getProperty("row.colour"));
-				newProperties.put("style.type", "raisedbevel");
-				
-				System.setProperties(newProperties);
-				FileOutputStream out = null;
-				try {
-					out = new FileOutputStream(file);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-				try {
-					newProperties.store(out, "");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				// END CONFIG   ######################################
-				for (int i = 0; i < 24; i++) {
-					button[i].setBorder((Border) raisedbevel);
-				}
-				button[20].setBorder(null);
-			}
-			
-		});
+		mnuItemPlain.addActionListener(new PlainAction(this, button, row, (Border) compound, loweredbevel, raisedbevel));
 		
+		mnuItemDarkGray.addActionListener(new DarkGrayAction(this, button, row, (Border) compound, loweredbevel, raisedbevel));
 		
-		// BORDER PLAIN START
-		
-		mnuItemNoBoarder.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				CalcProperties.setDesign();
-				// CREATE CONFIG ######################################
-				
-				File file = null;
-				try {
-					file = new File(CalcProperties.workingDir());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				Properties prop = new Properties();
-				FileInputStream input = null;
-				try {
-					input = new FileInputStream(file);
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				}
-				try {
-					prop.load(input);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				Properties newProperties = new Properties(System.getProperties());
-				
-				newProperties.put("theme.colour", prop.getProperty("theme.colour"));
-				newProperties.put("button.colour", prop.getProperty("button.colour"));
-				newProperties.put("button_c.colour", prop.getProperty("button_c.colour"));
-				newProperties.put("audio.status", prop.getProperty("audio.status"));
-				newProperties.put("mb.colour", prop.getProperty("mb.colour"));
-				newProperties.put("mnuFile.colour", prop.getProperty("mnuFile.colour"));
-				newProperties.put("mnuEdit.colour", prop.getProperty("mnuEdit.colour"));
-				newProperties.put("mnuHelp.colour", prop.getProperty("mnuHelp.colour"));
-				newProperties.put("mnuItemQuit.colour", prop.getProperty("mnuItemQuit.colour"));
-				newProperties.put("mnuItemAbout.colour", prop.getProperty("mnuItemAbout.colour"));
-				newProperties.put("mnuItemHist.colour", prop.getProperty("mnuItemHist.colour"));
-				newProperties.put("mnuItemHistOld.colour", prop.getProperty("mnuItemHistOld.colour"));
-				newProperties.put("mnuClearHist.colour", prop.getProperty("mnuClearHist.colour"));
-				newProperties.put("mnuSoundControl.colour", prop.getProperty("mnuSoundControl.colour"));
-				newProperties.put("mnuItemSupport.colour", prop.getProperty("mnuItemSupport.colour"));
-				newProperties.put("mnuItemTwitter.colour", prop.getProperty("mnuItemTwitter.colour"));
-				newProperties.put("mnuItemPayPal.colour", prop.getProperty("mnuItemPayPal.colour"));
-				newProperties.put("mnuCopyResult.colour", prop.getProperty("mnuCopyResult.colour"));
-				newProperties.put("mnuItemBack.colour", prop.getProperty("mnuItemBack.colour"));
-				newProperties.put("mnuItemButtonStyle.colour", prop.getProperty("mnuItemButtonStyle.colour"));
-				newProperties.put("mnuItemOrange.colour", prop.getProperty("mnuItemOrange.colour"));
-				newProperties.put("mnuItemDarkGray.colour", prop.getProperty("mnuItemDarkGray.colour"));
-				newProperties.put("mnuStyle.colour", prop.getProperty("mnuStyle.colour"));
-				newProperties.put("mnuExport.colour", prop.getProperty("mnuExport.colour"));
-				newProperties.put("mnuItemNoBoarder.colour", prop.getProperty("mnuItemNoBoarder.colour"));
-				newProperties.put("mnuItemBorderCompound.colour", prop.getProperty("mnuItemBorderCompound.colour"));
-				newProperties.put("mnuItemBorderLower.colour", prop.getProperty("mnuItemBorderLower.colour"));
-				newProperties.put("mnuItemBorderRaised.colour", prop.getProperty("mnuItemBorderRaised.colour"));
-				newProperties.put("mnuItemLime.colour", prop.getProperty("mnuItemLime.colour"));
-				newProperties.put("mnuItemPlain.colour", prop.getProperty("mnuItemPlain.colour"));
-				newProperties.put("row.colour", prop.getProperty("row.colour"));
-				newProperties.put("style.type", "null");
-				
-				System.setProperties(newProperties);
-				FileOutputStream out = null;
-				try {
-					out = new FileOutputStream(file);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-				try {
-					newProperties.store(out, "");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				
-				// END CONFIG   ######################################
-				for (int i = 0; i < 24; i++) {
-					button[i].setBorder(null);
-				}
-			}
-			
-		});
-		
-		// BORDER PLAIN END
-		
-		mnuItemPlain.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-
-				mb.setForeground(null); // set colour to menu bars
-				mnuFile.setForeground(null);
-				mnuEdit.setForeground(null);
-				mnuStyle.setForeground(null);
-				mnuHelp.setForeground(null);
-				mnuItemQuit.setForeground(null); // set colour to menu bar
-				mnuItemAbout.setForeground(null); // set colour to menu bar
-				mnuItemHist.setForeground(null);
-				mnuClearHist.setForeground(null);
-				mnuSoundControl.setForeground(null);
-				mnuItemSupport.setForeground(null);
-
-				mnuCopyResult.setForeground(null);
-				mnuItemBack.setForeground(null);
-				mnuItemButtonStyle.setForeground(null);
-				mnuItemOrange.setForeground(null);
-				mnuItemDarkGray.setForeground(null);
-				mnuStyle.setForeground(null);
-				mnuExport.setForeground(null);
-				mnuItemNoBoarder.setForeground(null);
-				mnuItemBorderCompound.setForeground(null);
-				mnuItemBorderLower.setForeground(null);
-				mnuItemBorderRaised.setForeground(null);
-				mnuItemLime.setForeground(null);
-				mnuItemPlain.setForeground(null);
-				
-				for (int i = 0; i < 5; i++) {
-					row[i].setBackground(null);
-				}
-				
-				for (int i = 0; i < 24; i++) {
-					if (button[0].getBorder() == compound) {
-						button[i].setBorder((Border) compound);
-						button[20].setBorder(null);
-					} else if (button[0].getBorder() == loweredbevel) {
-						button[i].setBorder((Border) loweredbevel);
-						button[20].setBorder(null);
-					} else if (button[0].getBorder() == raisedbevel) {
-						button[i].setBorder((Border) raisedbevel);
-						button[20].setBorder(null);
-					} else if (button[0].getBorder() == null) {
-						button[i].setBorder((Border) null);
-						button[20].setBorder(null);
-					}
-					button[i].setForeground(CalcProperties.BLACK);
-				}
-				
-				for (int i = 0; i < 24; i++) {
-					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
-							|| i == 8 || i == 9 || i == 10 || i == 18) {
-						button[i].setBackground(CalcProperties.DARKGREY);
-					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
-							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
-							|| i == 20 || i == 22 || i == 21 || i == 23) {
-						button[i].setBackground(null);
-					}
-				}
-				
-				File file = null;
-				try {
-					file = new File(CalcProperties.workingDir());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				Properties newProperties = new Properties(System.getProperties());
-				
-				newProperties.put("theme.colour", "null");
-				newProperties.put("button.colour", "null");
-				newProperties.put("button_c.colour", "null");
-				newProperties.put("audio.status", "false");
-				newProperties.put("mb.colour", "null");
-				newProperties.put("mnuFile.colour", "null");
-				newProperties.put("mnuEdit.colour", "null");
-				newProperties.put("mnuHelp.colour", "null");
-				newProperties.put("mnuItemQuit.colour", "null");
-				newProperties.put("mnuItemAbout.colour", "null");
-				newProperties.put("mnuItemHist.colour", "null");
-				newProperties.put("mnuItemHistOld.colour", "null");
-				newProperties.put("mnuClearHist.colour", "null");
-				newProperties.put("mnuSoundControl.colour", "null");
-				newProperties.put("mnuItemSupport.colour", "null");
-				newProperties.put("mnuItemTwitter.colour", "null");
-				newProperties.put("mnuItemPayPal.colour", "null");
-				newProperties.put("mnuCopyResult.colour", "null");
-				newProperties.put("mnuItemBack.colour", "null");
-				newProperties.put("mnuItemButtonStyle.colour", "null");
-				newProperties.put("mnuItemOrange.colour", "null");
-				newProperties.put("mnuItemDarkGray.colour", "null");
-				newProperties.put("mnuStyle.colour", "null");
-				newProperties.put("mnuExport.colour", "null");
-				newProperties.put("mnuItemNoBoarder.colour", "null");
-				newProperties.put("mnuItemBorderCompound.colour", "null");
-				newProperties.put("mnuItemBorderLower.colour", "null");
-				newProperties.put("mnuItemBorderRaised.colour", "null");
-				newProperties.put("mnuItemLime.colour", "null");
-				newProperties.put("mnuItemPlain.colour", "null");
-				newProperties.put("row.colour", "null");
-					
-					for (int i = 0; i < 1; i++) {
-						if (button[0].getBorder() == compound) {
-							newProperties.put("style.type", "compound");
-						} else if (button[0].getBorder() == loweredbevel) {
-							newProperties.put("style.type", "loweredbevel");
-						} else if (button[0].getBorder() == raisedbevel) {
-							newProperties.put("style.type", "raisedbevel");
-							button[20].setBorder(null);
-						} else if (button[0].getBorder() == null) {
-							newProperties.put("style.type", "null");
-							button[20].setBorder(null);
-						}
-					}
-					
-					System.setProperties(newProperties);
-					FileOutputStream out = null;
-					try {
-						out = new FileOutputStream(file);
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					}
-					try {
-						newProperties.store(out, "");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				
-			}
-			
-		});
-		
-		mnuItemDarkGray.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-
-				mb.setForeground(CalcProperties.DARKGREY); // set colour to menu bars
-				mnuFile.setForeground(CalcProperties.DARKGREY);
-				mnuEdit.setForeground(CalcProperties.DARKGREY);
-				mnuStyle.setForeground(CalcProperties.DARKGREY);
-				mnuHelp.setForeground(CalcProperties.DARKGREY);
-				mnuItemQuit.setForeground(CalcProperties.DARKGREY); // set colour to menu bar
-				mnuItemAbout.setForeground(CalcProperties.DARKGREY); // set colour to menu bar
-				mnuItemHist.setForeground(CalcProperties.DARKGREY);
-				mnuItemHistOld.setForeground(CalcProperties.DARKGREY);
-				mnuClearHist.setForeground(CalcProperties.DARKGREY);
-				mnuSoundControl.setForeground(CalcProperties.DARKGREY);
-				mnuItemSupport.setForeground(CalcProperties.DARKGREY);
-				mnuCopyResult.setForeground(CalcProperties.DARKGREY);
-				mnuItemBack.setForeground(CalcProperties.DARKGREY);
-				mnuItemButtonStyle.setForeground(CalcProperties.DARKGREY);
-				mnuItemOrange.setForeground(CalcProperties.DARKGREY);
-				mnuItemDarkGray.setForeground(CalcProperties.DARKGREY);
-				mnuStyle.setForeground(CalcProperties.DARKGREY);
-				mnuExport.setForeground(CalcProperties.DARKGREY);
-				mnuItemNoBoarder.setForeground(CalcProperties.DARKGREY);
-				mnuItemBorderCompound.setForeground(CalcProperties.DARKGREY);
-				mnuItemBorderLower.setForeground(CalcProperties.DARKGREY);
-				mnuItemBorderRaised.setForeground(CalcProperties.DARKGREY);
-				mnuItemLime.setForeground(CalcProperties.DARKGREY);
-				mnuItemPlain.setForeground(CalcProperties.DARKGREY);
-				
-				for (int i = 0; i < 5; i++) {
-					row[i].setBackground(CalcProperties.BLACK);
-				}
-				
-				for (int i = 0; i < 24; i++) {
-					// Default to current style
-					if (button[0].getBorder() == compound) {
-						button[i].setBorder((Border) compound);
-					} else if (button[0].getBorder() == loweredbevel) {
-						button[i].setBorder((Border) loweredbevel);
-					} else if (button[0].getBorder() == raisedbevel) {
-						button[i].setBorder((Border) raisedbevel);
-					} else if (button[0].getBorder() == null) {
-						button[i].setBorder((Border) null);
-					}
-
-					// Set numeric buttons: dark grey background, black text
-					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6 || i == 8 || i == 9 || i == 10 || i == 18) {
-						button[i].setBackground(CalcProperties.DARKGREY);
-						button[i].setForeground(CalcProperties.BLACK);
-						button[i].setContentAreaFilled(true);
-						button[i].setFont(FontTheme.size18i);
-					} else {
-						// non-numeric: black background, white text, white outline (except penguin)
-						button[i].setBackground(CalcProperties.BLACK);
-						button[i].setForeground(CalcProperties.BLACK);
-						button[i].setContentAreaFilled(true);
-						button[i].setFont(FontTheme.size18i);
-						if (i == 20) {
-							button[i].setBorder(null);
-						} else {
-							button[i].setBorder(BorderFactory.createLineBorder(CalcProperties.WHITE));
-						}
-					}
-				}
-				button[20].setBorder(null);
-				
-				for (int i = 0; i < 24; i++) {
-					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
-							|| i == 8 || i == 9 || i == 10 || i == 18) {
-						button[i].setBackground(CalcProperties.DARKGREY);
-					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
-							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
-							|| i == 20 || i == 22 || i == 21 || i == 23) {
-						button[i].setBackground(CalcProperties.BLACK);
-						button[i].setForeground(CalcProperties.BLACK);
-						// Keep white outline border for visibility on non-number buttons
-						if (i == 20) {
-							button[i].setBorder(null);
-						} else {
-							button[i].setBorder(BorderFactory.createLineBorder(CalcProperties.WHITE));
-						}
-					}
-				}
-				
-				File file = null;
-				try {
-					file = new File(CalcProperties.workingDir());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				Properties newProperties = new Properties(System.getProperties());
-				
-					newProperties.put("theme.colour", "LIME");
-					newProperties.put("button.colour", "DarkGrey");
-					newProperties.put("button_c.colour", "BLACK");
-					newProperties.put("audio.status", "false");
-					newProperties.put("mb.colour", "BLACK");
-					newProperties.put("mnuFile.colour", "DARKGREY");
-					newProperties.put("mnuEdit.colour", "DARKGREY");
-					newProperties.put("mnuHelp.colour", "DARKGREY");
-					newProperties.put("mnuItemQuit.colour", "DARKGREY");
-					newProperties.put("mnuItemAbout.colour", "DARKGREY");
-					newProperties.put("mnuItemHist.colour", "DARKGREY");
-					newProperties.put("mnuItemHistOld.colour", "DARKGREY");
-					newProperties.put("mnuClearHist.colour", "DARKGREY");
-					newProperties.put("mnuSoundControl.colour", "DARKGREY");
-					newProperties.put("mnuItemSupport.colour", "DARKGREY");
-					newProperties.put("mnuItemTwitter.colour", "DARKGREY");
-					newProperties.put("mnuItemPayPal.colour", "DARKGREY");
-					newProperties.put("mnuCopyResult.colour", "DARKGREY");
-					newProperties.put("mnuItemBack.colour", "DARKGREY");
-					newProperties.put("mnuItemButtonStyle.colour", "DARKGREY");
-					newProperties.put("mnuItemOrange.colour", "DARKGREY");
-					newProperties.put("mnuItemDarkGray.colour", "DARKGREY");
-					newProperties.put("mnuStyle.colour", "DARKGREY");
-					newProperties.put("mnuExport.colour", "DARKGREY");
-					newProperties.put("mnuItemNoBoarder.colour", "DARKGREY");
-					newProperties.put("mnuItemBorderCompound.colour", "DARKGREY");
-					newProperties.put("mnuItemBorderLower.colour", "DARKGREY");
-					newProperties.put("mnuItemBorderRaised.colour", "DARKGREY");
-					newProperties.put("mnuItemLime.colour", "DARKGREY");
-					newProperties.put("mnuItemPlain.colour", "DARKGREY");
-					newProperties.put("row.colour", "BLACK");
-					
-					for (int i = 0; i < 1; i++) {
-						if (button[0].getBorder() == compound) {
-							newProperties.put("style.type", "compound");
-						} else if (button[0].getBorder() == loweredbevel) {
-							newProperties.put("style.type", "loweredbevel");
-						} else if (button[0].getBorder() == raisedbevel) {
-							newProperties.put("style.type", "raisedbevel");
-							button[20].setBorder(null);
-						} else if (button[0].getBorder() == null) {
-							newProperties.put("style.type", "null");
-							button[20].setBorder(null);
-						}
-					}
-					
-					System.setProperties(newProperties);
-					FileOutputStream out = null;
-					try {
-						out = new FileOutputStream(file);
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					}
-					try {
-						newProperties.store(out, "");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				
-			}
-			
-		});
-		
-		mnuItemLime.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-
-				mb.setForeground(CalcProperties.DARKGREY); // set colour to menu bars
-				mnuFile.setForeground(CalcProperties.DARKGREY);
-				mnuEdit.setForeground(CalcProperties.DARKGREY);
-				mnuStyle.setForeground(CalcProperties.DARKGREY);
-				mnuHelp.setForeground(CalcProperties.DARKGREY);
-				mnuItemQuit.setForeground(CalcProperties.DARKGREY); // set colour to menu bar
-				mnuItemAbout.setForeground(CalcProperties.DARKGREY); // set colour to menu bar
-				mnuItemHist.setForeground(CalcProperties.DARKGREY);
-				mnuItemHistOld.setForeground(CalcProperties.DARKGREY);
-				mnuClearHist.setForeground(CalcProperties.DARKGREY);
-				mnuSoundControl.setForeground(CalcProperties.DARKGREY);
-				mnuItemSupport.setForeground(CalcProperties.DARKGREY);
-				mnuCopyResult.setForeground(CalcProperties.DARKGREY);
-				mnuItemBack.setForeground(CalcProperties.DARKGREY);
-				mnuItemButtonStyle.setForeground(CalcProperties.DARKGREY);
-				mnuItemOrange.setForeground(CalcProperties.DARKGREY);
-				mnuItemDarkGray.setForeground(CalcProperties.DARKGREY);
-				mnuStyle.setForeground(CalcProperties.DARKGREY);
-				mnuExport.setForeground(CalcProperties.DARKGREY);
-				mnuItemNoBoarder.setForeground(CalcProperties.DARKGREY);
-				mnuItemBorderCompound.setForeground(CalcProperties.DARKGREY);
-				mnuItemBorderLower.setForeground(CalcProperties.DARKGREY);
-				mnuItemBorderRaised.setForeground(CalcProperties.DARKGREY);
-				mnuItemLime.setForeground(CalcProperties.DARKGREY);
-				mnuItemPlain.setForeground(CalcProperties.DARKGREY);
-
-				for (int i = 0; i < 5; i++) {
-					row[i].setBackground(CalcProperties.LIME);
-				}
-				
-				for (int i = 0; i < 24; i++) {
-					
-					if (button[0].getBorder() == compound) {
-						button[i].setBorder((Border) compound);
-						button[20].setBorder(null);
-					} else if (button[0].getBorder() == loweredbevel) {
-						button[i].setBorder((Border) loweredbevel);
-						button[20].setBorder(null);
-					} else if (button[0].getBorder() == raisedbevel) {
-						button[i].setBorder((Border) raisedbevel);
-						button[20].setBorder(null);
-					}
-					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6 || i == 8 || i == 9 || i == 10 || i == 18) {
-						button[i].setBackground(CalcProperties.DARKGREY);
-					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17 || i == 19
-							|| i == 20 || i == 22 || i == 21 || i == 23) {
-						button[i].setBackground(CalcProperties.LIME);
-						button[i].setForeground(CalcProperties.BLACK);
-					}
-				}
-				// HERE
-				
-				File file = null;
-				try {
-					file = new File(CalcProperties.workingDir());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				Properties newProperties = new Properties(System.getProperties());
-				
-					newProperties.put("theme.colour", "LIME");
-					newProperties.put("button.colour", "DarkGrey");
-					newProperties.put("button_c.colour", "LIME");
-					newProperties.put("audio.status", "false");
-					newProperties.put("mb.colour", "LIME");
-					newProperties.put("mnuFile.colour", "DARKGREY");
-					newProperties.put("mnuEdit.colour", "DARKGREY");
-					newProperties.put("mnuHelp.colour", "DARKGREY");
-					newProperties.put("mnuItemQuit.colour", "DARKGREY");
-					newProperties.put("mnuItemAbout.colour", "DARKGREY");
-					newProperties.put("mnuItemHist.colour", "DARKGREY");
-					newProperties.put("mnuItemHistOld.colour", "DARKGREY");
-					newProperties.put("mnuClearHist.colour", "DARKGREY");
-					newProperties.put("mnuSoundControl.colour", "DARKGREY");
-					newProperties.put("mnuItemSupport.colour", "DARKGREY");
-					newProperties.put("mnuItemTwitter.colour", "DARKGREY");
-					newProperties.put("mnuItemPayPal.colour", "DARKGREY");
-					newProperties.put("mnuCopyResult.colour", "DARKGREY");
-					newProperties.put("mnuItemBack.colour", "DARKGREY");
-					newProperties.put("mnuItemButtonStyle.colour", "DARKGREY");
-					newProperties.put("mnuItemOrange.colour", "DARKGREY");
-					newProperties.put("mnuItemDarkGray.colour", "DARKGREY");
-					newProperties.put("mnuStyle.colour", "DARKGREY");
-					newProperties.put("mnuExport.colour", "DARKGREY");
-					newProperties.put("mnuItemNoBoarder.colour", "DARKGREY");
-					newProperties.put("mnuItemBorderCompound.colour", "DARKGREY");
-					newProperties.put("mnuItemBorderLower.colour", "DARKGREY");
-					newProperties.put("mnuItemBorderRaised.colour", "DARKGREY");
-					newProperties.put("mnuItemLime.colour", "DARKGREY");
-					newProperties.put("mnuItemPlain.colour", "DARKGREY");
-					newProperties.put("row.colour", "LIME");
-					
-					for (int i = 0; i < 1; i++) {
-						if (button[0].getBorder() == compound) {
-							newProperties.put("style.type", "compound");
-						} else if (button[0].getBorder() == loweredbevel) {
-							newProperties.put("style.type", "loweredbevel");
-						} else if (button[0].getBorder() == raisedbevel) {
-							newProperties.put("style.type", "raisedbevel");
-							button[20].setBorder(null);
-						} else if (button[0].getBorder() == null) {
-							newProperties.put("style.type", "null");
-							button[20].setBorder(null);
-						}
-					}
-					
-					System.setProperties(newProperties);
-					FileOutputStream out = null;
-					try {
-						out = new FileOutputStream(file);
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					}
-					try {
-						newProperties.store(out, "");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					// HERE
-			}
-			
-		});
-		
-		//System.out.println("CREATE_LIME = "+ CalcProperties.CREATE_LIME);
-		
-		mnuItemOrange.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				CalcProperties.setDesign();
-				mb.setForeground(CalcProperties.ORANGE); // set colour to menu bars
-				mnuFile.setForeground(CalcProperties.ORANGE);
-				mnuEdit.setForeground(CalcProperties.ORANGE);
-				mnuStyle.setForeground(CalcProperties.ORANGE);
-				mnuHelp.setForeground(CalcProperties.ORANGE);
-				mnuItemQuit.setForeground(CalcProperties.ORANGE); // set colour to menu bar
-				mnuItemAbout.setForeground(CalcProperties.ORANGE); // set colour to menu bar
-				mnuItemHist.setForeground(CalcProperties.ORANGE);
-				mnuItemHistOld.setForeground(CalcProperties.ORANGE);
-				mnuClearHist.setForeground(CalcProperties.ORANGE);
-				mnuSoundControl.setForeground(CalcProperties.ORANGE);
-				mnuItemSupport.setForeground(CalcProperties.ORANGE);
-				mnuCopyResult.setForeground(CalcProperties.ORANGE);
-				mnuItemBack.setForeground(CalcProperties.ORANGE);
-				mnuItemButtonStyle.setForeground(CalcProperties.ORANGE);
-				mnuItemOrange.setForeground(CalcProperties.ORANGE);
-				mnuItemDarkGray.setForeground(CalcProperties.ORANGE);
-				mnuStyle.setForeground(CalcProperties.ORANGE);
-				mnuExport.setForeground(CalcProperties.ORANGE);
-				mnuItemNoBoarder.setForeground(CalcProperties.ORANGE);
-				mnuItemBorderCompound.setForeground(CalcProperties.ORANGE);
-				mnuItemBorderLower.setForeground(CalcProperties.ORANGE);
-				mnuItemBorderRaised.setForeground(CalcProperties.ORANGE);
-				mnuItemLime.setForeground(CalcProperties.ORANGE);
-				mnuItemPlain.setForeground(CalcProperties.ORANGE);
-				
-				for (int i = 0; i < 5; i++) {
-					row[i].setBackground(CalcProperties.ORANGE);
-				}
-				
-				for (int i = 0; i < 24; i++) {
-					if (button[0].getBorder() == compound) {
-						button[i].setBorder((Border) compound);
-						button[20].setBorder(null);
-					} else if (button[0].getBorder() == loweredbevel) {
-						button[i].setBorder((Border) loweredbevel);
-						button[20].setBorder(null);
-					} else if (button[0].getBorder() == raisedbevel) {
-						button[i].setBorder((Border) raisedbevel);
-						button[20].setBorder(null);
-					} else if (button[0].getBorder() == null) {
-						button[i].setBorder((Border) null);
-						button[20].setBorder(null);
-					}
-					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
-							|| i == 8 || i == 9 || i == 10 || i == 18) {
-						button[i].setBackground(CalcProperties.DARKGREY);
-					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
-							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
-							|| i == 20 || i == 22 || i == 21 || i == 23) {
-						button[i].setBackground(CalcProperties.ORANGE);
-						button[i].setForeground(CalcProperties.BLACK);
-					}
-				}
-				// HERE
-				
-				File file = null;
-				try {
-					file = new File(CalcProperties.workingDir());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				Properties newProperties = new Properties(System.getProperties());
-				
-					newProperties.put("theme.colour", "ORANGE");
-					newProperties.put("button.colour", "DARKGREY");
-					newProperties.put("button_c.colour", "ORANGE");
-					newProperties.put("audio.status", "false");
-					newProperties.put("mb.colour", "ORANGE");
-					newProperties.put("mnuFile.colour", "ORANGE");
-					newProperties.put("mnuEdit.colour", "ORANGE");
-					newProperties.put("mnuHelp.colour", "ORANGE");
-					newProperties.put("mnuItemQuit.colour", "ORANGE");
-					newProperties.put("mnuItemAbout.colour", "ORANGE");
-					newProperties.put("mnuItemHist.colour", "ORANGE");
-					newProperties.put("mnuItemHistOld.colour", "ORANGE");
-					newProperties.put("mnuClearHist.colour", "ORANGE");
-					newProperties.put("mnuSoundControl.colour", "ORANGE");
-					newProperties.put("mnuItemSupport.colour", "ORANGE");
-					newProperties.put("mnuItemTwitter.colour", "ORANGE");
-					newProperties.put("mnuItemPayPal.colour", "ORANGE");
-					newProperties.put("mnuCopyResult.colour", "ORANGE");
-					newProperties.put("mnuItemBack.colour", "ORANGE");
-					newProperties.put("mnuItemButtonStyle.colour", "ORANGE");
-					newProperties.put("mnuItemOrange.colour", "ORANGE");
-					newProperties.put("mnuItemDarkGray.colour", "ORANGE");
-					newProperties.put("mnuStyle.colour", "ORANGE");
-					newProperties.put("mnuExport.colour", "ORANGE");
-					newProperties.put("mnuItemNoBoarder.colour", "ORANGE");
-					newProperties.put("mnuItemBorderCompound.colour", "ORANGE");
-					newProperties.put("mnuItemBorderLower.colour", "ORANGE");
-					newProperties.put("mnuItemBorderRaised.colour", "ORANGE");
-					newProperties.put("mnuItemLime.colour", "ORANGE");
-					newProperties.put("mnuItemPlain.colour", "ORANGE");
-					newProperties.put("row.colour", "ORANGE");
-					
-					for (int i = 0; i < 1; i++) {
-						if (button[0].getBorder() == compound) {
-							newProperties.put("style.type", "compound");
-						} else if (button[0].getBorder() == loweredbevel) {
-							newProperties.put("style.type", "loweredbevel");
-						} else if (button[0].getBorder() == raisedbevel) {
-							newProperties.put("style.type", "raisedbevel");
-							button[20].setBorder(null);
-						} else if (button[0].getBorder() == null) {
-							newProperties.put("style.type", "null");
-							button[20].setBorder(null);
-						}
-					}
-					
-					System.setProperties(newProperties);
-					FileOutputStream out = null;
-					try {
-						out = new FileOutputStream(file);
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					}
-					try {
-						newProperties.store(out, "");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					// HERE
-			}
-			
-		});
+		mnuItemLime.addActionListener(new LimeAction(this, button, row, (Border) compound, loweredbevel, raisedbevel));
+	
+		mnuItemOrange.addActionListener(new OrangeAction(this, button, row, (Border) compound, loweredbevel, raisedbevel));
 
 		mnuItemHist.addActionListener(new ActionListener() {
 			@Override
@@ -2268,7 +1295,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				}
 		
 				if (!file.exists()) {
-					//System.out.println("Trying to Open  " + file);
 				} else {
 					try {
 						Desktop.getDesktop().browse(CalcProperties.historyOld().toURI()); 
@@ -2313,7 +1339,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			e2.printStackTrace();
 		} // ZZ
 
-		//System.out.println("String Audio = System.getProperty = " + Audio);
 		try {
 			if (Audio.contains("true")) {
 				new Sound("typewriter.wav").start();
@@ -2342,9 +1367,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 
 		try {
 			double value = Math.pow(Double.parseDouble(allValues.getText()),2);
-			//System.out.println("Current value " + allValues.getText());
-			//System.out.println("Real value " + value);
-			//System.out.println("New value " +round(value, 2));
 			Double xx = Double.valueOf(value);
 			int x = xx.intValue();
 
@@ -2368,7 +1390,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + "x\u00B2" + allValues.getText() + " = "+ Integer.toString(x) + "</td></tr>");
 				outHist.newLine();
 				outHist.close();
-				//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
 
 				allValues.setText(Integer.toString(x));
 
@@ -2380,7 +1401,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + "x\u00B2" + allValues.getText() + " = "+ Double.toString(value) + "</td></tr>");
 				outHist.newLine();
 				outHist.close();
-				//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
 				String Audio = null;
 				try {
 					Audio = CalcProperties.AudioTrue();
@@ -2403,7 +1423,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 
 		try {
 			double value = Math.sqrt(Double.parseDouble(allValues.getText()));
-			//System.out.println("Square Before " + allValues.getText());
 			Double xx = Double.valueOf(value);
 			int x = xx.intValue();
 
@@ -2429,7 +1448,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + "Sq  &radic; " + allValues.getText() + " = "+ Integer.toString(x) + "</td></tr>");
 				outHist.newLine();
 				outHist.close();
-				//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
 
 				allValues.setText(Integer.toString(x));
 
@@ -2441,7 +1459,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + "Sq  &radic; " + allValues.getText() + " = "+ Double.toString(value) + "</td></tr>");
 				outHist.newLine();
 				outHist.close();
-				//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
 				String Audio = null;
 				try {
 					Audio = CalcProperties.AudioTrue();
@@ -2522,21 +1539,16 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 		try {
 			if (function[2] == true && temp0 != null && temp1 != null) {
 				result = temporary[0] * temporary[1];
-				//System.out.println("Multiply function set");
 			} else if (function[3] == true && temp0 != null && temp1 != null) {
 				result = temporary[0] / temporary[1];
-				//System.out.println("Division function set");
 			} else if (function[0] == true && temp0 != null && temp1 != null) {
 				result = temporary[0] + temporary[1];
-				//System.out.println("Addition function set");
 			} else if (function[1] == true && temp0 != null && temp1 != null) {
 				result = temporary[0] - temporary[1];
-				//System.out.println("Subtraction function set");
 			}
 
 			for (int i = 0; i < 4; i++) {
 				function[i] = false;
-				//System.out.println("Setting functions " + i + " to "+ function[i]);
 			}
 
 			Double xx = Double.valueOf(result);
@@ -2546,7 +1558,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				String mstr = displayMini.getText();
 				display.setText(Integer.toString(x));
 				allValues.setText(Integer.toString(x));
-				//System.out.println("One = " + Integer.toString(x));
 
 				FileWriter resultfilestr = new FileWriter(
 						CalcProperties.historyFile(), true);
@@ -2555,27 +1566,22 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				if (mstr.contains("=")) {
 					if (mstr.contains("%")) {
 						displayMini.setText(mstr + " = " + Integer.toString(x));
-						//System.out.println("STwo = " + mstr + " = "	+ Integer.toString(x));
 					} else {
 						displayMini.setText(mstr + str + " = "
 								+ Integer.toString(x));
-						//System.out.println("Two = " + mstr + str + " = "+ Integer.toString(x));
 					}
 
-					//System.out.println("CODE-021 - Checking button pressed result Again = " + checkResult);
 
 					if (checkResult == true) {
 						if (mstr.contains("%")) {
 							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + " = " + " " + Integer.toString(x) + "</td></tr>");
 							outHist.newLine();
 							outHist.close();
-							//System.out.println("Logged HTML Sfile = "+ CalcProperties.historyFile());
 						} else {
 
 							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + str + " " + " = " + " " + Integer.toString(x) + "</td></tr>");
 							outHist.newLine();
 							outHist.close();
-							//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
 						}
 					}
 
@@ -2587,8 +1593,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + " = " + " " + Integer.toString(x) + "</td></tr>");
 							outHist.newLine();
 							outHist.close();
-							//System.out.println("Logged HTML S file = "+ CalcProperties.historyFile());
-							//System.out.println("Three = " + mstr + " = "+ Integer.toString(x));
 						}
 					} else {
 						displayMini.setText(mstr + str + " = "
@@ -2598,8 +1602,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + str + " " + " = " + " " + Integer.toString(x) + "</td></tr>");
 							outHist.newLine();
 							outHist.close();
-							//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
-							//System.out.println("Three = " + mstr + str + " = "+ Integer.toString(x));
 						}
 					}
 				}
@@ -2609,53 +1611,42 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				result = Math.round(result * 100) / 100.0d;
 				display.setText(Double.toString(result));
 				allValues.setText(Double.toString(result));
-				//System.out.println("Four = " + Double.toString(result));
 
 				FileWriter resultfilestr = new FileWriter(
 						CalcProperties.historyFile(), true);
 				BufferedWriter outHist = new BufferedWriter(resultfilestr);
 
 				if (mstr.contains("=")) {
-					//System.out.println("Zstr = " + str);
-					//System.out.println("Zmstr = " + mstr);
-					//System.out.println("Zresult = " + Double.toString(result));
 					if (mstr.contains("%")) {
 						displayMini.setText(mstr + " = "
 								+ Double.toString(result)); // changed from x to
 															// result
-						//System.out.println("SFive = " + mstr + " = "+ Double.toString(result));
 						if (checkResult == true) {
 							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + " = " + " " + Double.toString(result) + "</td></tr>");
 							outHist.newLine();
 							outHist.close();
-							//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
 						}
 					} else {
 						displayMini.setText(mstr + str + " = "
 								+ Double.toString(result)); // changed from x to
 															// result
-						//System.out.println("Five = " + mstr + str + " = "+ Double.toString(result));
 					}
 				} else {
 					if (mstr.contains("%")) {
 						displayMini.setText(mstr + " = "
 								+ Double.toString(result));
-						//System.out.println("SSix = " + mstr + " = "	+ Double.toString(result));
 						if (checkResult == true) {
 							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + " = " + " " + Double.toString(result) + "</td></tr>");
 							outHist.newLine();
 							outHist.close();
-							//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
 						}
 					} else {
 						displayMini.setText(mstr + str + " = "
 								+ Double.toString(result));
-						//System.out.println("Six = " + mstr + str + " = "+ Double.toString(result));
 						if (checkResult == true) {
 							outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + mstr + " " + str + " " + " = " + " " + Double.toString(result) + "</td></tr>");
 							outHist.newLine();
 							outHist.close();
-							//System.out.println("Logged HTML file = "+ CalcProperties.historyFile());
 						}
 					}
 				}
@@ -2693,7 +1684,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 					new Sound("typewriter.wav").start();
 				}
 				if (checkResult == true) {
-					//System.out.println("Busy checkResult = true");
 					if (display.getText().contains(".")){
 						display.setText(display.getText()+"7");
 					} else {
@@ -2702,7 +1692,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 					allValues.setText(display.getText());
 					checkResult = false;
 				} else {
-					//System.out.println("Busy checkResult = false");
 					display.setText(display.getText() + "7");
 					allValues.setText(display.getText());
 				}
@@ -2724,7 +1713,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				}
 			} else {
 				if (checkResult == true) {
-					//System.out.println("Busy checkResult = true");
 					if (display.getText().contains(".")){
 						display.setText(display.getText()+"8");
 					} else {
@@ -2733,7 +1721,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 					allValues.setText(display.getText());
 					checkResult = false;
 				} else {
-					//System.out.println("Busy checkResult = false");
 					display.setText(display.getText() + "8");
 					allValues.setText(display.getText());
 				}
@@ -2764,7 +1751,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				}
 			} else {
 				if (checkResult == true) {
-					//System.out.println("Busy checkResult = true");
 					if (display.getText().contains(".")){
 						display.setText(display.getText()+"9");
 					} else {
@@ -2773,7 +1759,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 					allValues.setText(display.getText());
 					checkResult = false;
 				} else {
-					//System.out.println("Busy checkResult = false");
 					display.setText(display.getText() + "9");
 					allValues.setText(display.getText());
 				}
@@ -2796,7 +1781,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			String str9 = displayMini.getText();
 			if (str9.contains("%") && str9.contains("(")
 					&& checkResult == false) {
-				//System.out.println("Contains % & () need to press = first --> getting result");
 				// getResult();
 			} else {
 
@@ -2869,7 +1853,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 
 			if (str9.contains("%") && str9.contains("(")
 					&& checkResult == false) {
-				//System.out.println("Contains % & () need to press = first");
 			} else {
 
 				if (function[0] == true || function[2] == true
@@ -2938,14 +1921,9 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			//String str8 = display.getText();
 			String str9 = displayMini.getText();
 
-			//System.out.println("ALLVALUES = " + str);
-			//System.out.println("DISPLAY = " + str8);
-			//System.out.println("MINIDISPLAY = " + str9);
-			//System.out.println("CHECKRESULT = " + checkResult);
 
 			if (str9.contains("%") && str9.contains("(")
 					&& checkResult == false) {
-				//System.out.println("Contains % & () need to press = first");
 			} else {
 
 				if (function[0] == true || function[1] == true
@@ -3018,7 +1996,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 
 			if (str9.contains("%") && str9.contains("(")
 					&& checkResult == false) {
-				//System.out.println("Contains % & () need to press = first");
 			} else {
 
 				if (function[0] == true || function[1] == true
@@ -3089,8 +2066,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			String temp0 = Double.toString(temporary[0]);
 			String temp1 = Double.toString(temporary[1]);
 
-			//System.out.println("CODE-014 - Percent temp0 = " + temp0);
-			//System.out.println("CODE-015 - Percent temp1 = " + temp1);
 			
 			/* if (function[2] == true) {
 				System.out.println("CODE-008 - Function 2 = true");
@@ -3106,7 +2081,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			*/
 
 			if (temp0.equals("0.0") || strp.contains("%") || (function[0] == false && function[3] == false && function[1] == false && function[2] == false)) {
-				//System.out.println("CODE-013 - Percent temp0 = " + temp0 + " OR "+ "Percent already engaged " + strp);
 			} else {
 				try {
 					if (temp0.contains("-")) {
@@ -3123,7 +2097,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 					result = (temporary[0] / 100) * temporary[1];
 					result = Math.round(result * 100) / 100.0d;
 					
-					//System.out.println("CODE-007 - Percentage function executed");
 
 					Double xx = Double.valueOf(result);
 					int x = xx.intValue();
@@ -3132,7 +2105,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 						String mstr = displayMini.getText();
 						display.setText(Integer.toString(x));
 						allValues.setText(Integer.toString(x));
-						//System.out.println("CODE-001 = " + Integer.toString(x));
 						String Audio = null;
 						try {
 							Audio = CalcProperties.AudioTrue();
@@ -3152,15 +2124,12 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 							
 							displayMini.setText("(" + mstr + str + "%" + ") = "	+ Integer.toString(x));
 							
-							//System.out.println("CODE-002 = " + mstr + str + " = "+ Integer.toString(x));
 
-							//System.out.println("CODE-016 - Checking button pressed result Again "+ checkResult);
 
 							if (checkResult == true) {
 								outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">"+ "(" + mstr + " " + str + " " + ")" + " = " + " " + Integer.toString(x) + "</td></tr>");
 								outHist.newLine();
 								outHist.close();
-								//System.out.println("CODE-017 - Logged HTML file = "+ CalcProperties.historyFile());
 							}
 
 						} else {
@@ -3171,16 +2140,13 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 								outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">"+ "(" + mstr + " " + str + " " + ")" + " = " + " " + Integer.toString(x) + "</td></tr>");
 								outHist.newLine();
 								outHist.close();
-								//System.out.println("CODE-018 - Logged HTML file = "+ CalcProperties.historyFile());
 							}
-							//System.out.println("CODE-003 = " + mstr + str+ " = " + Integer.toString(x));
 						}
 					} else {
 						String str = allValues.getText();
 						String mstr = displayMini.getText();
 						display.setText(Double.toString(result));
 						allValues.setText(Double.toString(result));
-						//System.out.println("CODE-004 = "+ Double.toString(result));
 						String Audio = null;
 						try {
 							Audio = CalcProperties.AudioTrue();
@@ -3193,23 +2159,14 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 						if (mstr.contains("=")) {
 							displayMini.setText("(" + mstr + str + "%" + ") = "
 									+ Double.toString(result));
-							//System.out.println("CODE-005 = " + mstr + str + "%"+ " = " + Double.toString(result));
 						} else {
 							displayMini.setText("(" + mstr + str + "%" + ") = "
 									+ Double.toString(result));
-							//System.out.println("CODE-006 = " + mstr + str + "%"+ " = " + Double.toString(result));
 						}
 					}
 
-					//System.out.println("CODE-19 - Result = " + result);
 					result = Math.round(result * 100) / 100.0d;
-					//System.out.println("CODE-20 - New Result = " + result);
-					//System.out.println("temp0 = " + temp0);
-					//System.out.println("temp1 = " + temp1);
-					//System.out.println("temporary0 = " + temporary[0]);
-					//System.out.println("temporary1 = " + temporary[1]);
 					temporary[1] = result;
-					//System.out.println("new temporary1 = " + temporary[1]);
 				} catch (NumberFormatException e) {
 				} catch (IOException e) {
 				}
@@ -3231,7 +2188,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				}
 			} else {
 				if (checkResult == true) {
-					//System.out.println("Busy checkResult here = true");
 					if (display.getText().contains(".")){
 						display.setText(display.getText()+"5");
 					} else {
@@ -3240,7 +2196,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 					allValues.setText(display.getText());
 					checkResult = false;
 				} else {
-					//System.out.println("Busy checkResult = false");
 					display.setText(display.getText() + "5");
 					allValues.setText(display.getText());
 				}
@@ -3271,7 +2226,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				}
 			} else {
 				if (checkResult == true) {
-					//System.out.println("Busy checkResult = true");
 					if (display.getText().contains(".")){
 						display.setText(display.getText()+"4");
 					} else {
@@ -3280,7 +2234,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 					allValues.setText(display.getText());
 					checkResult = false;
 				} else {
-					//System.out.println("Busy checkResult = false");
 					display.setText(display.getText() + "4");
 					allValues.setText(display.getText());
 				}
@@ -3311,7 +2264,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				}
 			} else {
 				if (checkResult == true) {
-					//System.out.println("Busy checkResult = true");
 					if (display.getText().contains(".")){
 						display.setText(display.getText()+"6");
 					} else {
@@ -3320,7 +2272,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 					allValues.setText(display.getText());
 					checkResult = false;
 				} else {
-					//System.out.println("Busy checkResult = false");
 					display.setText(display.getText() + "6");
 					allValues.setText(display.getText());
 				}
@@ -3351,7 +2302,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				}
 			} else {
 				if (checkResult == true) {
-					//System.out.println("Busy checkResult = true");
 					if (display.getText().contains(".")){
 						display.setText(display.getText()+"1");
 					} else {
@@ -3360,7 +2310,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 					allValues.setText(display.getText());
 					checkResult = false;
 				} else {
-					//System.out.println("Busy checkResult = false");
 					display.setText(display.getText() + "1");
 					allValues.setText(display.getText());
 				}
@@ -3391,7 +2340,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				}
 			} else {
 				if (checkResult == true) {
-					//System.out.println("Busy checkResult = true");
 					if (display.getText().contains(".")){
 						display.setText(display.getText()+"2");
 					} else {
@@ -3400,7 +2348,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 					allValues.setText(display.getText());
 					checkResult = false;
 				} else {
-					//System.out.println("Busy checkResult = false");
 					display.setText(display.getText() + "2");
 					allValues.setText(display.getText());
 				}
@@ -3431,7 +2378,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 				}
 			} else {
 				if (checkResult == true) {
-					//System.out.println("Busy checkResult = true" + " " + display.getText());
 					
 					if (display.getText().contains(".")){
 						display.setText(display.getText()+"3");
@@ -3441,7 +2387,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 					allValues.setText(display.getText());
 					checkResult = false;
 				} else {
-					//System.out.println("Busy checkResult = false");
 					display.setText(display.getText() + "3");
 					allValues.setText(display.getText());
 				}
@@ -3505,9 +2450,7 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 			} else {
 
 					if (function[0] == true || function[1] == true || function[2] == true || function[3] == true) {
-						//System.out.println("Button 17 pressed to get result");
 						checkResult = true;
-						//System.out.println("Setting button pressed result "+ checkResult);
 						getResult();
 						String Audio = null;
 						try {
@@ -3597,6 +2540,6 @@ public class CalculatorOrangeLite extends JFrame implements ActionListener {
 
 	@SuppressWarnings("unused")
 	public static void main(String[] arguments) throws IOException {
-		CalculatorOrangeLite c = new CalculatorOrangeLite();
+		OrangeCalc c = new OrangeCalc();
 	}
 }
