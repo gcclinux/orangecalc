@@ -973,7 +973,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		mnuItemAbout.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				About.main(null);
+				About.showAbout(OrangeCalc.this);
 			}
 		});
 		// Select button focus, required for initial key stroke
