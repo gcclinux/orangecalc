@@ -47,7 +47,7 @@ public class OrangeAction implements ActionListener {
         owner.mnuItemBack.setForeground(CalcProperties.ORANGE);
         owner.mnuItemButtonStyle.setForeground(CalcProperties.ORANGE);
         owner.mnuItemOrange.setForeground(CalcProperties.ORANGE);
-        owner.mnuItemDarkGray.setForeground(CalcProperties.ORANGE);
+
         OrangeCalc.mnuStyle.setForeground(CalcProperties.ORANGE);
         owner.mnuExport.setForeground(CalcProperties.ORANGE);
         owner.mnuItemNoBoarder.setForeground(CalcProperties.ORANGE);
@@ -115,7 +115,7 @@ public class OrangeAction implements ActionListener {
         newProperties.put("mnuItemBack.colour", "ORANGE");
         newProperties.put("mnuItemButtonStyle.colour", "ORANGE");
         newProperties.put("mnuItemOrange.colour", "ORANGE");
-        newProperties.put("mnuItemDarkGray.colour", "ORANGE");
+
         newProperties.put("mnuStyle.colour", "ORANGE");
         newProperties.put("mnuExport.colour", "ORANGE");
         newProperties.put("mnuItemNoBoarder.colour", "ORANGE");

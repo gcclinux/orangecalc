@@ -51,7 +51,7 @@ public class PlainAction implements ActionListener {
     owner.mnuItemBack.setForeground(null);
     owner.mnuItemButtonStyle.setForeground(null);
     owner.mnuItemOrange.setForeground(null);
-    owner.mnuItemDarkGray.setForeground(null);
+
     OrangeCalc.mnuStyle.setForeground(null);
     owner.mnuExport.setForeground(null);
     owner.mnuItemNoBoarder.setForeground(null);
@@ -122,7 +122,7 @@ public class PlainAction implements ActionListener {
         newProperties.put("mnuItemBack.colour", "null");
         newProperties.put("mnuItemButtonStyle.colour", "null");
         newProperties.put("mnuItemOrange.colour", "null");
-        newProperties.put("mnuItemDarkGray.colour", "null");
+
         newProperties.put("mnuStyle.colour", "null");
         newProperties.put("mnuExport.colour", "null");
         newProperties.put("mnuItemNoBoarder.colour", "null");

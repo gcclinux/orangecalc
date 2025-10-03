@@ -145,7 +145,6 @@ public class OrangeCalc extends JFrame implements ActionListener {
 	public JMenuItem mnuCopyResult = new JMenuItem("Copy (result)", iconCopyResult );
 	public JMenuItem mnuExport = new JMenuItem("Export (Excel)", iconExport );
 	
-	public JMenuItem mnuItemDarkGray = new JMenuItem("Dark Gray", iconGray); // Sub-Menu item
 	public JMenuItem mnuItemOrange = new JMenuItem("Orange", iconOrange); // Sub-Menu item
 	public JMenuItem mnuItemPlain = new JMenuItem("Plain", iconBorderPlain);
 	public JMenuItem mnuItemNoBoarder = new JMenuItem("Plain", iconBorderPlain);
@@ -208,7 +207,6 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		mnuItemBack.setFont(FontTheme.size14p);
 		mnuItemButtonStyle.setFont(FontTheme.size14p);
 		mnuItemOrange.setFont(FontTheme.size14p);
-		mnuItemDarkGray.setFont(FontTheme.size14p);
 		mnuExport.setFont(FontTheme.size14p);
 		mnuItemNoBoarder.setFont(FontTheme.size14p);
 		mnuItemBorderCompound.setFont(FontTheme.size14p);
@@ -243,7 +241,6 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		mnuItemBack.add(mnuItemLime);
 		mnuItemBack.add(mnuItemPlain);
 		mnuItemBack.add(mnuItemOrange);
-		mnuItemBack.add(mnuItemDarkGray);
 		mnuItemButtonStyle.add(mnuItemNoBoarder);
 		mnuItemButtonStyle.add(mnuItemBorderCompound);
 		mnuItemButtonStyle.add(mnuItemBorderLower);
@@ -296,7 +293,6 @@ public class OrangeCalc extends JFrame implements ActionListener {
 			mnuItemBack.setForeground(CalcProperties.ORANGE);
 			mnuItemButtonStyle.setForeground(CalcProperties.ORANGE);
 			mnuItemOrange.setForeground(CalcProperties.ORANGE);
-			mnuItemDarkGray.setForeground(CalcProperties.ORANGE);
 			mnuStyle.setForeground(CalcProperties.ORANGE);
 			mnuExport.setForeground(CalcProperties.ORANGE);
 			mnuItemNoBoarder.setForeground(CalcProperties.ORANGE);
@@ -367,7 +363,6 @@ public class OrangeCalc extends JFrame implements ActionListener {
 				newProperties.put("mnuItemBack.colour", "ORANGE");
 				newProperties.put("mnuItemButtonStyle.colour", "ORANGE");
 				newProperties.put("mnuItemOrange.colour", "ORANGE");
-				newProperties.put("mnuItemDarkGray.colour", "ORANGE");
 				newProperties.put("mnuStyle.colour", "ORANGE");
 				newProperties.put("mnuExport.colour", "ORANGE");
 				newProperties.put("mnuItemNoBoarder.colour", "ORANGE");
@@ -440,7 +435,6 @@ public class OrangeCalc extends JFrame implements ActionListener {
 			if (prop.getProperty("mnuItemNoBoarder.colour") == null){ prop.setProperty("mnuItemNoBoarder.colour", "ORANGE"); }
 			if (prop.getProperty("mnuItemLime.colour") == null){ prop.setProperty("mnuItemLime.colour", "ORANGE"); }
 			if (prop.getProperty("mnuSoundControl.colour") == null){ prop.setProperty("mnuSoundControl.colour", "ORANGE"); }
-			if (prop.getProperty("mnuItemDarkGray.colour") == null){ prop.setProperty("mnuItemDarkGray.colour", "ORANGE"); }
 			if (prop.getProperty("mnuHelp.colour") == null){ prop.setProperty("mnuHelp.colour", "ORANGE"); }
 			if (prop.getProperty("mnuItemBorderLower.colour") == null){ prop.setProperty("mnuItemBorderLower.colour", "ORANGE"); }
 			if (prop.getProperty("audio.status") == null){ prop.setProperty("audio.status", "ORANGE"); }
@@ -535,7 +529,6 @@ public class OrangeCalc extends JFrame implements ActionListener {
 			setMenuItemColor(mnuItemBack, prop, "mnuItemBack.colour");
 			setMenuItemColor(mnuItemButtonStyle, prop, "mnuItemButtonStyle.colour");
 			setMenuItemColor(mnuItemOrange, prop, "mnuItemOrange.colour");
-			setMenuItemColor(mnuItemDarkGray, prop, "mnuItemDarkGray.colour");
 			setMenuItemColor(mnuStyle, prop, "mnuStyle.colour");
 			setMenuItemColor(mnuExport, prop, "mnuExport.colour");
 			setMenuItemColor(mnuItemNoBoarder, prop, "mnuItemNoBoarder.colour");
@@ -841,8 +834,6 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		mnuItemNoBoarder.addActionListener(new NoBorderAction(button));
 		
 		mnuItemPlain.addActionListener(new PlainAction(this, button, row, (Border) compound, loweredbevel, raisedbevel));
-		
-		mnuItemDarkGray.addActionListener(new DarkGrayAction(this, button, row, (Border) compound, loweredbevel, raisedbevel));
 		
 		mnuItemLime.addActionListener(new LimeAction(this, button, row, (Border) compound, loweredbevel, raisedbevel));
 	

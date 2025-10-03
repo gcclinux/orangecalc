@@ -143,7 +143,7 @@ public class CalcProperties {
 			newProperties.put("mnuItemBack.colour", "ORANGE");
 			newProperties.put("mnuItemButtonStyle.colour", "ORANGE");
 			newProperties.put("mnuItemOrange.colour", "ORANGE");
-			newProperties.put("mnuItemDarkGray.colour", "ORANGE");
+
 			newProperties.put("mnuStyle.colour", "ORANGE");
 			newProperties.put("mnuExport.colour", "ORANGE");
 			newProperties.put("mnuItemNoBoarder.colour", "ORANGE");

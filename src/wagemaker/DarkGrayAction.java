@@ -48,7 +48,7 @@ public class DarkGrayAction implements ActionListener {
         owner.mnuItemBack.setForeground(CalcProperties.DARKGREY);
         owner.mnuItemButtonStyle.setForeground(CalcProperties.DARKGREY);
         owner.mnuItemOrange.setForeground(CalcProperties.DARKGREY);
-        owner.mnuItemDarkGray.setForeground(CalcProperties.DARKGREY);
+
     OrangeCalc.mnuStyle.setForeground(CalcProperties.DARKGREY);
         owner.mnuExport.setForeground(CalcProperties.DARKGREY);
         owner.mnuItemNoBoarder.setForeground(CalcProperties.DARKGREY);
@@ -130,7 +130,7 @@ public class DarkGrayAction implements ActionListener {
         newProperties.put("mnuItemBack.colour", "DARKGREY");
         newProperties.put("mnuItemButtonStyle.colour", "DARKGREY");
         newProperties.put("mnuItemOrange.colour", "DARKGREY");
-        newProperties.put("mnuItemDarkGray.colour", "DARKGREY");
+
         newProperties.put("mnuStyle.colour", "DARKGREY");
         newProperties.put("mnuExport.colour", "DARKGREY");
         newProperties.put("mnuItemNoBoarder.colour", "DARKGREY");
