@@ -67,9 +67,10 @@ public class About {
 		JFrame About = new JFrame();
 		
 		About.setLayout(null);
+		About.setLocationRelativeTo(null);
 		About.setVisible(true);
 		About.setTitle(CalcProperties.Title);
-		About.setSize(300, 300);
+		About.setSize(355, 355);
 		About.setResizable(false);
 		
 		About.add(label);

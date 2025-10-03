@@ -162,8 +162,6 @@ public class OrangeCalc extends JFrame implements ActionListener {
 
 	// Finish Creating boarders
 
-	// END THEME
-
 	// Key press constructor
 
 	class KeyPressed extends AbstractAction {
@@ -313,27 +311,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 				row[i].setBackground(CalcProperties.ORANGE);
 			}
 			
-			Map<Integer, Character> keystrokeMap = new HashMap<Integer, Character>();
-			
-			keystrokeMap.put(14, (char) KeyEvent.VK_ESCAPE);
-			keystrokeMap.put(0, '7');
-			keystrokeMap.put(1, '8');
-			keystrokeMap.put(2, '9');
-			keystrokeMap.put(3, '+');
-			keystrokeMap.put(4, '4');
-			keystrokeMap.put(5, '5');
-			keystrokeMap.put(6, '6');
-			keystrokeMap.put(7, '-');
-			keystrokeMap.put(8, '1');
-			keystrokeMap.put(9, '2');
-			keystrokeMap.put(10, '3');
-			keystrokeMap.put(11, '*');
-			keystrokeMap.put(12, '.');
-			keystrokeMap.put(13, '/');
-			keystrokeMap.put(17, '=');
-			keystrokeMap.put(17, (char) KeyEvent.VK_ENTER);
-			keystrokeMap.put(18, '0');
-			keystrokeMap.put(19, '%');
+			Map<Integer, Character> keystrokeMap = createKeystrokeMap();
 			
 			for (int i = 0; i < 24; i++) {
 				button[i] = new JButton(); // Moved
@@ -537,264 +515,35 @@ public class OrangeCalc extends JFrame implements ActionListener {
 			String MNUFILE = prop.getProperty("mnuFile.colour");
 			
 			// Identify colour and assign colour
-			if (MNUFILE.equals(ORANGE)) {	
-				mnuFile.setForeground(CalcProperties.ORANGE);
-			} else if (MNUFILE.equals(LIME)) {	
-				mnuFile.setForeground(CalcProperties.LIME);
-			} else if (MNUFILE.equals(DARKGREY)) {	
-				mnuFile.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUFILE.equals(BLACK)) {	
-				mnuFile.setForeground(CalcProperties.BLACK);
-			}
+			setMenuItemColor(mnuFile, prop, "mnuFile.colour");
 			
 			
-			String MB = prop.getProperty("mb.colour");
-			if (MB.equals(ORANGE)) {	
-				mb.setForeground(CalcProperties.ORANGE);
-			} else if (MB.equals(LIME)) {	
-				mb.setForeground(CalcProperties.LIME);
-			} else if (MB.equals(DARKGREY)) {	
-				mb.setForeground(CalcProperties.DARKGREY);
-			} else if (MB.equals(BLACK)) {	
-				mb.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUEDIT = prop.getProperty("mnuEdit.colour");
-			if (MNUEDIT.equals(ORANGE)) {	
-				mnuEdit.setForeground(CalcProperties.ORANGE);
-			} else if (MNUEDIT.equals(LIME)) {	
-				mnuEdit.setForeground(CalcProperties.LIME);
-			} else if (MNUEDIT.equals(DARKGREY)) {	
-				mnuEdit.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUEDIT.equals(BLACK)) {	
-				mnuEdit.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUHELP = prop.getProperty("mnuHelp.colour");
-			if (MNUHELP.equals(ORANGE)) {	
-				mnuHelp.setForeground(CalcProperties.ORANGE);
-			} else if (MNUHELP.equals(LIME)) {	
-				mnuHelp.setForeground(CalcProperties.LIME);
-			} else if (MNUHELP.equals(DARKGREY)) {	
-				mnuHelp.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUHELP.equals(BLACK)) {	
-				mnuHelp.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMQUIT = prop.getProperty("mnuItemQuit.colour");
-			if (MNUITEMQUIT.equals(ORANGE)) {	
-				mnuItemQuit.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMQUIT.equals(LIME)) {	
-				mnuItemQuit.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMQUIT.equals(DARKGREY)) {	
-				mnuItemQuit.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMQUIT.equals(BLACK)) {	
-				mnuItemQuit.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMABOUT = prop.getProperty("mnuItemAbout.colour");
-			if (MNUITEMABOUT.equals(ORANGE)) {	
-				mnuItemAbout.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMABOUT.equals(LIME)) {	
-				mnuItemAbout.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMABOUT.equals(DARKGREY)) {	
-				mnuItemAbout.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMABOUT.equals(BLACK)) {	
-				mnuItemAbout.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMHIST = prop.getProperty("mnuItemHist.colour");
-			if (MNUITEMHIST.equals(ORANGE)) {	
-				mnuItemHist.setForeground(CalcProperties.ORANGE);
-				mnuItemHistOld.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMHIST.equals(LIME)) {	
-				mnuItemHist.setForeground(CalcProperties.LIME);
-				mnuItemHistOld.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMHIST.equals(DARKGREY)) {	
-				mnuItemHist.setForeground(CalcProperties.DARKGREY);
-				mnuItemHistOld.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMHIST.equals(BLACK)) {	
-				mnuItemHist.setForeground(CalcProperties.BLACK);
-				mnuItemHistOld.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUCLEARHIST = prop.getProperty("mnuClearHist.colour");
-			if (MNUCLEARHIST.equals(ORANGE)) {	
-				mnuClearHist.setForeground(CalcProperties.ORANGE);
-			} else if (MNUCLEARHIST.equals(LIME)) {	
-				mnuClearHist.setForeground(CalcProperties.LIME);
-			} else if (MNUCLEARHIST.equals(DARKGREY)) {	
-				mnuClearHist.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUCLEARHIST.equals(BLACK)) {	
-				mnuClearHist.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUSOUNDCONTROL = prop.getProperty("mnuSoundControl.colour");
-			if (MNUSOUNDCONTROL.equals(ORANGE)) {	
-				mnuSoundControl.setForeground(CalcProperties.ORANGE);
-			} else if (MNUSOUNDCONTROL.equals(LIME)) {	
-				mnuSoundControl.setForeground(CalcProperties.LIME);
-			} else if (MNUSOUNDCONTROL.equals(DARKGREY)) {	
-				mnuSoundControl.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUSOUNDCONTROL.equals(BLACK)) {	
-				mnuSoundControl.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMSUPPORT = prop.getProperty("mnuItemSupport.colour");
-			if (MNUITEMSUPPORT.equals(ORANGE)) {	
-				mnuItemSupport.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMSUPPORT.equals(LIME)) {	
-				mnuItemSupport.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMSUPPORT.equals(DARKGREY)) {	
-				mnuItemSupport.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMSUPPORT.equals(BLACK)) {	
-				mnuItemSupport.setForeground(CalcProperties.BLACK);
-			}
+			setMenuItemColor(mb, prop, "mb.colour");
+			setMenuItemColor(mnuEdit, prop, "mnuEdit.colour");
+			setMenuItemColor(mnuHelp, prop, "mnuHelp.colour");
+			setMenuItemColor(mnuItemQuit, prop, "mnuItemQuit.colour");
+			setMenuItemColor(mnuItemAbout, prop, "mnuItemAbout.colour");
+			setMenuItemColor(mnuItemHist, prop, "mnuItemHist.colour");
+			setMenuItemColor(mnuItemHistOld, prop, "mnuItemHist.colour");
+			setMenuItemColor(mnuClearHist, prop, "mnuClearHist.colour");
+			setMenuItemColor(mnuSoundControl, prop, "mnuSoundControl.colour");
+			setMenuItemColor(mnuItemSupport, prop, "mnuItemSupport.colour");
 
 
 			//
-			String MNUCOPYRESULT = prop.getProperty("mnuCopyResult.colour");
-			if (MNUCOPYRESULT.equals(ORANGE)) {	
-				mnuCopyResult.setForeground(CalcProperties.ORANGE);
-			} else if (MNUCOPYRESULT.equals(LIME)) {	
-				mnuCopyResult.setForeground(CalcProperties.LIME);
-			} else if (MNUCOPYRESULT.equals(DARKGREY)) {	
-				mnuCopyResult.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUCOPYRESULT.equals(BLACK)) {	
-				mnuCopyResult.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMBACK = prop.getProperty("mnuItemBack.colour");
-			if (MNUITEMBACK.equals(ORANGE)) {	
-				mnuItemBack.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMBACK.equals(LIME)) {	
-				mnuItemBack.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMBACK.equals(DARKGREY)) {	
-				mnuItemBack.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMBACK.equals(BLACK)) {	
-				mnuItemBack.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMBUTTONSTYLE = prop.getProperty("mnuItemButtonStyle.colour");
-			if (MNUITEMBUTTONSTYLE.equals(ORANGE)) {	
-				mnuItemButtonStyle.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMBUTTONSTYLE.equals(LIME)) {	
-				mnuItemButtonStyle.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMBUTTONSTYLE.equals(DARKGREY)) {	
-				mnuItemButtonStyle.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMBUTTONSTYLE.equals(BLACK)) {	
-				mnuItemButtonStyle.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMORANGE = prop.getProperty("mnuItemOrange.colour");
-			if (MNUITEMORANGE.equals(ORANGE)) {	
-				mnuItemOrange.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMORANGE.equals(LIME)) {	
-				mnuItemOrange.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMORANGE.equals(DARKGREY)) {	
-				mnuItemOrange.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMORANGE.equals(BLACK)) {	
-				mnuItemOrange.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMDARLGRAY = prop.getProperty("mnuItemDarkGray.colour");
-			if (MNUITEMDARLGRAY.equals(ORANGE)) {	
-				mnuItemDarkGray.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMDARLGRAY.equals(LIME)) {	
-				mnuItemDarkGray.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMDARLGRAY.equals(DARKGREY)) {	
-				mnuItemDarkGray.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMDARLGRAY.equals(BLACK)) {	
-				mnuItemDarkGray.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUSTYLE = prop.getProperty("mnuStyle.colour");
-			if (MNUSTYLE.equals(ORANGE)) {	
-				mnuStyle.setForeground(CalcProperties.ORANGE);
-			} else if (MNUSTYLE.equals(LIME)) {	
-				mnuStyle.setForeground(CalcProperties.LIME);
-			} else if (MNUSTYLE.equals(DARKGREY)) {	
-				mnuStyle.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUSTYLE.equals(BLACK)) {	
-				mnuStyle.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUEXPORT = prop.getProperty("mnuExport.colour");
-			if (MNUEXPORT.equals(ORANGE)) {	
-				mnuExport.setForeground(CalcProperties.ORANGE);
-			} else if (MNUEXPORT.equals(LIME)) {	
-				mnuExport.setForeground(CalcProperties.LIME);
-			} else if (MNUEXPORT.equals(DARKGREY)) {	
-				mnuExport.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUEXPORT.equals(BLACK)) {	
-				mnuExport.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMNOBOARDER = prop.getProperty("mnuItemNoBoarder.colour"); 
-			if (MNUITEMNOBOARDER.equals(ORANGE)) {	
-				mnuItemNoBoarder.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMNOBOARDER.equals(LIME)) {	
-				mnuItemNoBoarder.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMNOBOARDER.equals(DARKGREY)) {	
-				mnuItemNoBoarder.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMNOBOARDER.equals(BLACK)) {	
-				mnuItemNoBoarder.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMCOMPOUND = prop.getProperty("mnuItemBorderCompound.colour");
-			if (MNUITEMCOMPOUND.equals(ORANGE)) {	
-				mnuItemBorderCompound.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMCOMPOUND.equals(LIME)) {	
-				mnuItemBorderCompound.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMCOMPOUND.equals(DARKGREY)) {	
-				mnuItemBorderCompound.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMCOMPOUND.equals(BLACK)) {	
-				mnuItemBorderCompound.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMBOARDERLOWER = prop.getProperty("mnuItemBorderLower.colour");
-			if (MNUITEMBOARDERLOWER.equals(ORANGE)) {	
-				mnuItemBorderLower.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMBOARDERLOWER.equals(LIME)) {	
-				mnuItemBorderLower.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMBOARDERLOWER.equals(DARKGREY)) {	
-				mnuItemBorderLower.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMBOARDERLOWER.equals(BLACK)) {	
-				mnuItemBorderLower.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMBOADERRAISED = prop.getProperty("mnuItemBorderRaised.colour");
-			if (MNUITEMBOADERRAISED.equals(ORANGE)) {	
-				mnuItemBorderRaised.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMBOADERRAISED.equals(LIME)) {	
-				mnuItemBorderRaised.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMBOADERRAISED.equals(DARKGREY)) {	
-				mnuItemBorderRaised.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMBOADERRAISED.equals(BLACK)) {	
-				mnuItemBorderRaised.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMLIME = prop.getProperty("mnuItemLime.colour");
-			if (MNUITEMLIME.equals(ORANGE)) {	
-				mnuItemLime.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMLIME.equals(LIME)) {	
-				mnuItemLime.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMLIME.equals(DARKGREY)) {	
-				mnuItemLime.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMLIME.equals(BLACK)) {	
-				mnuItemLime.setForeground(CalcProperties.BLACK);
-			}
-			//
-			String MNUITEMPLAIN = prop.getProperty("mnuItemPlain.colour");
-			if (MNUITEMPLAIN.equals(ORANGE)) {	
-				mnuItemPlain.setForeground(CalcProperties.ORANGE);
-			} else if (MNUITEMPLAIN.equals(LIME)) {	
-				mnuItemPlain.setForeground(CalcProperties.LIME);
-			} else if (MNUITEMPLAIN.equals(DARKGREY)) {	
-				mnuItemPlain.setForeground(CalcProperties.DARKGREY);
-			} else if (MNUITEMPLAIN.equals(BLACK)) {	
-				mnuItemPlain.setForeground(CalcProperties.BLACK);
-			}
+			setMenuItemColor(mnuCopyResult, prop, "mnuCopyResult.colour");
+			setMenuItemColor(mnuItemBack, prop, "mnuItemBack.colour");
+			setMenuItemColor(mnuItemButtonStyle, prop, "mnuItemButtonStyle.colour");
+			setMenuItemColor(mnuItemOrange, prop, "mnuItemOrange.colour");
+			setMenuItemColor(mnuItemDarkGray, prop, "mnuItemDarkGray.colour");
+			setMenuItemColor(mnuStyle, prop, "mnuStyle.colour");
+			setMenuItemColor(mnuExport, prop, "mnuExport.colour");
+			setMenuItemColor(mnuItemNoBoarder, prop, "mnuItemNoBoarder.colour");
+			setMenuItemColor(mnuItemBorderCompound, prop, "mnuItemBorderCompound.colour");
+			setMenuItemColor(mnuItemBorderLower, prop, "mnuItemBorderLower.colour");
+			setMenuItemColor(mnuItemBorderRaised, prop, "mnuItemBorderRaised.colour");
+			setMenuItemColor(mnuItemLime, prop, "mnuItemLime.colour");
+			setMenuItemColor(mnuItemPlain, prop, "mnuItemPlain.colour");
 			//
 			String CALROW = prop.getProperty("row.colour");
 			
@@ -804,45 +553,13 @@ public class OrangeCalc extends JFrame implements ActionListener {
 				} 
 				//\\ ONLY IN ORANGE AT THE MOMENT
 				
-				Map<Integer, Character> keystrokeMap = new HashMap<Integer, Character>();
-				
-				keystrokeMap.put(14, (char) KeyEvent.VK_ESCAPE);
-				keystrokeMap.put(0, '7');
-				keystrokeMap.put(1, '8');
-				keystrokeMap.put(2, '9');
-				keystrokeMap.put(3, '+');
-				keystrokeMap.put(4, '4');
-				keystrokeMap.put(5, '5');
-				keystrokeMap.put(6, '6');
-				keystrokeMap.put(7, '-');
-				keystrokeMap.put(8, '1');
-				keystrokeMap.put(9, '2');
-				keystrokeMap.put(10, '3');
-				keystrokeMap.put(11, '*');
-				keystrokeMap.put(12, '.');
-				keystrokeMap.put(13, '/');
-				keystrokeMap.put(17, '=');
-				keystrokeMap.put(17, (char) KeyEvent.VK_ENTER);
-				keystrokeMap.put(18, '0');
-				keystrokeMap.put(19, '%');
+				Map<Integer, Character> keystrokeMap = createKeystrokeMap();
 				
 				String STYLETYPE = prop.getProperty("style.type");	
 				
 				for (int i = 0; i < 24; i++) {
 					button[i] = new JButton(); // Moved
-					//button[i].setBorder((Border) compound);  r
-						if (STYLETYPE.equals("compound")) {
-							button[i].setBorder((Border) compound);
-						} else if (STYLETYPE.equals("loweredbevel")) {
-							button[i].setBorder((Border) loweredbevel);
-						} else if (STYLETYPE.equals("raisedbevel")) {
-							button[i].setBorder((Border) raisedbevel);
-							//button[20].setBorder(null);                         LINE 758
-						} else if (STYLETYPE.equals("null")) {
-							button[i].setBorder((Border) null);
-						} else {
-							System.out.println("NO BOARDER FOUND STYLE FOUND = " + STYLETYPE);
-						}
+					button[i].setBorder(getBorderByType(STYLETYPE));
 					button[i].setContentAreaFilled(true); 
 					button[i].setText(buttonString[i]);
 
@@ -878,45 +595,13 @@ public class OrangeCalc extends JFrame implements ActionListener {
 				} 
 				//\\ ONLY IN ORANGE AT THE MOMENT
 				
-				Map<Integer, Character> keystrokeMap = new HashMap<Integer, Character>();
-				
-				keystrokeMap.put(14, (char) KeyEvent.VK_ESCAPE);
-				keystrokeMap.put(0, '7');
-				keystrokeMap.put(1, '8');
-				keystrokeMap.put(2, '9');
-				keystrokeMap.put(3, '+');
-				keystrokeMap.put(4, '4');
-				keystrokeMap.put(5, '5');
-				keystrokeMap.put(6, '6');
-				keystrokeMap.put(7, '-');
-				keystrokeMap.put(8, '1');
-				keystrokeMap.put(9, '2');
-				keystrokeMap.put(10, '3');
-				keystrokeMap.put(11, '*');
-				keystrokeMap.put(12, '.');
-				keystrokeMap.put(13, '/');
-				keystrokeMap.put(17, '=');
-				keystrokeMap.put(17, (char) KeyEvent.VK_ENTER);
-				keystrokeMap.put(18, '0');
-				keystrokeMap.put(19, '%');
+				Map<Integer, Character> keystrokeMap = createKeystrokeMap();
 				
 				String STYLETYPE = prop.getProperty("style.type");				
 				
 				for (int i = 0; i < 24; i++) {
 					button[i] = new JButton(); // Moved
-					//button[i].setBorder((Border) compound);  r
-						if (STYLETYPE.equals("compound")) {
-							button[i].setBorder((Border) compound);
-						} else if (STYLETYPE.equals("loweredbevel")) {
-							button[i].setBorder((Border) loweredbevel);
-						} else if (STYLETYPE.equals("raisedbevel")) {
-							button[i].setBorder((Border) raisedbevel);
-							//button[20].setBorder(null);
-						} else if (STYLETYPE.equals("null")) {
-							button[i].setBorder((Border) null);
-						} else {
-							System.out.println("NO BOARDER FOUND STYLE FOUND = " + STYLETYPE);
-						}
+					button[i].setBorder(getBorderByType(STYLETYPE));
 					button[i].setContentAreaFilled(true); 
 					button[i].setText(buttonString[i]);
 
@@ -951,45 +636,13 @@ public class OrangeCalc extends JFrame implements ActionListener {
 					row[i].setBackground(CalcProperties.LIME);
 				} 
 				
-				Map<Integer, Character> keystrokeMap = new HashMap<Integer, Character>();
-				
-				keystrokeMap.put(14, (char) KeyEvent.VK_ESCAPE);
-				keystrokeMap.put(0, '7');
-				keystrokeMap.put(1, '8');
-				keystrokeMap.put(2, '9');
-				keystrokeMap.put(3, '+');
-				keystrokeMap.put(4, '4');
-				keystrokeMap.put(5, '5');
-				keystrokeMap.put(6, '6');
-				keystrokeMap.put(7, '-');
-				keystrokeMap.put(8, '1');
-				keystrokeMap.put(9, '2');
-				keystrokeMap.put(10, '3');
-				keystrokeMap.put(11, '*');
-				keystrokeMap.put(12, '.');
-				keystrokeMap.put(13, '/');
-				keystrokeMap.put(17, '=');
-				keystrokeMap.put(17, (char) KeyEvent.VK_ENTER);
-				keystrokeMap.put(18, '0');
-				keystrokeMap.put(19, '%');
+				Map<Integer, Character> keystrokeMap = createKeystrokeMap();
 				
 				String STYLETYPE = prop.getProperty("style.type");
 
 				for (int i = 0; i < 24; i++) {
 					button[i] = new JButton(); 
-					//button[i].setBorder((Border) compound);  r
-						if (STYLETYPE.equals("compound")) {
-							button[i].setBorder((Border) compound);
-						} else if (STYLETYPE.equals("loweredbevel")) {
-							button[i].setBorder((Border) loweredbevel);
-						} else if (STYLETYPE.equals("raisedbevel")) {
-							button[i].setBorder((Border) raisedbevel);
-							//button[20].setBorder(null);
-						} else if (STYLETYPE.equals("null")) {
-							button[i].setBorder((Border) null);
-						} else {
-							System.out.println("NO BOARDER FOUND STYLE FOUND = " + STYLETYPE);
-						}
+					button[i].setBorder(getBorderByType(STYLETYPE));
 					button[i].setContentAreaFilled(true); 
 					button[i].setText(buttonString[i]);
 
@@ -1022,44 +675,13 @@ public class OrangeCalc extends JFrame implements ActionListener {
 				for (int i = 0; i < 5; i++) {
 					row[i].setBackground(CalcProperties.BLACK);
 				} 
-				Map<Integer, Character> keystrokeMap = new HashMap<Integer, Character>();
-				
-				keystrokeMap.put(14, (char) KeyEvent.VK_ESCAPE);
-				keystrokeMap.put(0, '7');
-				keystrokeMap.put(1, '8');
-				keystrokeMap.put(2, '9');
-				keystrokeMap.put(3, '+');
-				keystrokeMap.put(4, '4');
-				keystrokeMap.put(5, '5');
-				keystrokeMap.put(6, '6');
-				keystrokeMap.put(7, '-');
-				keystrokeMap.put(8, '1');
-				keystrokeMap.put(9, '2');
-				keystrokeMap.put(10, '3');
-				keystrokeMap.put(11, '*');
-				keystrokeMap.put(12, '.');
-				keystrokeMap.put(13, '/');
-				keystrokeMap.put(17, '=');
-				keystrokeMap.put(17, (char) KeyEvent.VK_ENTER);
-				keystrokeMap.put(18, '0');
-				keystrokeMap.put(19, '%');
+				Map<Integer, Character> keystrokeMap = createKeystrokeMap();
 				
 				String STYLETYPE = prop.getProperty("style.type");
 
 				for (int i = 0; i < 24; i++) {
 					button[i] = new JButton(); // Moved
-					//button[i].setBorder((Border) compound);  r
-						if (STYLETYPE.equals("compound")) {
-							button[i].setBorder((Border) compound);
-						} else if (STYLETYPE.equals("loweredbevel")) {
-							button[i].setBorder((Border) loweredbevel);
-						} else if (STYLETYPE.equals("raisedbevel")) {
-							button[i].setBorder((Border) raisedbevel);
-						} else if (STYLETYPE.equals("null")) {
-							button[i].setBorder((Border) null);
-						} else {
-							System.out.println("NO BOARDER FOUND STYLE FOUND = " + STYLETYPE);
-						}
+					button[i].setBorder(getBorderByType(STYLETYPE));
 					button[i].setContentAreaFilled(true); 
 					button[i].setText(buttonString[i]);
 
@@ -1307,12 +929,21 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		mnuItemSupport.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				try 
-		        {
-					Desktop.getDesktop().browse(URI.create("https://github.com/gcclinux/orangecalc/discussions/").toURL().toURI());
-		        }           
-		        catch (Exception e) {}
-
+				try {
+					if (Desktop.isDesktopSupported()) {
+						Desktop desktop = Desktop.getDesktop();
+						if (desktop.isSupported(Desktop.Action.BROWSE)) {
+							desktop.browse(new URI("https://github.com/gcclinux/orangecalc/discussions/"));
+							return;
+						}
+					}
+					// Fallback for environments without desktop support (like WSL)
+					System.out.println("Browser not supported in this environment.");
+					System.out.println("Please visit: https://github.com/gcclinux/orangecalc/discussions/");
+				} catch (Exception e) {
+					System.err.println("Failed to open browser: " + e.getMessage());
+					System.out.println("Please visit: https://github.com/gcclinux/orangecalc/discussions/");
+				}
 			}
 		});
 
@@ -1331,18 +962,110 @@ public class OrangeCalc extends JFrame implements ActionListener {
 
 	} // End super("Calculator XL")
 
-	public void clear() {
-		String Audio = null;
+	// ==================== HELPER METHODS ====================
+	
+	/**
+	 * Play audio sound if enabled in settings
+	 */
+	private void playAudioIfEnabled() {
 		try {
-			Audio = CalcProperties.AudioTrue();
-		} catch (IOException e2) {
-			e2.printStackTrace();
-		} // ZZ
-
-		try {
-			if (Audio.contains("true")) {
+			if (CalcProperties.AudioTrue().contains("true")) {
 				new Sound("typewriter.wav").start();
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Set menu item color from properties
+	 */
+	private void setMenuItemColor(JComponent item, Properties prop, String propertyKey) {
+		String colorName = prop.getProperty(propertyKey);
+		Color color = switch(colorName) {
+			case "ORANGE" -> CalcProperties.ORANGE;
+			case "LIME" -> CalcProperties.LIME;
+			case "DARKGREY" -> CalcProperties.DARKGREY;
+			case "BLACK" -> CalcProperties.BLACK;
+			default -> CalcProperties.ORANGE;
+		};
+		item.setForeground(color);
+	}
+	
+	/**
+	 * Get border by type name
+	 */
+	private Border getBorderByType(String styleType) {
+		return switch(styleType) {
+			case "compound" -> (Border) compound;
+			case "loweredbevel" -> (Border) loweredbevel;
+			case "raisedbevel" -> (Border) raisedbevel;
+			case "null" -> null;
+			default -> {
+				System.out.println("NO BORDER FOUND, STYLE = " + styleType);
+				yield (Border) compound;
+			}
+		};
+	}
+	
+	/**
+	 * Create keystroke map for keyboard shortcuts
+	 */
+	private Map<Integer, Character> createKeystrokeMap() {
+		Map<Integer, Character> keystrokeMap = new HashMap<>();
+		keystrokeMap.put(14, (char) KeyEvent.VK_ESCAPE);
+		keystrokeMap.put(0, '7');
+		keystrokeMap.put(1, '8');
+		keystrokeMap.put(2, '9');
+		keystrokeMap.put(3, '+');
+		keystrokeMap.put(4, '4');
+		keystrokeMap.put(5, '5');
+		keystrokeMap.put(6, '6');
+		keystrokeMap.put(7, '-');
+		keystrokeMap.put(8, '1');
+		keystrokeMap.put(9, '2');
+		keystrokeMap.put(10, '3');
+		keystrokeMap.put(11, '*');
+		keystrokeMap.put(12, '.');
+		keystrokeMap.put(13, '/');
+		keystrokeMap.put(17, '=');
+		keystrokeMap.put(17, (char) KeyEvent.VK_ENTER);
+		keystrokeMap.put(18, '0');
+		keystrokeMap.put(19, '%');
+		return keystrokeMap;
+	}
+	
+	/**
+	 * Handle number button press
+	 */
+	private void handleNumberButton(String digit) {
+		playAudioIfEnabled();
+		
+		if (allValues.getText().isEmpty()) {
+			display.setText(digit);
+			allValues.setText(digit);
+		} else {
+			if (checkResult) {
+				if (display.getText().contains(".")) {
+					display.setText(display.getText() + digit);
+				} else {
+					display.setText(digit);
+				}
+				allValues.setText(display.getText());
+				checkResult = false;
+			} else {
+				display.setText(display.getText() + digit);
+				allValues.setText(display.getText());
+			}
+		}
+	}
+	
+	// ==================== END HELPER METHODS ====================
+
+	public void clear() {
+		playAudioIfEnabled();
+		
+		try {
 			display.setText("");
 			displayMini.setText("");
 			allValues.setText("");
@@ -1375,16 +1098,8 @@ public class OrangeCalc extends JFrame implements ActionListener {
 			BufferedWriter outHist = new BufferedWriter(resultfilestr);
 
 			if (x == value) {
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} 
 				display.setText(Integer.toString(x));
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
+				playAudioIfEnabled();
 
 				displayMini.setText("x\u00B2 " + allValues.getText() + " = " + Integer.toString(x));
 				outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + "x\u00B2" + allValues.getText() + " = "+ Integer.toString(x) + "</td></tr>");
@@ -1401,15 +1116,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 				outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + "x\u00B2" + allValues.getText() + " = "+ Double.toString(value) + "</td></tr>");
 				outHist.newLine();
 				outHist.close();
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
+				playAudioIfEnabled();
 
 				allValues.setText(Double.toString(round(value, 2)));
 			}
@@ -1431,16 +1138,8 @@ public class OrangeCalc extends JFrame implements ActionListener {
 			BufferedWriter outHist = new BufferedWriter(resultfilestr);
 
 			if (x == value) {
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
 				display.setText(Integer.toString(x));
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
+				playAudioIfEnabled();
 
 				displayMini.setText("Sq (\u221A) " + allValues.getText() + " = "
 						+ Integer.toString(x));
@@ -1459,15 +1158,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 				outHist.write("<tr><td width=\"200px\" align=\"center\" bgcolor=\"#ff6600\">" + new Date().toString() + "</td><td align=\"center\" bgcolor=\"#ff6600\">" + "Sq  &radic; " + allValues.getText() + " = "+ Double.toString(value) + "</td></tr>");
 				outHist.newLine();
 				outHist.close();
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
+				playAudioIfEnabled();
 
 				allValues.setText(Double.toString(value));
 			}
@@ -1480,7 +1171,6 @@ public class OrangeCalc extends JFrame implements ActionListener {
 	public void getPosNeg() {
 		try {
 			double value = Double.parseDouble(display.getText());
-			String str = allValues.getText();
 			if (value != 0) {
 				value = value * (-1);
 				Double xx = Double.valueOf(value);
@@ -1488,27 +1178,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 				if (x == value) {
 					display.setText(Integer.toString(x));
 					allValues.setText(Integer.toString(x));
-					if (str.contains("-")) {
-						String Audio = null;
-						try {
-							Audio = CalcProperties.AudioTrue();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						} // ZZ
-						if (Audio.contains("true")) {
-							new Sound("typewriter.wav").start();
-						}
-					} else {
-						String Audio = null;
-						try {
-							Audio = CalcProperties.AudioTrue();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						} // ZZ
-						if (Audio.contains("true")) {
-							new Sound("typewriter.wav").start();
-						}
-					}
+					playAudioIfEnabled();
 				} else {
 					display.setText(Double.toString(value));
 					allValues.setText(Double.toString(value));
@@ -1659,119 +1329,17 @@ public class OrangeCalc extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		
-
+		// Number buttons 0-9
 		if (ae.getSource() == button[0]) { // Number SEVEN - 7
-			if (allValues.getText().isEmpty()) {
-				display.setText("7");
-				allValues.setText("7");
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			} else {
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-				if (checkResult == true) {
-					if (display.getText().contains(".")){
-						display.setText(display.getText()+"7");
-					} else {
-						display.setText("7");
-					}
-					allValues.setText(display.getText());
-					checkResult = false;
-				} else {
-					display.setText(display.getText() + "7");
-					allValues.setText(display.getText());
-				}
-			}
+			handleNumberButton("7");
 		}
 
 		if (ae.getSource() == button[1]) { // Number EIGHT - 8
-			if (allValues.getText().isEmpty()) {
-				display.setText("8");
-				allValues.setText("8");
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			} else {
-				if (checkResult == true) {
-					if (display.getText().contains(".")){
-						display.setText(display.getText()+"8");
-					} else {
-						display.setText("8");
-					}
-					allValues.setText(display.getText());
-					checkResult = false;
-				} else {
-					display.setText(display.getText() + "8");
-					allValues.setText(display.getText());
-				}
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			}
+			handleNumberButton("8");
 		}
 
 		if (ae.getSource() == button[2]) { // Number NINE - 9
-			if (allValues.getText().isEmpty()) {
-				display.setText("9");
-				allValues.setText("9");
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			} else {
-				if (checkResult == true) {
-					if (display.getText().contains(".")){
-						display.setText(display.getText()+"9");
-					} else {
-						display.setText("9");
-					}
-					allValues.setText(display.getText());
-					checkResult = false;
-				} else {
-					display.setText(display.getText() + "9");
-					allValues.setText(display.getText());
-				}
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			}
+			handleNumberButton("9");
 		}
 
 		if (ae.getSource() == button[3]) { // add function[0] --> Adding numbers
@@ -1794,15 +1362,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 					display.setText(str2);
 					displayMini.setText(str3 + " + ");
 					allValues.setText("");
-					String Audio = null;
-					try {
-						Audio = CalcProperties.AudioTrue();
-					} catch (IOException e2) {
-						e2.printStackTrace();
-					} // ZZ
-					if (Audio.contains("true")) {
-						new Sound("typewriter.wav").start();
-					}
+					playAudioIfEnabled();
 				}
 
 				if (function[0] == false) {
@@ -1812,15 +1372,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 						display.setText("");
 						displayMini.setText(str + " + ");
 						allValues.setText(str);
-						String Audio = null;
-						try {
-							Audio = CalcProperties.AudioTrue();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						} // ZZ
-						if (Audio.contains("true")) {
-							new Sound("typewriter.wav").start();
-						}
+						playAudioIfEnabled();
 					}
 				} else {
 					getResult();
@@ -1831,15 +1383,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 					display.setText(str2);
 					displayMini.setText(str3 + " + ");
 					allValues.setText("");
-					String Audio = null;
-					try {
-						Audio = CalcProperties.AudioTrue();
-					} catch (IOException e2) {
-						e2.printStackTrace();
-					} // ZZ
-					if (Audio.contains("true")) {
-						new Sound("typewriter.wav").start();
-					}
+					playAudioIfEnabled();
 				}
 			}
 		}
@@ -1865,15 +1409,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 					display.setText(str2);
 					displayMini.setText(str3 + " - ");
 					allValues.setText("");
-					String Audio = null;
-					try {
-						Audio = CalcProperties.AudioTrue();
-					} catch (IOException e2) {
-						e2.printStackTrace();
-					} // ZZ
-					if (Audio.contains("true")) {
-						new Sound("typewriter.wav").start();
-					}
+					playAudioIfEnabled();
 				}
 
 				if (function[1] == false) {
@@ -1883,15 +1419,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 						display.setText("");
 						displayMini.setText(str + " - ");
 						allValues.setText(str);
-						String Audio = null;
-						try {
-							Audio = CalcProperties.AudioTrue();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						} // ZZ
-						if (Audio.contains("true")) {
-							new Sound("typewriter.wav").start();
-						}
+						playAudioIfEnabled();
 					}
 				} else {
 					getResult();
@@ -1902,15 +1430,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 					display.setText(str2);
 					displayMini.setText(str3 + " - ");
 					allValues.setText("");
-					String Audio = null;
-					try {
-						Audio = CalcProperties.AudioTrue();
-					} catch (IOException e2) {
-						e2.printStackTrace();
-					} // ZZ
-					if (Audio.contains("true")) {
-						new Sound("typewriter.wav").start();
-					}
+					playAudioIfEnabled();
 				}
 			}
 		}
@@ -1936,15 +1456,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 					display.setText(str2);
 					displayMini.setText(str3 + " x ");
 					allValues.setText("");
-					String Audio = null;
-					try {
-						Audio = CalcProperties.AudioTrue();
-					} catch (IOException e2) {
-						e2.printStackTrace();
-					} // ZZ
-					if (Audio.contains("true")) {
-						new Sound("typewriter.wav").start();
-					}
+					playAudioIfEnabled();
 				}
 
 				if (function[2] == false) {
@@ -1954,15 +1466,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 						display.setText("");
 						displayMini.setText(str + " x ");
 						allValues.setText(str);
-						String Audio = null;
-						try {
-							Audio = CalcProperties.AudioTrue();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						} // ZZ
-						if (Audio.contains("true")) {
-							new Sound("typewriter.wav").start();
-						}
+						playAudioIfEnabled();
 					}
 				} else {
 					getResult();
@@ -1973,15 +1477,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 					display.setText(str2);
 					displayMini.setText(str3 + " x ");
 					allValues.setText("");
-					String Audio = null;
-					try {
-						Audio = CalcProperties.AudioTrue();
-					} catch (IOException e2) {
-						e2.printStackTrace();
-					} // ZZ
-					if (Audio.contains("true")) {
-						new Sound("typewriter.wav").start();
-					}
+					playAudioIfEnabled();
 				}
 			}
 		}
@@ -2008,15 +1504,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 					display.setText(str2);
 					displayMini.setText(str3 + " / ");
 					allValues.setText("");
-					String Audio = null;
-					try {
-						Audio = CalcProperties.AudioTrue();
-					} catch (IOException e2) {
-						e2.printStackTrace();
-					} // ZZ
-					if (Audio.contains("true")) {
-						new Sound("typewriter.wav").start();
-					}
+					playAudioIfEnabled();
 				}
 
 				if (function[3] == false) {
@@ -2026,15 +1514,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 						display.setText("");
 						displayMini.setText(str + " / ");
 						allValues.setText(str);
-						String Audio = null;
-						try {
-							Audio = CalcProperties.AudioTrue();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						} // ZZ
-						if (Audio.contains("true")) {
-							new Sound("typewriter.wav").start();
-						}
+						playAudioIfEnabled();
 					}
 				} else {
 					getResult();
@@ -2045,15 +1525,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 					display.setText(str2);
 					displayMini.setText(str3 + " / ");
 					allValues.setText("");
-					String Audio = null;
-					try {
-						Audio = CalcProperties.AudioTrue();
-					} catch (IOException e2) {
-						e2.printStackTrace();
-					} // ZZ
-					if (Audio.contains("true")) {
-						new Sound("typewriter.wav").start();
-					}
+					playAudioIfEnabled();
 				}
 			}
 		}
@@ -2105,15 +1577,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 						String mstr = displayMini.getText();
 						display.setText(Integer.toString(x));
 						allValues.setText(Integer.toString(x));
-						String Audio = null;
-						try {
-							Audio = CalcProperties.AudioTrue();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						} // ZZ
-						if (Audio.contains("true")) {
-							new Sound("typewriter.wav").start();
-						}
+						playAudioIfEnabled();
 
 						FileWriter resultfilestr = new FileWriter(
 								CalcProperties.historyFile(), true);
@@ -2147,15 +1611,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 						String mstr = displayMini.getText();
 						display.setText(Double.toString(result));
 						allValues.setText(Double.toString(result));
-						String Audio = null;
-						try {
-							Audio = CalcProperties.AudioTrue();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						} // ZZ
-						if (Audio.contains("true")) {
-							new Sound("typewriter.wav").start();
-						}
+						playAudioIfEnabled();
 						if (mstr.contains("=")) {
 							displayMini.setText("(" + mstr + str + "%" + ") = "
 									+ Double.toString(result));
@@ -2175,231 +1631,27 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		}
 
 		if (ae.getSource() == button[5]) { // Number FIVE - 5
-			if (allValues.getText().isEmpty()) {
-				display.setText("5");
-				allValues.setText("5");
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {e2.printStackTrace(); }
-				
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			} else {
-				if (checkResult == true) {
-					if (display.getText().contains(".")){
-						display.setText(display.getText()+"5");
-					} else {
-						display.setText("5");
-					}
-					allValues.setText(display.getText());
-					checkResult = false;
-				} else {
-					display.setText(display.getText() + "5");
-					allValues.setText(display.getText());
-				}
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			}
+			handleNumberButton("5");
 		}
 
 		if (ae.getSource() == button[4]) { // Number FOUR - 4
-			if (allValues.getText().isEmpty()) {
-				display.setText("4");
-				allValues.setText("4");
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			} else {
-				if (checkResult == true) {
-					if (display.getText().contains(".")){
-						display.setText(display.getText()+"4");
-					} else {
-						display.setText("4");
-					}
-					allValues.setText(display.getText());
-					checkResult = false;
-				} else {
-					display.setText(display.getText() + "4");
-					allValues.setText(display.getText());
-				}
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			}
+			handleNumberButton("4");
 		}
 
 		if (ae.getSource() == button[6]) { // Number SIX - 6
-			if (allValues.getText().isEmpty()) {
-				display.setText("6");
-				allValues.setText("6");
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			} else {
-				if (checkResult == true) {
-					if (display.getText().contains(".")){
-						display.setText(display.getText()+"6");
-					} else {
-						display.setText("6");
-					}
-					allValues.setText(display.getText());
-					checkResult = false;
-				} else {
-					display.setText(display.getText() + "6");
-					allValues.setText(display.getText());
-				}
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			}
+			handleNumberButton("6");
 		}
 
 		if (ae.getSource() == button[8]) { // Number ONE - 1
-			if (allValues.getText().isEmpty()) {
-				display.setText("1");
-				allValues.setText("1");
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			} else {
-				if (checkResult == true) {
-					if (display.getText().contains(".")){
-						display.setText(display.getText()+"1");
-					} else {
-						display.setText("1");
-					}
-					allValues.setText(display.getText());
-					checkResult = false;
-				} else {
-					display.setText(display.getText() + "1");
-					allValues.setText(display.getText());
-				}
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			}
+			handleNumberButton("1");
 		}
 
 		if (ae.getSource() == button[9]) { // Number TWO - 2
-			if (allValues.getText().isEmpty()) {
-				display.setText("2");
-				allValues.setText("2");
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			} else {
-				if (checkResult == true) {
-					if (display.getText().contains(".")){
-						display.setText(display.getText()+"2");
-					} else {
-						display.setText("2");
-					}
-					allValues.setText(display.getText());
-					checkResult = false;
-				} else {
-					display.setText(display.getText() + "2");
-					allValues.setText(display.getText());
-				}
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			}
+			handleNumberButton("2");
 		}
 
 		if (ae.getSource() == button[10]) { // Number THREE - 3
-			if (allValues.getText().isEmpty()) {
-				display.setText("3");
-				allValues.setText("3");
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			} else {
-				if (checkResult == true) {
-					
-					if (display.getText().contains(".")){
-						display.setText(display.getText()+"3");
-					} else {
-						display.setText("3");
-					}
-					allValues.setText(display.getText());
-					checkResult = false;
-				} else {
-					display.setText(display.getText() + "3");
-					allValues.setText(display.getText());
-				}
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			}
+			handleNumberButton("3");
 		}
 
 		if (ae.getSource() == button[12]) { // DOT / dot button
@@ -2407,27 +1659,10 @@ public class OrangeCalc extends JFrame implements ActionListener {
 			if (!str.contains(".")) {
 				if (str.isEmpty()) {
 					str = "0";
-					String Audio = null;
-					try {
-						Audio = CalcProperties.AudioTrue();
-					} catch (IOException e2) {
-						e2.printStackTrace();
-					} // ZZ
-					if (Audio.contains("true")) {
-						new Sound("typewriter.wav").start();
-					}
 				}
 				display.setText(str + ".");
 				allValues.setText(str + ".");
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
+				playAudioIfEnabled();
 			}
 		}
 
@@ -2452,45 +1687,13 @@ public class OrangeCalc extends JFrame implements ActionListener {
 					if (function[0] == true || function[1] == true || function[2] == true || function[3] == true) {
 						checkResult = true;
 						getResult();
-						String Audio = null;
-						try {
-							Audio = CalcProperties.AudioTrue();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						} // ZZ
-						if (Audio.contains("true")) {
-							new Sound("typewriter.wav").start();
-						}
+						playAudioIfEnabled();
 					}
 			}
 		}
 
 		if (ae.getSource() == button[18]) { // Number ZERO - 0
-			if (allValues.getText().isEmpty()) {
-				display.setText("0");
-				allValues.setText(display.getText());
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			} else {
-				display.setText(display.getText() + "0");
-				allValues.setText(display.getText());
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
-			}
+			handleNumberButton("0");
 		}
 
 		if (ae.getSource() == button[21]) { // Power of 2
@@ -2506,15 +1709,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		if (ae.getSource() == button[22]) { // Number of Pi - 3.14159
 			if (allValues.getText().isEmpty()) {
 				display.setText("3.14159265359");
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
+				playAudioIfEnabled();
 				allValues.setText(display.getText());
 			} else {
 				display.setText("");
@@ -2524,15 +1719,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 				}
 				display.setText(display.getText() + "3.14159265359");
 				allValues.setText(display.getText());
-				String Audio = null;
-				try {
-					Audio = CalcProperties.AudioTrue();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				} // ZZ
-				if (Audio.contains("true")) {
-					new Sound("typewriter.wav").start();
-				}
+				playAudioIfEnabled();
 			}
 		}
 
