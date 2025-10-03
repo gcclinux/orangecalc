@@ -70,6 +70,7 @@ public class BorderLowerAction implements ActionListener {
         newProperties.put("mnuItemBack.colour", prop.getProperty("mnuItemBack.colour"));
         newProperties.put("mnuItemButtonStyle.colour", prop.getProperty("mnuItemButtonStyle.colour"));
         newProperties.put("mnuItemOrange.colour", prop.getProperty("mnuItemOrange.colour"));
+        newProperties.put("mnuItemPurple.colour", prop.getProperty("mnuItemPurple.colour"));
 
         newProperties.put("mnuStyle.colour", prop.getProperty("mnuStyle.colour"));
         newProperties.put("mnuExport.colour", prop.getProperty("mnuExport.colour"));

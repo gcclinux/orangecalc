@@ -122,6 +122,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 	ImageIcon iconBorderRaised =new ImageIcon(getClass().getResource("/images/raised.png") );
 	ImageIcon iconBorderPlain =new ImageIcon(getClass().getResource("/images/plain.png") );
 	ImageIcon iconLime =new ImageIcon(getClass().getResource("/images/lime.png") );
+	ImageIcon iconPurple =new ImageIcon(getClass().getResource("/images/star.gif") ); // TODO: Create purple.png icon
 	
 
 	public JMenu mnuItemBack = new JMenu("BackGround"); // Sub-Menu Quit item
@@ -146,6 +147,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 	public JMenuItem mnuExport = new JMenuItem("Export (Excel)", iconExport );
 	
 	public JMenuItem mnuItemOrange = new JMenuItem("Orange", iconOrange); // Sub-Menu item
+	public JMenuItem mnuItemPurple = new JMenuItem("Purple", iconPurple); // Sub-Menu item
 	public JMenuItem mnuItemPlain = new JMenuItem("Plain", iconBorderPlain);
 	public JMenuItem mnuItemNoBoarder = new JMenuItem("Plain", iconBorderPlain);
 	public JMenuItem mnuItemBorderCompound = new JMenuItem("Compound", iconBorderCompound);
@@ -207,6 +209,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		mnuItemBack.setFont(FontTheme.size14p);
 		mnuItemButtonStyle.setFont(FontTheme.size14p);
 		mnuItemOrange.setFont(FontTheme.size14p);
+		mnuItemPurple.setFont(FontTheme.size14p);
 		mnuExport.setFont(FontTheme.size14p);
 		mnuItemNoBoarder.setFont(FontTheme.size14p);
 		mnuItemBorderCompound.setFont(FontTheme.size14p);
@@ -241,6 +244,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		mnuItemBack.add(mnuItemLime);
 		mnuItemBack.add(mnuItemPlain);
 		mnuItemBack.add(mnuItemOrange);
+		mnuItemBack.add(mnuItemPurple);
 		mnuItemButtonStyle.add(mnuItemNoBoarder);
 		mnuItemButtonStyle.add(mnuItemBorderCompound);
 		mnuItemButtonStyle.add(mnuItemBorderLower);
@@ -293,6 +297,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 			mnuItemBack.setForeground(CalcProperties.ORANGE);
 			mnuItemButtonStyle.setForeground(CalcProperties.ORANGE);
 			mnuItemOrange.setForeground(CalcProperties.ORANGE);
+			mnuItemPurple.setForeground(CalcProperties.ORANGE);
 			mnuStyle.setForeground(CalcProperties.ORANGE);
 			mnuExport.setForeground(CalcProperties.ORANGE);
 			mnuItemNoBoarder.setForeground(CalcProperties.ORANGE);
@@ -363,6 +368,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 				newProperties.put("mnuItemBack.colour", "ORANGE");
 				newProperties.put("mnuItemButtonStyle.colour", "ORANGE");
 				newProperties.put("mnuItemOrange.colour", "ORANGE");
+				newProperties.put("mnuItemPurple.colour", "ORANGE");
 				newProperties.put("mnuStyle.colour", "ORANGE");
 				newProperties.put("mnuExport.colour", "ORANGE");
 				newProperties.put("mnuItemNoBoarder.colour", "ORANGE");
@@ -419,6 +425,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 			if (prop.getProperty("mnuClearHist.colour") == null){ prop.setProperty("mnuClearHist.colour", "ORANGE"); }
 			if (prop.getProperty("theme.colour") == null){ prop.setProperty("theme.colour", "ORANGE"); }
 			if (prop.getProperty("mnuItemOrange.colour") == null){ prop.setProperty("mnuItemOrange.colour", "ORANGE"); }
+			if (prop.getProperty("mnuItemPurple.colour") == null){ prop.setProperty("mnuItemPurple.colour", "ORANGE"); }
 			if (prop.getProperty("mnuItemHist.colour") == null){ prop.setProperty("mnuItemHist.colour", "ORANGE"); }
 			if (prop.getProperty("mnuItemHistOld.colour") == null){ prop.setProperty("mnuItemHistOld.colour", "ORANGE"); }
 
@@ -497,6 +504,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 			String LIME = "LIME";
 			String DARKGREY = "DARKGREY";
 			String BLACK = "BLACK";
+			String PURPLE = "PURPLE";
 			
 			//newProperties.put("theme.colour", prop.getProperty("theme.colour"));
 			
@@ -529,6 +537,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 			setMenuItemColor(mnuItemBack, prop, "mnuItemBack.colour");
 			setMenuItemColor(mnuItemButtonStyle, prop, "mnuItemButtonStyle.colour");
 			setMenuItemColor(mnuItemOrange, prop, "mnuItemOrange.colour");
+			setMenuItemColor(mnuItemPurple, prop, "mnuItemPurple.colour");
 			setMenuItemColor(mnuStyle, prop, "mnuStyle.colour");
 			setMenuItemColor(mnuExport, prop, "mnuExport.colour");
 			setMenuItemColor(mnuItemNoBoarder, prop, "mnuItemNoBoarder.colour");
@@ -713,6 +722,46 @@ public class OrangeCalc extends JFrame implements ActionListener {
 					}
 				}
 				
+			} else if (CALROW.equals(PURPLE)) {	
+				for (int i = 0; i < 5; i++) {
+					row[i].setBackground(CalcProperties.PURPLE);
+				} 
+				
+				Map<Integer, Character> keystrokeMap = createKeystrokeMap();
+				
+				String STYLETYPE = prop.getProperty("style.type");
+
+				for (int i = 0; i < 24; i++) {
+					button[i] = new JButton(); 
+					button[i].setBorder(getBorderByType(STYLETYPE));
+					button[i].setContentAreaFilled(true); 
+					button[i].setText(buttonString[i]);
+
+					if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
+							|| i == 8 || i == 9 || i == 10 || i == 18) {
+						button[i].setBackground(CalcProperties.DARKGREY);
+						button[i].setFont(FontTheme.size18i);
+					} else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
+							|| i == 14 || i == 15 || i == 16 || i == 17 || i == 19
+							|| i == 20 || i == 22 || i == 21 || i == 23) {
+						button[i].setBackground(CalcProperties.PURPLE);
+						button[i].setFont(FontTheme.size18i);
+						button[i].setForeground(CalcProperties.WHITE);
+					}
+
+					button[i].addActionListener(this);
+
+					Character c = keystrokeMap.get(i);
+					if (c != null) {
+						KeyStroke keyStroke = KeyStroke.getKeyStroke(c, 0);
+						InputMap inputMap = button[i]
+								.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+						inputMap.put(keyStroke, ACTION_KEY);
+						ActionMap actionMap = button[i].getActionMap();
+						actionMap.put(ACTION_KEY, new KeyPressed(button[i]));
+					}
+				}
+				
 			}
 		
 		}
@@ -838,6 +887,8 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		mnuItemLime.addActionListener(new LimeAction(this, button, row, (Border) compound, loweredbevel, raisedbevel));
 	
 		mnuItemOrange.addActionListener(new OrangeAction(this, button, row, (Border) compound, loweredbevel, raisedbevel));
+		
+		mnuItemPurple.addActionListener(new PurpleAction(this, button, row, (Border) compound, loweredbevel, raisedbevel));
 
 		mnuItemHist.addActionListener(new ActionListener() {
 			@Override

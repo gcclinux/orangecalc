@@ -41,6 +41,7 @@ public class CalcProperties {
 	static Color PINK = new Color(158, 45, 205);
 	static Color BLUE = new Color(49, 156, 231);
 	static Color LIME = new Color(51, 255, 51);
+	static Color PURPLE = new Color(138, 43, 226);
 	static Color BLACK = new Color(0, 0, 0);
 	static Color DARKGREY = new Color(94, 94, 94);
 	static Color LIGHTGREY = new Color(192, 192, 192);
@@ -118,6 +119,7 @@ public class CalcProperties {
 		colourmap.put("Pink", PINK);
 		colourmap.put("Blue", BLUE);
 		colourmap.put("Lime", LIME);
+		colourmap.put("Purple", PURPLE);
 		colourmap.put("Black", BLACK);
 		colourmap.put("DarkGrey", DARKGREY);
 		colourmap.put("LighGrey", LIGHTGREY);
@@ -143,6 +145,7 @@ public class CalcProperties {
 			newProperties.put("mnuItemBack.colour", "ORANGE");
 			newProperties.put("mnuItemButtonStyle.colour", "ORANGE");
 			newProperties.put("mnuItemOrange.colour", "ORANGE");
+			newProperties.put("mnuItemPurple.colour", "ORANGE");
 
 			newProperties.put("mnuStyle.colour", "ORANGE");
 			newProperties.put("mnuExport.colour", "ORANGE");
@@ -199,6 +202,7 @@ public class CalcProperties {
 		colourmap.put("Pink", PINK);
 		colourmap.put("Blue", BLUE);
 		colourmap.put("Lime", LIME);
+		colourmap.put("Purple", PURPLE);
 		colourmap.put("Black", BLACK);
 		colourmap.put("DarkGrey", DARKGREY);
 		colourmap.put("LighGrey", LIGHTGREY);
@@ -220,6 +224,7 @@ public class CalcProperties {
 		colourmap.put("Pink", PINK);
 		colourmap.put("Blue", BLUE);
 		colourmap.put("Lime", LIME);
+		colourmap.put("Purple", PURPLE);
 		colourmap.put("Black", BLACK);
 		colourmap.put("DarkGrey", DARKGREY);
 		colourmap.put("LighGrey", LIGHTGREY);
