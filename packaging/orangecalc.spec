@@ -1,5 +1,5 @@
 Name:           orangecalc
-Version:        1.5.5
+Version:        1.5.6
 Release:        1%{?dist}
 Summary:        A lightweight Java calculator with multiple themes and advanced features
 
@@ -21,7 +21,7 @@ history, audio feedback, and keyboard shortcuts.
 Features:
 - Basic arithmetic operations (+, -, ×, ÷)
 - Advanced functions (square root, power, percentage, pi)
-- Multiple color themes (Orange, Lime, Dark Gray, Plain)
+- Multiple color themes (Orange, Purple, Lime, Plain, Black)
 - Customizable button styles and borders
 - Calculation history with HTML export
 - Audio feedback for button presses
@@ -41,9 +41,14 @@ javac -d bin -Xlint:deprecation @sources.txt
 cp -r res/* bin/
 
 # Create JAR file
-mkdir -p classes/artifacts
-echo "Main-Class: wagemaker.CalculatorOrangeLite" > manifest.txt
-jar cfm classes/artifacts/OrangeCalc.jar manifest.txt -C bin .
+mkdir -p dist
+echo "Manifest-Version: 1.0" > manifest.txt
+echo "Main-Class: wagemaker.OrangeCalc" >> manifest.txt
+echo "Created-By: Orange Calculator Build Script" >> manifest.txt
+echo "Implementation-Title: Orange Calculator" >> manifest.txt
+echo "Implementation-Version: 1.5.6" >> manifest.txt
+echo "Implementation-Vendor: Ricardo Wagemaker" >> manifest.txt
+jar cfm dist/OrangeCalculator.jar manifest.txt -C bin .
 
 %install
 # Create directory structure
@@ -55,41 +60,22 @@ install -d %{buildroot}%{_datadir}/icons/hicolor/64x64/apps
 install -d %{buildroot}%{_docdir}/%{name}
 
 # Install JAR file
-install -m 644 classes/artifacts/OrangeCalc.jar %{buildroot}%{_datadir}/%{name}/
+install -m 644 dist/OrangeCalculator.jar %{buildroot}%{_datadir}/%{name}/
 
-# Install icons (using calculator.ico converted to PNG or existing PNG icons)
-if [ -f res/images/calculator.ico ]; then
-    # Convert ICO to PNG if needed, or use existing PNG files
-    install -m 644 res/images/calculator.png %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
-    install -m 644 res/images/calculator.png %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
-fi
+# Install icons
+install -m 644 res/images/calculator.png %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
+install -m 644 res/images/calculator.png %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
 
 # Create launcher script
 cat > %{buildroot}%{_bindir}/%{name} << 'EOF'
 #!/bin/bash
 # Orange Calculator launcher script
-exec java -jar %{_datadir}/%{name}/OrangeCalc.jar "$@"
+exec java -jar %{_datadir}/%{name}/OrangeCalculator.jar "$@"
 EOF
 chmod 755 %{buildroot}%{_bindir}/%{name}
 
-# Create desktop file
-cat > %{buildroot}%{_datadir}/applications/%{name}.desktop << 'EOF'
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Orange Calculator
-Comment=A lightweight Java calculator with multiple themes and advanced features
-Comment[es]=Una calculadora ligera en Java con múltiples temas y funciones avanzadas
-Comment[fr]=Une calculatrice légère en Java avec plusieurs thèmes et fonctionnalités avancées
-Comment[de]=Ein leichtgewichtiger Java-Rechner mit mehreren Themen und erweiterten Funktionen
-Exec=orangecalc
-Icon=orangecalc
-Terminal=false
-StartupNotify=true
-Categories=Utility;Calculator;Office;
-Keywords=calculator;math;arithmetic;java;
-StartupWMClass=OrangeCalc
-EOF
+# Install desktop file
+install -m 644 packaging/%{name}.desktop %{buildroot}%{_datadir}/applications/
 
 # Install documentation
 install -m 644 README.md %{buildroot}%{_docdir}/%{name}/
@@ -120,6 +106,15 @@ fi
 %{_datadir}/icons/hicolor/64x64/apps/%{name}.png
 
 %changelog
+* Fri Jan 10 2025 Ricardo Wagemaker <maintainer@example.com> - 1.5.6-1
+- Updated to version 1.5.6
+- Added new Purple theme support
+- Redesigned About dialog with dynamic theme colors
+- Improved theme switching and persistence
+- Enhanced UI with better color schemes
+- Fixed theme initialization issues
+- Updated build system with JAR creation support
+
 * Fri Jan 10 2025 Ricardo Wagemaker <maintainer@example.com> - 1.5.5-1
 - Initial RPM package for Orange Calculator
 - Lightweight Java calculator with multiple themes

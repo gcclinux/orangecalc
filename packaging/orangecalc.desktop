@@ -1,0 +1,18 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Orange Calculator
+Comment=A lightweight Java calculator with multiple themes and advanced features
+Comment[es]=Una calculadora ligera en Java con múltiples temas y funciones avanzadas
+Comment[fr]=Une calculatrice légère en Java avec plusieurs thèmes et fonctionnalités avancées
+Comment[de]=Ein leichtgewichtiger Java-Rechner mit mehreren Themen und erweiterten Funktionen
+Comment[pt]=Uma calculadora leve em Java com múltiplos temas e recursos avançados
+Comment[ru]=Легкий калькулятор на Java с несколькими темами и расширенными функциями
+Exec=orangecalc
+Icon=orangecalc
+Terminal=false
+StartupNotify=true
+Categories=Utility;Calculator;
+Keywords=calculator;math;arithmetic;java;themes;
+StartupWMClass=OrangeCalc
+MimeType=text/plain;

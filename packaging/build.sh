@@ -5,7 +5,9 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SRC_DIR="$PROJECT_ROOT/src"
 BIN_DIR="$PROJECT_ROOT/bin"
 RES_DIR="$PROJECT_ROOT/res"
+DIST_DIR="$PROJECT_ROOT/dist"
 MAIN_CLASS="wagemaker.OrangeCalc"
+JAR_NAME="OrangeCalculator.jar"
 
 # Colors for output
 RED='\033[0;31m'
@@ -21,15 +23,23 @@ show_help() {
     echo "  ./build.sh           - Compile the project"
     echo "  ./build.sh clean     - Clean and compile"
     echo "  ./build.sh run       - Compile and run"
+    echo "  ./build.sh jar       - Compile and create executable JAR"
+    echo "  ./build.sh clean jar - Clean, compile and create JAR"
     echo "  ./build.sh clean run - Clean, compile and run"
     echo "  ./build.sh help      - Show this help"
+    echo
+    echo "Output:"
+    echo "  Compiled classes: bin/"
+    echo "  Executable JAR:   dist/$JAR_NAME"
     echo
 }
 
 clean_project() {
     echo -e "${YELLOW}Cleaning project...${NC}"
     rm -rf "$BIN_DIR"
+    rm -rf "$DIST_DIR"
     mkdir -p "$BIN_DIR"
+    mkdir -p "$DIST_DIR"
     echo -e "${GREEN}Clean complete.${NC}"
 }
 
@@ -88,9 +98,64 @@ run_application() {
     cd "$PROJECT_ROOT"
 }
 
+create_jar() {
+    echo -e "${YELLOW}Creating executable JAR...${NC}"
+    
+    # Check if jar command is available
+    if ! command -v jar &> /dev/null; then
+        echo -e "${RED}Error: jar command not found in PATH${NC}"
+        echo -e "${YELLOW}Make sure JDK is installed (not just JRE)${NC}"
+        exit 1
+    fi
+    
+    # Ensure dist directory exists
+    mkdir -p "$DIST_DIR"
+    
+    # Create manifest file
+    MANIFEST_FILE="$DIST_DIR/MANIFEST.MF"
+    cat > "$MANIFEST_FILE" << EOF
+Manifest-Version: 1.0
+Main-Class: $MAIN_CLASS
+Created-By: Orange Calculator Build Script
+Implementation-Title: Orange Calculator
+Implementation-Version: 1.5.6
+Implementation-Vendor: Ricardo Wagemaker
+EOF
+    
+    # Create JAR file
+    cd "$BIN_DIR"
+    
+    if jar cfm "$DIST_DIR/$JAR_NAME" "$MANIFEST_FILE" .; then
+        echo -e "${GREEN}JAR created successfully: $DIST_DIR/$JAR_NAME${NC}"
+        
+        # Get JAR file size
+        jar_size=$(du -h "$DIST_DIR/$JAR_NAME" | cut -f1)
+        echo -e "${CYAN}JAR file size: $jar_size${NC}"
+        
+        # Test if JAR is executable
+        echo -e "${YELLOW}Testing JAR executability...${NC}"
+        if java -jar "$DIST_DIR/$JAR_NAME" --version 2>/dev/null || java -jar "$DIST_DIR/$JAR_NAME" -h 2>/dev/null; then
+            echo -e "${GREEN}JAR is executable!${NC}"
+        else
+            echo -e "${YELLOW}JAR created but test run failed (this may be normal if app requires GUI)${NC}"
+        fi
+        
+        echo -e "${GREEN}To run the JAR: java -jar $DIST_DIR/$JAR_NAME${NC}"
+    else
+        echo -e "${RED}JAR creation failed!${NC}"
+        exit 1
+    fi
+    
+    cd "$PROJECT_ROOT"
+    
+    # Clean up manifest file
+    rm -f "$MANIFEST_FILE"
+}
+
 # Parse arguments
 CLEAN_BUILD=false
 RUN_APP=false
+CREATE_JAR=false
 
 for arg in "$@"; do
     case $arg in
@@ -99,6 +164,9 @@ for arg in "$@"; do
             ;;
         run)
             RUN_APP=true
+            ;;
+        jar)
+            CREATE_JAR=true
             ;;
         help)
             show_help
@@ -122,11 +190,31 @@ elif [ ! -d "$BIN_DIR" ]; then
     mkdir -p "$BIN_DIR"
 fi
 
+# Ensure dist directory exists if creating JAR
+if [ "$CREATE_JAR" = true ] && [ ! -d "$DIST_DIR" ]; then
+    mkdir -p "$DIST_DIR"
+fi
+
 compile_java
 copy_resources
+
+if [ "$CREATE_JAR" = true ]; then
+    create_jar
+fi
 
 if [ "$RUN_APP" = true ]; then
     run_application
 fi
 
 echo -e "${GREEN}Build process complete!${NC}"
+
+# Show output summary
+if [ "$CREATE_JAR" = true ]; then
+    echo
+    echo -e "${CYAN}Output Files:${NC}"
+    echo -e "${CYAN}  Compiled classes: $BIN_DIR${NC}"
+    echo -e "${CYAN}  Executable JAR:   $DIST_DIR/$JAR_NAME${NC}"
+    echo
+    echo -e "${GREEN}To run the application:${NC}"
+    echo -e "${GREEN}  java -jar $DIST_DIR/$JAR_NAME${NC}"
+fi
