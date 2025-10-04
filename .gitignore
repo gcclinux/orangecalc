@@ -1,6 +1,7 @@
 # Ignore compiled class files and build output
 /bin/
 **/*.class
+*/*.class
 /dist/
 
 # Maven

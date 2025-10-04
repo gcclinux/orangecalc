@@ -189,16 +189,18 @@ public class About extends JDialog {
     }
     
     private JPanel createFeaturesPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setOpaque(false);
+        JPanel outerPanel = new JPanel(new BorderLayout());
+        outerPanel.setOpaque(false);
+        
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setOpaque(false);
         
         JLabel featuresTitle = new JLabel("Key Features:");
         featuresTitle.setFont(new Font("SansSerif", Font.BOLD, 16));
         featuresTitle.setForeground(textColor);
-        featuresTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(featuresTitle);
-        panel.add(Box.createVerticalStrut(10));
+        contentPanel.add(featuresTitle);
+        contentPanel.add(Box.createVerticalStrut(10));
         
         String[] features = {
             "• Multiple Color Themes (Orange, Purple, Lime, Plain, Black)",
@@ -214,12 +216,14 @@ public class About extends JDialog {
             JLabel featureLabel = new JLabel(feature);
             featureLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
             featureLabel.setForeground(textColor);
-            featureLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            panel.add(featureLabel);
-            panel.add(Box.createVerticalStrut(3));
+            contentPanel.add(featureLabel);
+            contentPanel.add(Box.createVerticalStrut(3));
         }
         
-        return panel;
+        // Add the content panel to the left side of the border layout
+        outerPanel.add(contentPanel, BorderLayout.WEST);
+        
+        return outerPanel;
     }
     
     private JPanel createButtonPanel() {
