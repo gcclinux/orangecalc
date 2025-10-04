@@ -30,7 +30,7 @@ else {
 }
 
 if (-not $appName) { $appName = 'OrangeCalc' }
-if (-not $version) { $version = '1.5.6' }
+if (-not $version) { $version = '1.5.7' }
 if (-not $vendor) { $vendor = 'Ricardo Wagemaker' }
 
 $mainClass = 'wagemaker.CalculatorOrangeLite'

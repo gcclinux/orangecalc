@@ -118,7 +118,7 @@ Manifest-Version: 1.0
 Main-Class: $MAIN_CLASS
 Created-By: Orange Calculator Build Script
 Implementation-Title: Orange Calculator
-Implementation-Version: 1.5.6
+Implementation-Version: 1.5.7
 Implementation-Vendor: Ricardo Wagemaker
 EOF
     

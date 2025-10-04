@@ -2,7 +2,7 @@
 # Orange Calculator RPM Build Script
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="1.5.6"
+VERSION="1.5.7"
 
 # Colors for output
 RED='\033[0;31m'

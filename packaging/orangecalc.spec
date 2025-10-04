@@ -1,5 +1,5 @@
 Name:           orangecalc
-Version:        1.5.6
+Version:        1.5.7
 Release:        1%{?dist}
 Summary:        A lightweight Java calculator with multiple themes and advanced features
 
@@ -46,7 +46,7 @@ echo "Manifest-Version: 1.0" > manifest.txt
 echo "Main-Class: wagemaker.OrangeCalc" >> manifest.txt
 echo "Created-By: Orange Calculator Build Script" >> manifest.txt
 echo "Implementation-Title: Orange Calculator" >> manifest.txt
-echo "Implementation-Version: 1.5.6" >> manifest.txt
+echo "Implementation-Version: 1.5.7" >> manifest.txt
 echo "Implementation-Vendor: Ricardo Wagemaker" >> manifest.txt
 jar cfm dist/OrangeCalculator.jar manifest.txt -C bin .
 
@@ -106,6 +106,15 @@ fi
 %{_datadir}/icons/hicolor/64x64/apps/%{name}.png
 
 %changelog
+* Sat Jan 11 2025 Ricardo Wagemaker <maintainer@example.com> - 1.5.7-1
+- Updated to version 1.5.7
+- Introduced vibrant Purple theme with dynamic color support
+- Enhanced About dialog with theme-aware gradient backgrounds
+- Improved theme persistence and initialization
+- Fixed RPM packaging and build system
+- Added comprehensive project validation tools
+- Updated desktop integration and icon support
+
 * Fri Jan 10 2025 Ricardo Wagemaker <maintainer@example.com> - 1.5.6-1
 - Updated to version 1.5.6
 - Added new Purple theme support

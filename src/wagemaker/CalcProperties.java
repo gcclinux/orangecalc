@@ -2,7 +2,7 @@ package wagemaker;
 
 /******************************************************************************************************
  * @author by Ricardo Wagemaker (["java"] + "@" + "wagemaker.co.uk") 2013-2015
- * @version 1.5.3
+ * @version 1.5.7
  * @since   2013 - 2015
  ******************************************************************************************************/
 
@@ -23,7 +23,7 @@ public class CalcProperties {
 	static String Name = "RW Collection";
 	static String Developer = "Ricardo Wagemaker";
 
-	static String Version = "1.5.6";
+	static String Version = "1.5.7";
 	static String Title = "Orange Calculator";
 	static String configFile = "calculatorOrange.conf";
 	static String homeDir = System.getProperty("user.home");
