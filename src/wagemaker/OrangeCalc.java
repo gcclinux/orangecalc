@@ -833,7 +833,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		// End Penguin icon
 
 		// Finalize a fixed-size, non-resizable frame 550x550 and center it
-		int w = 473; int h = 480;
+		int w = 480; int h = 480;
 		setSize(w, h);
 		setMinimumSize(new Dimension(w, h));
 		setMaximumSize(new Dimension(w, h));
