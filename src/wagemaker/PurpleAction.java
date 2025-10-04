@@ -60,6 +60,7 @@ public class PurpleAction implements ActionListener {
 
         for (int i = 0; i < 5; i++) {
             row[i].setBackground(CalcProperties.PURPLE);
+            button[i].setForeground(CalcProperties.PURPLE);
         }
 
         for (int i = 0; i < 24; i++) {
@@ -78,12 +79,12 @@ public class PurpleAction implements ActionListener {
             }
             if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6
                     || i == 8 || i == 9 || i == 10 || i == 18) {
-                button[i].setBackground(CalcProperties.DARKGREY);
+                button[i].setBackground(CalcProperties.PURPLE);
             } else if (i == 3 || i == 7 || i == 11 || i == 12 || i == 13
                     || i == 14 || i == 15 || i == 16 || i == 17 || i == 19
                     || i == 20 || i == 22 || i == 21 || i == 23) {
                 button[i].setBackground(CalcProperties.PURPLE);
-                button[i].setForeground(CalcProperties.WHITE);
+                button[i].setForeground(CalcProperties.PURPLE);
             }
         }
 
@@ -96,7 +97,7 @@ public class PurpleAction implements ActionListener {
         Properties newProperties = new Properties(System.getProperties());
 
         newProperties.put("theme.colour", "PURPLE");
-        newProperties.put("button.colour", "DARKGREY");
+        newProperties.put("button.colour", "PURPLE");
         newProperties.put("button_c.colour", "PURPLE");
         newProperties.put("audio.status", "false");
         newProperties.put("mb.colour", "PURPLE");
