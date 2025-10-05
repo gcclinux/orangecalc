@@ -832,11 +832,15 @@ public class OrangeCalc extends JFrame implements ActionListener {
 	row[4].add(button[20]);
 		// End Penguin icon
 
-		// Finalize a fixed-size, non-resizable frame 550x550 and center it
-		int w = 487; int h = 480;
-		setSize(w, h);
-		setMinimumSize(new Dimension(w, h));
-		setMaximumSize(new Dimension(w, h));
+		// Finalize a fixed-size, non-resizable frame and center it
+		Dimension optimalSize = WindowSizeCalculator.calculateOptimalSize();
+		
+		// Display diagnostics if enabled
+		WindowSizeCalculator.displayDiagnostics();
+		
+		setSize(optimalSize);
+		setMinimumSize(optimalSize);
+		setMaximumSize(optimalSize);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -1558,20 +1562,6 @@ public class OrangeCalc extends JFrame implements ActionListener {
 			temporary[1] = Double.parseDouble(allValues.getText());
 			String temp0 = Double.toString(temporary[0]);
 			String temp1 = Double.toString(temporary[1]);
-
-			
-			/* if (function[2] == true) {
-				System.out.println("CODE-008 - Function 2 = true");
-			} else if (function[3] == true) {
-				System.out.println("CODE-009 - Function 3 = true");
-			} else if (function[0] == true) {
-				System.out.println("CODE-010 - Function 0 = true");
-			} else if (function[1] == true) {
-				System.out.println("CODE-011 - Function 1 = true");
-			} else {
-				System.out.println("CODE-012 - No Function Active");
-			}
-			*/
 
 			if (temp0.equals("0.0") || strp.contains("%") || (function[0] == false && function[3] == false && function[1] == false && function[2] == false)) {
 			} else {
