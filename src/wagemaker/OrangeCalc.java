@@ -1006,7 +1006,7 @@ public class OrangeCalc extends JFrame implements ActionListener {
 		Color color = switch(colorName) {
 			case "ORANGE" -> CalcProperties.ORANGE;
 			case "LIME" -> CalcProperties.LIME;
-			case "DARKGREY" -> CalcProperties.DARKGREY;
+			case "PURPLE" -> CalcProperties.PURPLE;
 			case "BLACK" -> CalcProperties.BLACK;
 			default -> CalcProperties.ORANGE;
 		};
