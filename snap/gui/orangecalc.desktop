@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=OrangeCalc
+Comment=Simple Java Orang Calculator
+Exec=orangecalc %F
+Icon=${SNAP}/usr/share/pixmaps/calculator.png
+Terminal=false
+Type=Application
+Categories=Utility;Calculator;
+StartupNotify=true
+Keywords=calculator;math;arithmetic;java;themes;
+StartupWMClass=OrangeCalc
+MimeType=text/plain;

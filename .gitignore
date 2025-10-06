@@ -3,6 +3,13 @@
 **/*.class
 */*.class
 /dist/
+/overlay/
+/parts/
+/prime/
+/stage/
+/.craft/
+.snap/
+*.snap
 
 # Maven
 /target/

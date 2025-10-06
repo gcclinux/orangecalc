@@ -1,0 +1,78 @@
+name: orangecalc
+base: core22
+version: '1.5.7'
+title: Orange Calculator
+summary: A lightweight Java calculator with multiple themes
+description: |
+  Orange Calculator is a feature-rich desktop calculator application built with Java.
+  It offers multiple color themes (Orange, Lime, Purple, Plain), advanced mathematical
+  operations, calculation history, audio feedback, and an intuitive user interface.
+  
+  Features:
+  - Basic arithmetic operations (+, -, ×, ÷)
+  - Advanced functions (√, x², π, %)
+  - Multiple color themes
+  - Calculation history with HTML export
+  - Audio feedback (optional)
+  - Keyboard shortcuts
+  - Copy results to clipboard
+
+website: https://github.com/gcclinux/orangecalc
+source-code: https://github.com/gcclinux/orangecalc
+issues: https://github.com/gcclinux/orangecalc/issues
+contact: https://github.com/gcclinux/orangecalc/discussions
+license: MIT
+
+grade: stable
+confinement: strict
+
+platforms:
+  amd64:
+
+apps:
+  orangecalc:
+    command: bin/orangecalc
+    desktop: usr/share/applications/orangecalc.desktop
+    plugs:
+      - home
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - unity7
+      - opengl
+      - audio-playback
+
+parts:
+  orangecalc:
+    plugin: dump
+    source: .
+    build-packages: []
+    stage-packages:
+      - openjdk-21-jre
+    build-attributes:
+      - no-patchelf
+    override-build: |
+      # Create wrapper script
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      cat > $SNAPCRAFT_PART_INSTALL/bin/orangecalc << 'EOF'
+      #!/bin/bash
+      export JAVA_HOME=$(find $SNAP/usr/lib/jvm -name "java-*-openjdk-*" -type d | head -1)
+      export DISPLAY=${DISPLAY:-:0}
+      exec $JAVA_HOME/bin/java -jar $SNAP/OrangeCalculator.jar "$@"
+      EOF
+      chmod +x $SNAPCRAFT_PART_INSTALL/bin/orangecalc
+      
+      # Copy pre-compiled JAR
+      cp dist/OrangeCalculator.jar $SNAPCRAFT_PART_INSTALL/
+      
+      # Copy resources
+      cp -r res $SNAPCRAFT_PART_INSTALL/
+      
+      # Install desktop file
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/applications
+      cp packaging/orangecalc.desktop $SNAPCRAFT_PART_INSTALL/usr/share/applications/
+      
+      # Install icon
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/pixmaps
+      cp res/images/calculator.png $SNAPCRAFT_PART_INSTALL/usr/share/pixmaps/orangecalc.png
